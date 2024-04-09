@@ -2,11 +2,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import getSvgs, { sidebarLinks } from "@/app/lib/constants";
-import { useRouter } from "next/navigation";
+import { usePathname } from 'next/navigation'
 import { Button } from "@/app/components/UI/button";
 
 const Leftbar = () => {
-    const pathname = useRouter();
+    const pathname = usePathname();
+    console.log(pathname);
     return (
         <nav className="hidden relative md:flex px-6 py-10 flex-col justify-between min-w-[270px] bg-bar">
             <div className="flex flex-col gap-11">
@@ -18,7 +19,7 @@ const Leftbar = () => {
                 </Link>
                 <div className="flex gap-3 items-center">
                     <Image
-                        src="/assets/hq720.jpg"
+                        src="/images/hq720.jpg"
                         alt="img"
                         className="w-14 h-14 rounded-full"
                         width={56}
@@ -68,7 +69,7 @@ const Leftbar = () => {
                 className="shad-button_ghost flex justify-start gap-1"
             >
                 <Image
-                    src="/assets/logout-svgrepo-com.svg"
+                    src="/images/logout-svgrepo-com.svg"
                     className="w-6 h-6 "
                     alt="logout"
                     width={24}

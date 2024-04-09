@@ -2,9 +2,10 @@
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from 'next/navigation'
 import getSvgs, { bottombarLinks } from "@/app/lib/constants";
 const BottomBar = () => {
-    const pathname = useRouter();
+    const pathname = usePathname();
     return (
         <section className="z-50 flex justify-around w-full sticky bottom-0 rounded-t-[20px] bg-[#09090A] px-5 py-4 md:hidden top-8">
             {bottombarLinks.map((link) => {
