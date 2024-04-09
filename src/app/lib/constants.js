@@ -82,3 +82,14 @@ const getSvgs = (name) => {
 };
 
 export default getSvgs;
+export const profilePictureSources = [
+    {
+      source: "/images/lamp-lights-lantern-wallpaper-preview.jpg"
+    },
+    {
+      source: "/images/post_img1.jpeg"
+    },
+    {
+        source: "/images/maaz_photo.jpg"
+      },
+  ];

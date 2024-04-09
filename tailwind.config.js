@@ -8,7 +8,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        bar:"#09090A",
         prim_Col:"#33bbcf",
+        text_light:"#c0e5eb"
       }
     },
   },

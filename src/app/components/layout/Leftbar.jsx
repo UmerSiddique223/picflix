@@ -9,8 +9,9 @@ const Leftbar = () => {
     const pathname = usePathname();
     console.log(pathname);
     return (
-        <nav className="hidden relative md:flex px-6 py-10 flex-col justify-between min-w-[270px] bg-bar">
-            <div className="flex flex-col gap-11">
+        <nav className="hidden   md:flex flex-col px-6 py-10   min-w-[270px] bg-bar ">
+            <div className="sticky left-0 top-10 flex flex-col gap-[5.8rem]   ">
+            <div className="flex  flex-col gap-11">
                 <Link
                     href="/"
                     className="flex gap-3 items-center text-gradient text-4xl"
@@ -29,7 +30,7 @@ const Leftbar = () => {
                         <p className="text-[18px] font-bold leading-[140%]">
                             Butt Sahb
                         </p>
-                        <p className="text-[#c0e5eb] text-[14px] font-normal leading-[140%]">
+                        <p className="text-text_light text-[14px] font-normal leading-[140%]">
                             @butt.sheracom
                         </p>
                     </div>
@@ -64,9 +65,10 @@ const Leftbar = () => {
                     })}
                 </ul>
             </div>
+          
             <Button
                 variant="ghost"
-                className="shad-button_ghost flex justify-start gap-1"
+                className=" flex gap-4 items-center justify-start  "
             >
                 <Image
                     src="/images/logout-svgrepo-com.svg"
@@ -78,7 +80,8 @@ const Leftbar = () => {
                 <p className="lg:text-[17px] text-[15px] font-medium leading-[140%]">
                     Logout
                 </p>
-            </Button>
+            </Button></div>
+            
         </nav>
     );
 };

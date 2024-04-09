@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
                 <div className="w-full md:flex ">
                     <Topbar />
                     <Leftbar />
-                    <section className="flex flex-1 h-full">
+                    <section className=" min-h-screen">
                         {children}
                     </section>
                     <BottomBar />
