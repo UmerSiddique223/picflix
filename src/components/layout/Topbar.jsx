@@ -1,4 +1,4 @@
-import { Button } from "@/app/components/UI/button";
+import { Button } from "@/components/UI/button";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -8,14 +8,14 @@ const Topbar = () => {
             <div className="flex justify-between items-center py-4 px-5">
                 <Link
                     href="/"
-                    className="flex gap-3 items-center text-gradient text-3xl"
+                    className="flex gap-3 items-center text-prim_Col text-3xl"
                 >
                     PicFLix
                 </Link>
                 <div className="flex gap-4">
                     <Button variant="ghost" className="shad-button_ghost">
                         <Image
-                            src="/assets/logout-svgrepo-com.svg"
+                            src="/images/logout-svgrepo-com.svg"
                             className="w-6 h-6"
                             alt="logout"
                             width={24}
@@ -27,7 +27,7 @@ const Topbar = () => {
                         className="flex justify-center items-center"
                     >
                         <Image
-                            src="/assets/hq720.jpg"
+                            src="/images/hq720.jpg"
                             alt="profile picture"
                             className="w-8 h-8 rounded-full"
                             width={32}
