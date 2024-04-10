@@ -22,10 +22,10 @@ export default function RootLayout({ children }) {
                     inter.className
                 )}
             >
-                <div className="w-full md:flex ">
+                <div className="w-full md:flex items-start">
                     <Topbar />
                     <Leftbar />
-                    <section className="flex flex-1 h-full">{children}</section>
+                    <section className="min-h-screen">{children}</section>
                     <BottomBar />
                 </div>
             </body>

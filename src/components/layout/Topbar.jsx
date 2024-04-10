@@ -13,15 +13,6 @@ const Topbar = () => {
                     PicFLix
                 </Link>
                 <div className="flex gap-4">
-                    <Button variant="ghost" className="shad-button_ghost">
-                        <Image
-                            src="/images/logout-svgrepo-com.svg"
-                            className="w-6 h-6"
-                            alt="logout"
-                            width={24}
-                            height={24}
-                        />
-                    </Button>
                     <Link
                         href="/profile"
                         className="flex justify-center items-center"

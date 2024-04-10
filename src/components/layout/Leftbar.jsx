@@ -2,82 +2,85 @@
 import Link from "next/link";
 import Image from "next/image";
 import getSvgs, { sidebarLinks } from "@/lib/constants";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/UI/button";
 
 const Leftbar = () => {
-    const pathname = useRouter();
+    const pathname = usePathname();
     return (
-        <nav className="hidden relative md:flex px-6 py-10 flex-col justify-between min-w-[270px] bg-bar">
-            <div className="flex flex-col gap-11">
-                <Link
-                    href="/"
-                    className="flex gap-3 items-center text-prim_Col text-4xl"
-                >
-                    PicFLix
-                </Link>
-                <div className="flex gap-3 items-center">
-                    <Image
-                        src="/images/hq720.jpg"
-                        alt="img"
-                        className="w-14 h-14 rounded-full"
-                        width={56}
-                        height={56}
-                    />
-                    <div className="flex flex-col">
-                        <p className="text-[18px] font-bold leading-[140%]">
-                            Butt Sahb
-                        </p>
-                        <p className="text-[#c0e5eb] text-[14px] font-normal leading-[140%]">
-                            @butt.sheracom
-                        </p>
+        <nav className="sticky hidden top-0 h-screen md:flex flex-col min-w-[270px] bg-bar">
+            <div className="h-full flex flex-col justify-between px-6 py-10 gap-y-8 custom-scrollbar overflow-y-scroll">
+                <div className="flex flex-col gap-10">
+                    <Link
+                        href="/"
+                        className="flex gap-3 items-center text-prim_Col text-4xl"
+                    >
+                        PicFLix
+                    </Link>
+                    <div className="flex gap-3 items-center">
+                        <Image
+                            src="/images/hq720.jpg"
+                            alt="img"
+                            className="w-14 h-14 rounded-full"
+                            width={56}
+                            height={56}
+                        />
+                        <div className="flex flex-col">
+                            <p className="text-lg font-bold">
+                                Butt Sahb
+                            </p>
+                            <p className="text-[#c0e5eb] text-sm font-normal">
+                                @butt.sheracom
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <ul className=" flex flex-col gap-6">
-                    {sidebarLinks.map((link) => {
-                        const isActive = pathname === link.route;
-                        return (
-                            <li
-                                key={link.label}
-                                className={`rounded-xl group text-[16px] font-medium leading-[140%] hover:bg-prim_Col transition ${
-                                    isActive && "bg-prim_Col"
-                                }`}
-                            >
-                                <Link
-                                    href={link.route}
-                                    className="flex gap-4 items-center p-4"
+                    <ul className=" flex flex-col gap-4">
+                        {sidebarLinks.map((link) => {
+                            const isActive = pathname === link.route;
+                            return (
+                                <li
+                                    key={link.label}
+                                    className={`rounded-xl group text-base font-medium hover:bg-prim_Col transition ${
+                                        isActive && "bg-prim_Col"
+                                    }`}
                                 >
-                                    <Image
-                                        src={getSvgs(link.name)}
-                                        alt={link.label}
-                                        className={`group-hover:brightness-0 group-hover:invert ${
-                                            isActive && "invert brightness-0"
-                                        }`}
-                                        width={24}
-                                        height={24}
-                                    />
-                                    {link.label}
-                                </Link>
-                            </li>
-                        );
-                    })}
-                </ul>
+                                    <Link
+                                        href={link.route}
+                                        className="flex gap-4 items-center p-4"
+                                    >
+                                        <Image
+                                            src={getSvgs(link.name)}
+                                            alt={link.label}
+                                            className={`group-hover:brightness-0 group-hover:invert ${
+                                                isActive &&
+                                                "invert brightness-0"
+                                            }`}
+                                            width={24}
+                                            height={24}
+                                        />
+                                        {link.label}
+                                    </Link>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </div>
+                <Button
+                    variant="ghost"
+                    className="flex gap-4 items-center justify-start"
+                >
+                    <Image
+                        src="/images/logout-svgrepo-com.svg"
+                        className="w-6 h-6"
+                        alt="logout"
+                        width={24}
+                        height={24}
+                    />
+                    <p className="lg:text-base text-sm font-medium">
+                        Logout
+                    </p>
+                </Button>
             </div>
-            <Button
-                variant="ghost"
-                className="shad-button_ghost flex justify-start gap-1"
-            >
-                <Image
-                    src="/images/logout-svgrepo-com.svg"
-                    className="w-6 h-6 "
-                    alt="logout"
-                    width={24}
-                    height={24}
-                />
-                <p className="lg:text-[17px] text-[15px] font-medium leading-[140%]">
-                    Logout
-                </p>
-            </Button>
         </nav>
     );
 };

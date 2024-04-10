@@ -1,19 +1,19 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import getSvgs, { bottombarLinks } from "@/lib/constants";
 const BottomBar = () => {
-    const pathname = useRouter();
+    const pathname = usePathname();
     return (
-        <section className="z-50 flex justify-around w-full sticky bottom-0 rounded-t-[20px] bg-[#09090A] px-5 py-4 md:hidden top-8">
+        <section className="z-10 flex justify-around w-full sticky bottom-0 bg-[#09090A] px-5 py-4 md:hidden">
             {bottombarLinks.map((link) => {
                 const isActive = pathname === link.route;
                 return (
                     <Link
                         key={link.label}
                         href={link.route}
-                        className={`flex justify-center items-center flex-col ${
+                        className={`flex justify-center items-center flex-col gap-y-1 ${
                             isActive &&
                             "bg-prim_Col rounded-[10px] gap-1 p-2 transition"
                         }`}
@@ -27,7 +27,7 @@ const BottomBar = () => {
                                 isActive && "invert brightness-0"
                             }`}
                         />
-                        <p className="text-[10px] text-[#EFEFEF] font-medium leading-[140%]">
+                        <p className="text-[10px] text-[#EFEFEF] font-medium">
                             {link.label}
                         </p>
                     </Link>
