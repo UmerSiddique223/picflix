@@ -1,9 +1,10 @@
 import { Inter } from "next/font/google";
 
 import "./globals.css";
-import Topbar from "./components/layout/Topbar";
-import Leftbar from "./components/layout/Leftbar";
-import BottomBar from "./components/layout/BottomBar";
+import Topbar from "@/components/layout/Topbar";
+import Leftbar from "@/components/layout/Leftbar";
+import BottomBar from "@/components/layout/BottomBar";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,13 +17,16 @@ export default function RootLayout({ children }) {
     
     return (
         <html lang="en">
-            <body className={inter.className}>
-                <div className="w-full md:flex ">
+            <body
+                className={cn(
+                    "min-h-screen dark bg-background font-sans antialiased",
+                    inter.className
+                )}
+            >
+                <div className="w-full md:flex items-start">
                     <Topbar />
                     <Leftbar />
-                    <section className=" min-h-screen">
-                        {children}
-                    </section>
+                    <section className="min-h-screen">{children}</section>
                     <BottomBar />
                 </div>
             </body>

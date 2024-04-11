@@ -27,7 +27,6 @@ export const sidebarLinks = [
     },
     {
         name: "gallery-add",
-        
         route: "/create-post",
         label: "Create Post",
     },
@@ -83,6 +82,7 @@ const getSvgs = (name) => {
 };
 
 export default getSvgs;
+
 export const profilePictureSources = [
     {
       source: "/images/lamp-lights-lantern-wallpaper-preview.jpg"
