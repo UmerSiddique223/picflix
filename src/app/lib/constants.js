@@ -27,6 +27,7 @@ export const sidebarLinks = [
     },
     {
         name: "gallery-add",
+        
         route: "/create-post",
         label: "Create Post",
     },

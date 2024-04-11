@@ -4,9 +4,7 @@ import Image from "next/image";
 
 
 const PostCard = ({ source }) => {
-  
-console.log("inside");
-  return (
+    return (
     <div className="bg-dark-2 rounded-3xl border border-[#1F1F22] p-5 lg:p-7 w-full max-w-screen-sm">
       <div className="flex justify-between items-center">
         <div className="flex justify-center items-center gap-3">
