@@ -1,14 +1,18 @@
-import { profilePictureSources } from "@/lib/constants";
-import PostCard from "@/components/home/PostCard";
-
+import { profilePictureSources } from "..//lib/constants";
+import PostCard from "../components/home/PostCard";
+import Image from "next/image";
 export default function Home() {
     return (
-        <div>
-            <div className=" flex flex-col items-center gap-10 overflow-scroll py-10 sm:px-5 md:px-8 lg:p-14 custom-scrollbar">
-                <h2 className="text-2xl font-bold tracking-tighter">
+        
+       
+             <div className="flex ">
+<div className="flex-grow w-3/4">
+            <div className="flex flex-col items-center gap-10 py-10 sm:px-5 md:px-8  lg:p-10 custom-scrollbar">
+                {/* <h2 className="text-2xl font-bold tracking-tighter">
                     Home Feed
-                </h2>
-                <ul className="flex flex-col  gap-9 w-full">
+                </h2> */}                                        
+                 <Image alt="homePage" src="/images/wired-outline-63-home.gif" width={80} height={50} />
+                <ul className="flex flex-col gap-9 w-full">
                     {profilePictureSources.map((profile) => (
                         <PostCard
                             key={profile.source}
@@ -16,8 +20,12 @@ export default function Home() {
                         />
                     ))}
                 </ul>
-            </div>
+            </div></div>
+            {/* //Right side  data */}
+            <div className=" hidden lg:block "> RIght data</div>
         </div>
+       
+       
     );
 }
 

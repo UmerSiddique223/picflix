@@ -2,7 +2,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import getSvgs, { bottombarLinks } from "@/lib/constants";
+import getSvgs, { bottombarLinks } from "../../lib/constants";
 const BottomBar = () => {
     const pathname = usePathname();
     return (

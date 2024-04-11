@@ -1,4 +1,4 @@
-import { Button } from "@/components/UI/button";
+import { Button } from "../UI/button";
 import Link from "next/link";
 import Image from "next/image";
 
