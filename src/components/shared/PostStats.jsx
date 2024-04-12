@@ -16,29 +16,29 @@ export const PostStats = () => {
         setLike(!like);
     }
     return (
-        <div className="flex justify-between items-center z-20">
-            <div className="flex gap-2 mr-5">
+        <div className="flex  justify-between items-center z-20">
+            <div className="flex gap-2 mr-5 ">
                 <Image
                     src={`${
                         checkIsLiked()
-                            ? "/assets/icons/liked.svg"
-                            : "/assets/icons/like.svg"
+                            ? "/images/liked.svg"
+                            : "/images/like.svg"
                     }`}
                     alt="like"
-                    width={20}
-                    height={20}
+                    width={25}
+                    height={25}
                     onClick={(e) => handleLikePost(e)}
                     className="cursor-pointer"
                 />
-                <p className="text-sm font-medium  lg:base-medium">69</p>
+                <p className="text-sm font-medium flex justify-center items-center lg:base-medium">69</p>
             </div>
 
             <div className="flex gap-2">
                 <Image
                     src={isSaved ? "/icons/saved.svg" : "/icons/save.svg"}
                     alt="share"
-                    width={20}
-                    height={20}
+                    width={30}
+                    height={30}
                     className="cursor-pointer"
                     onClick={(e) => handleSavePost(e)}
                 />
