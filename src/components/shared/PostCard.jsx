@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const PostCard = ({ source }) => {
     return (
-        <div className="bg-dark-2 rounded-3xl border border-[#1F1F22] p-5 lg:p-7 w-full max-w-screen-sm">
+        <div className="bg-card rounded-3xl border border-border p-5 lg:p-7 w-full max-w-screen-sm">
             <div className="flex justify-between items-center">
                 <div className="flex justify-center items-center gap-3">
                     <Image
@@ -14,10 +14,10 @@ const PostCard = ({ source }) => {
                     />
 
                     <div className="flex flex-col">
-                        <p className="text-base font-medium  lg:font-bold text-[#FFFFFF]">
+                        <p className="text-base font-medium lg:font-bold">
                             Maaz Ahmad
                         </p>
-                        <div className="flex-center gap-2 text-text_light">
+                        <div className="flex-center gap-2">
                             <p className="text-xs font-semibold  lg:small-regular ">
                                 24-2-2024
                             </p>

@@ -1,10 +1,10 @@
 import { profilePictureSources } from "@/lib/constants";
-import PostCard from "@/components/home/PostCard";
+import PostCard from "@/components/shared/PostCard";
 
 export default function Home() {
     return (
         <div>
-            <div className=" flex flex-col items-center gap-10 overflow-scroll py-10 sm:px-5 md:px-8 lg:p-14 custom-scrollbar">
+            <div className=" flex flex-col items-center gap-10 py-10 sm:px-5 md:px-8 lg:p-14">
                 <h2 className="text-2xl font-bold tracking-tighter">
                     Home Feed
                 </h2>

@@ -1,8 +1,8 @@
-import bookmark from "/public/images/bookmark.svg";
-import home from "/public/images/home.svg";
-import addImage from "/public/images/gallery-add.svg";
-import people from "/public/images/people.svg";
-import wallpaper from "/public/images/wallpaper.svg";
+import bookmark from "/public/icons/bookmark.svg";
+import home from "/public/icons/home.svg";
+import addImage from "/public/icons/gallery-add.svg";
+import people from "/public/icons/people.svg";
+import wallpaper from "/public/icons/wallpaper.svg";
 
 export const sidebarLinks = [
     {
@@ -27,7 +27,7 @@ export const sidebarLinks = [
     },
     {
         name: "gallery-add",
-        route: "/create-post",
+        route: "/create",
         label: "Create Post",
     },
 ];
@@ -50,7 +50,7 @@ export const bottombarLinks = [
     },
     {
         name: "gallery-add",
-        route: "/create-post",
+        route: "/create",
         label: "Create Post",
     },
 ];
@@ -85,12 +85,12 @@ export default getSvgs;
 
 export const profilePictureSources = [
     {
-      source: "/images/lamp-lights-lantern-wallpaper-preview.jpg"
+        source: "/images/lamp-lights-lantern-wallpaper-preview.jpg",
     },
     {
-      source: "/images/post_img1.jpeg"
+        source: "/images/post_img1.jpeg",
     },
     {
-        source: "/images/maaz_photo.jpg"
-      },
-  ];
+        source: "/images/maaz_photo.jpg",
+    },
+];

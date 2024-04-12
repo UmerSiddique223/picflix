@@ -13,7 +13,7 @@ const Leftbar = () => {
                 <div className="flex flex-col gap-10">
                     <Link
                         href="/"
-                        className="flex gap-3 items-center text-prim_Col text-4xl"
+                        className="flex gap-3 items-center text-primary text-4xl"
                     >
                         PicFLix
                     </Link>
@@ -26,10 +26,8 @@ const Leftbar = () => {
                             height={56}
                         />
                         <div className="flex flex-col">
-                            <p className="text-lg font-bold">
-                                Butt Sahb
-                            </p>
-                            <p className="text-[#c0e5eb] text-sm font-normal">
+                            <p className="text-lg font-bold">Butt Sahb</p>
+                            <p className="text-sm font-normal">
                                 @butt.sheracom
                             </p>
                         </div>
@@ -40,8 +38,8 @@ const Leftbar = () => {
                             return (
                                 <li
                                     key={link.label}
-                                    className={`rounded-xl group text-base font-medium hover:bg-prim_Col transition ${
-                                        isActive && "bg-prim_Col"
+                                    className={`rounded-xl group text-base font-medium hover:bg-primary transition ${
+                                        isActive && "bg-primary"
                                     }`}
                                 >
                                     <Link
@@ -70,15 +68,13 @@ const Leftbar = () => {
                     className="flex gap-4 items-center justify-start"
                 >
                     <Image
-                        src="/images/logout-svgrepo-com.svg"
+                        src="/icons/logout.svg"
                         className="w-6 h-6"
                         alt="logout"
                         width={24}
                         height={24}
                     />
-                    <p className="lg:text-base text-sm font-medium">
-                        Logout
-                    </p>
+                    <p className="lg:text-base text-sm font-medium">Logout</p>
                 </Button>
             </div>
         </nav>
