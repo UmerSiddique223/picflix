@@ -8,7 +8,7 @@ const Topbar = () => {
             <div className="flex justify-between items-center py-4 px-5">
                 <Link
                     href="/"
-                    className="flex gap-3 items-center text-prim_Col text-3xl"
+                    className="flex gap-3 items-center text-primary text-3xl"
                 >
                     PicFLix
                 </Link>

@@ -15,7 +15,7 @@ const BottomBar = () => {
                         href={link.route}
                         className={`flex justify-center items-center flex-col gap-y-1 ${
                             isActive &&
-                            "bg-prim_Col rounded-[10px] gap-1 p-2 transition"
+                            "bg-primary rounded-[10px] gap-1 p-2 transition"
                         }`}
                     >
                         <Image

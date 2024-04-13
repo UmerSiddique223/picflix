@@ -35,7 +35,7 @@ export const PostStats = () => {
 
             <div className="flex gap-2">
                 <Image
-                    src={isSaved ? "/images/saved.svg" : "/images/save.svg"}
+                    src={isSaved ? "/icons/saved.svg" : "/icons/save.svg"}
                     alt="share"
                     width={30}
                     height={30}
