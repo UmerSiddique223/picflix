@@ -1,8 +1,6 @@
 import poolPromise  from"../../lib/SQL_Config" ;
 // import { NextResponse } from "next/server";
-export  async function GET(req, res) {
-
-
+export async function GET(req, res) {
   try {
     const pool = await poolPromise;
     const result = await pool.request().query(`SELECT * FROM User`);

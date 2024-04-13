@@ -3,16 +3,14 @@ import { ConnectionPool } from "mssql";
 
 // Configure the database connection
 const config = {
-  server: "DESKTOP-MCD4BLG",
-  user: "picflix",
-  password: "bestapp",
-  database: "picflix",
+  server: "THINKPAD-T480",
+  user: "afnan",
+  password: "123456",
+  database: "PicFlix",
   options: {
     enableArithAbort: true,
-    encrypt: false,
-    trustedConnection: true
+    encrypt: false
   },
- 
 };
 
 // Create a pool of connections
