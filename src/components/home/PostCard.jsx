@@ -37,7 +37,7 @@ const PostCard = ({ source }) => {
             />
 <PostStats />
   
-            <div> <p className="text-sm font-semibold leading-5 lg:small-regular">
+            <div> <p className="text-sm font-normal leading-5 lg:small-regular">
     Maaz khan from Multan. He is a good Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non nam placeat, officia aperiam numquam quis perspiciatis recusandae tempora libero veritatis! Nam natus culpa itaque voluptatem. Voluptatibus obcaecati quibusdam possimus dignissimos?
     </p></div>
         </div>

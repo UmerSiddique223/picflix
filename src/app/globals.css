@@ -107,6 +107,19 @@
   background-clip: text;
   text-fill-color: transparent;
 }
-
+.yellow{
+        background: radial-gradient(circle, #3C2D19, transparent);
+        width: 100%;
+        height: 100vh;
+      
+      
+}
+.pink{
+        background: radial-gradient(circle, #7A4347, transparent);
+        width: 100%;
+        height: 100vh;
+      
+      
+}
 
 
