@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { PostStats } from "./PostStats";
 import {
@@ -6,16 +7,23 @@ import {
     CarouselItem,
     CarouselNext,
     CarouselPrevious,
-} from "../UI/carousel";
+} from "@/components/UI/carousel";
+import { useEffect, useState } from "react";
+import parseDate from "@/lib/dateParser";
+import CommentSection from "./CommentSection";
 const PostCard = ({ key, post }) => {
-    const parseDate = (d) => {
-        const date = d.toLocaleDateString("en-US", {
-            month: "numeric",
-            day: "numeric",
-            year: "numeric",
+    const [api, setApi] = useState();
+    const [current, setCurrent] = useState(0);
+    const [comments, toggleComments] = useState(false);
+    useEffect(() => {
+        if (!api) {
+            return;
+        }
+        setCurrent(api.selectedScrollSnap());
+        api.on("select", () => {
+            setCurrent(api.selectedScrollSnap());
         });
-        return date;
-    };
+    }, [api]);
     return (
         <div
             key={key}
@@ -36,19 +44,19 @@ const PostCard = ({ key, post }) => {
                             {post.name}
                         </p>
                         <div className="flex-center gap-2">
-                            <p className="text-xs font-semibold  lg:small-regular ">
+                            <p className="text-xs font-semibold lg:small-regular">
                                 {parseDate(post.created_at)}
                             </p>
                         </div>
                         <div className="flex-center gap-2 text-text_light">
-                            <p className="text-xs font-semibold  lg:small-regular">
+                            <p className="text-xs font-semibold lg:small-regular">
                                 {post.location}
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
-            <Carousel>
+            <Carousel setApi={setApi}>
                 <CarouselContent>
                     {post.media.map((file, index) => (
                         <CarouselItem
@@ -65,15 +73,28 @@ const PostCard = ({ key, post }) => {
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <CarouselPrevious className="-left-8" />
-                <CarouselNext className="-right-8" />
+                <CarouselPrevious className="left-4" />
+                <CarouselNext className="right-4" />
+                {post.media.length > 1 && (
+                    <div className="flex justify-center items-center gap-1 mt-2">
+                        {post.media.map((_, index) => (
+                            <div
+                                key={index}
+                                className={`${
+                                    current === index
+                                        ? "h-3 w-3 bg-primary"
+                                        : "h-2 w-2 bg-muted"
+                                } rounded-full`}
+                            ></div>
+                        ))}
+                    </div>
+                )}
             </Carousel>
-            <PostStats />
-            <div>
-                <p className="text-sm font-semibold leading-5 lg:small-regular">
-                    {post.caption}
-                </p>
-            </div>
+            <p className="my-3 text-sm font-semibold leading-5 lg:small-regular">
+                {post.caption}
+            </p>
+            <PostStats toggleComments={toggleComments}/>
+            {comments&&<CommentSection postId={post.post_id} />}
         </div>
     );
 };
