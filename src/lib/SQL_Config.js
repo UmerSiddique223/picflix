@@ -1,5 +1,5 @@
 // utils/db.js
-import { ConnectionPool } from "mssql";
+import {ConnectionPool} from "mssql";
 
 // Configure the database connection
 const config = {
