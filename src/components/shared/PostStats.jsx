@@ -21,8 +21,8 @@ export const PostStats = () => {
                 <Image
                     src={`${
                         checkIsLiked()
-                            ? "/images/liked.svg"
-                            : "/images/like.svg"
+                            ? "/icons/liked.svg"
+                            : "/icons/like.svg"
                     }`}
                     alt="like"
                     width={25}

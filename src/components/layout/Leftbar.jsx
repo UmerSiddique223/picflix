@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import getSvgs, { sidebarLinks } from "../../lib/constants";
 import { usePathname } from "next/navigation";
-import { Button } from "../UI/button";
+import { Button } from "../ui/button";
 
 const Leftbar = () => {
     const pathname = usePathname();

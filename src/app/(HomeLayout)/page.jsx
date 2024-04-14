@@ -1,5 +1,6 @@
 import { profilePictureSources } from "@/lib/constants";
 import PostCard from "@/components/shared/PostCard";
+import Image from "next/image";
 
 export default function Home() {
     return (
@@ -26,7 +27,12 @@ export default function Home() {
                 </div>
             </div>
             {/* //Right side  data */}
-            <div className=" hidden lg:block "> RIght data</div>
+            <div className=" flex flex-col gap-2 ml-64 mt-32 ">
+                <div className="h-10 w-10 bg-secondary  "> </div>
+                <div className="h-10 w-10 bg-destructive  "> </div>
+                <div className="h-10 w-10 bg-muted  "> </div>
+                <div className="h-10 w-10 bg-accent  "> </div>
+                 </div>
         </div>
     );
 }

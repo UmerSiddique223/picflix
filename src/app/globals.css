@@ -1,8 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
-
 @layer base {
     :root {
         --background: 271.5 100% 95%;
@@ -31,7 +29,7 @@
         --background: 271.5 50% 6%;
         --foreground: 271.5 5% 90%;
         --bar: 240 5% 5%;
-        --card: 271.5 40% 6%;
+        --card: 271.5 40% 7%;
         --card-foreground: 271.5 5% 90%;
         --popover: 271.5 50% 5%;
         --popover-foreground: 271.5 5% 90%;
