@@ -1,11 +1,11 @@
 // utils/db.js
-import {ConnectionPool} from "mssql";
+import { ConnectionPool } from "mssql";
 
 // Configure the database connection
 const config = {
-  server: "DESKTOP-MCD4BLG",
-  user: "umer",
-  password: "123456",
+  server: process.env.SERVER,
+  user: process.env.LOGINAME,
+  password: process.env.PASSWORD,
   database: "picflix",
   options: {
     enableArithAbort: true,
@@ -17,7 +17,6 @@ const config = {
 const poolPromise = new ConnectionPool(config)
   .connect()
   .then((pool) => {
-
     console.log("Connected to SQL Server");
     return pool;
   })

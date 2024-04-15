@@ -12,20 +12,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={cn(
-          "min-h-screen dark font-sans antialiased",
-          inter.className
-        )}
-      >
-        <div className="w-full md:flex items-start">
-          <Topbar />
-          <Leftbar />
-          <section className="min-h-screen">{children}</section>
-          <BottomBar />
-        </div>
-      </body>
-    </html>
+    <div className="w-full md:flex items-start">
+      <Topbar />
+      <Leftbar />
+      <section className="min-h-screen">{children}</section>
+      <BottomBar />
+    </div>
   );
 }
