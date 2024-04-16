@@ -59,7 +59,6 @@ function SignupPage() {
   // console.log("form Errors", errors);
 
   const handleSubmit = async (values) => {
-    console.log("values", values);
     try {
       await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/signup`, {
         method: "POST",
@@ -69,11 +68,14 @@ function SignupPage() {
         body: JSON.stringify(values),
       })
         .then((response) => {
+          console.log(response.json);
           return response.json();
         })
         .then((data) => {
           if (!data.success) {
             Seterror(data.message);
+          } else {
+            router.push("/");
           }
         });
     } catch (error) {

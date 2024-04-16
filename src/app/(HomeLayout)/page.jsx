@@ -1,7 +1,7 @@
 import PostCard from "@/components/shared/PostCard";
 import Image from "next/image";
 import poolPromise from "@/lib/SQL_Config";
-
+import { useUserContext } from "@/lib/context/UserContext";
 export const getPosts = async () => {
   try {
     const pool = await poolPromise;
@@ -31,6 +31,8 @@ export const getPosts = async () => {
 };
 
 export default async function Home() {
+  const { user } = useUserContext();
+  console.log("user", user);
   const posts = await getPosts();
   return (
     <div>

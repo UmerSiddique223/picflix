@@ -1,6 +1,6 @@
 "use client";
 import "../globals.css";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -12,10 +12,21 @@ import {
   FormMessage,
   FormField,
 } from "@/components/UI/form";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { Input } from "@/components/UI/input";
 import { Button } from "@/components/UI/button";
 import Link from "next/link";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/UI/alert-dialog";
+import { useUserContext } from "@/lib/context/UserContext";
 
 //yup schema
 const schema = yup.object({
@@ -29,6 +40,7 @@ const schema = yup.object({
 //main function
 function LoginPage() {
   const [error, Seterror] = useState("");
+  const { user, setUser } = useUserContext();
 
   const router = useRouter();
 
@@ -57,17 +69,18 @@ function LoginPage() {
           return response.json();
         })
         .then((data) => {
-          console.log(data);
+          setUser(data.userData);
           if (!data.success) {
             Seterror(data.message);
           } else {
-            router.push("/");
+            // router.push("/");
           }
         });
     } catch (error) {
       console.error("Error:", error);
     }
   };
+  console.log("user inside login ", user);
 
   return (
     <div className="grid grid-cols-6 gap-4">
@@ -123,9 +136,24 @@ function LoginPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="whitespace-nowrap mt-8">
-                Login
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button type="submit" className="whitespace-nowrap mt-8">
+                    Login
+                  </Button>
+                </AlertDialogTrigger>
+                {error && (
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Signup Error</AlertDialogTitle>
+                      <AlertDialogDescription>{error}</AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogAction>OK</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                )}{" "}
+              </AlertDialog>
             </form>
           </Form>
         </div>

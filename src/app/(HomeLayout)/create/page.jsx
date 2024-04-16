@@ -18,6 +18,7 @@ import { Input } from "@/components/UI/input";
 import { Button } from "@/components/UI/button";
 import { useToast } from "@/components/UI/use-toast";
 import MediaUploader from "@/components/shared/MediaUploader";
+import { useUserContext } from "@/lib/context/UserContext";
 
 const schema = yup.object({
   caption: yup.string(),
@@ -40,7 +41,8 @@ function Create() {
   const { errors } = formState;
   console.log(errors);
   const handleSubmit = (value) => {};
-
+  const { user } = useUserContext();
+  console.log("user", user);
   return (
     // temporary styling because no right section
     <div className="px-16 my-24 w-[800px]">
