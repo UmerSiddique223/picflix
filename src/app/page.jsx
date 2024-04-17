@@ -1,13 +1,14 @@
 import PostCard from "@/components/shared/PostCard";
 import poolPromise from "@/lib/SQL_Config";
+import Image from "next/image";
 
 export const getPosts = async () => {
     try {
         const pool = await poolPromise;
         const result = await pool.request().query(`
-        SELECT Posts.*, Users.name, Users.profile_picture AS profile_pic, Media.media_url AS media FROM Posts
+        SELECT Posts.*, Users.name, Users.profile_picture, Media.media_url AS media FROM Posts
         JOIN Users ON Users.user_id=Posts.user_id
-        LEFT JOIN Media ON Posts.post_id = Media.post_id
+        LEFT JOIN Media ON Posts.post_id = Media.post_id ORDER BY Posts.created_at DESC;
         `);
         const posts = result.recordset.reduce((acc, row) => {
             const existingPost = acc.find(post => post.post_id === row.post_id);

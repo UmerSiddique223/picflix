@@ -1,12 +1,13 @@
 // utils/db.js
 import {ConnectionPool} from "mssql";
 
+const {USER,PASSWORD,SERVER,DATABASE} = process.env;
 // Configure the database connection
 const config = {
-  server: "THINKPAD-T480",
-  user: "afnan",
-  password: "123456",
-  database: "PicFlix",
+  server: SERVER,
+  user: USER,
+  password: PASSWORD,
+  database: DATABASE,
   options: {
     enableArithAbort: true,
     encrypt: false

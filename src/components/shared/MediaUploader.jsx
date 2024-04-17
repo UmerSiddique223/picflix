@@ -16,18 +16,16 @@ const MediaUploader = ({ fieldChange }) => {
 
     const onDrop = useCallback(
         (acceptedFiles) => {
-            if(file.length===0){
-            setFile(acceptedFiles);
-            fieldChange(acceptedFiles);
-            }
-            else{
-                setFile([...file,...acceptedFiles]);
-                fieldChange([...file,...acceptedFiles]);
+            if (file.length === 0) {
+                setFile(acceptedFiles);
+                fieldChange(acceptedFiles);
+            } else {
+                setFile([...file, ...acceptedFiles]);
+                fieldChange([...file, ...acceptedFiles]);
             }
         },
         [file]
     );
-
     const { getRootProps, getInputProps, open } = useDropzone({
         multiple: true,
         noClick: true,
