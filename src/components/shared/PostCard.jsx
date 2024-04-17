@@ -14,7 +14,9 @@ import CommentSection from "./CommentSection";
 const PostCard = ({ key, post }) => {
     const [api, setApi] = useState();
     const [current, setCurrent] = useState(0);
-    const [comments, toggleComments] = useState(false);
+    const [commentSection, toggleCommentSection] = useState(false);
+    const [comments, setComments] = useState([]);
+    const [stats, setStats] = useState({ likes: 0, comments: 0});
     useEffect(() => {
         if (!api) {
             return;
@@ -24,6 +26,30 @@ const PostCard = ({ key, post }) => {
             setCurrent(api.selectedScrollSnap());
         });
     }, [api]);
+    useEffect(() => {
+        const fetchComments = async () => {
+            await fetch(
+                `${process.env.NEXT_PUBLIC_DOMAIN}/api/comments/${post.post_id}`
+            ).then((res) => {
+                if (res.ok) {
+                    return res.json();
+                }
+            }).then((data) => {
+                setComments(data);
+                setStats({
+                    likes: post.num_likes?post.num_likes:0,
+                    comments: data.length?data.length:0,
+                });
+            });
+        };
+        fetchComments();
+    }, []);
+    useEffect(()=>{
+        setStats((prev)=>({
+            ...prev,
+            comments: comments.length
+        }))
+    },[comments])
     return (
         <div
             key={key}
@@ -32,7 +58,7 @@ const PostCard = ({ key, post }) => {
             <div className="flex justify-between items-center">
                 <div className="flex justify-center items-center gap-3">
                     <Image
-                        src={`/images/${post.profile_pic}`}
+                        src={`/images/${post.profile_picture}`}
                         alt="creator"
                         className="w-12 h-12 rounded-full"
                         width={48}
@@ -93,8 +119,8 @@ const PostCard = ({ key, post }) => {
             <p className="my-3 text-sm font-semibold leading-5 lg:small-regular">
                 {post.caption}
             </p>
-            <PostStats toggleComments={toggleComments}/>
-            {comments&&<CommentSection postId={post.post_id} />}
+            <PostStats stats={stats} setStats={setStats} toggleComments={toggleCommentSection}/>
+            {commentSection&&<CommentSection comments={comments} setComments={setComments} post={post.post_id} />}
         </div>
     );
 };

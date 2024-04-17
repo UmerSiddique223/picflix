@@ -1,18 +1,19 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-export const PostStats = ({ toggleComments }) => {
+export const PostStats = ({ stats, setStats, toggleComments }) => {
     const [like, setLike] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
-    function handleSavePost(e) {
-        e.preventDefault();
+    function handleSavePost() {
         setIsSaved(!isSaved);
     }
-    function checkIsLiked() {
-        return like;
-    }
-    function handleLikePost(e) {
-        e.preventDefault();
+    function handleLikePost() {
+        if(like){
+            setStats(prev=>({...prev, likes:prev.likes-1}));
+        }
+        else{
+            setStats(prev=>({...prev, likes:prev.likes+1}));
+        }
         setLike(!like);
     }
     return (
@@ -21,18 +22,18 @@ export const PostStats = ({ toggleComments }) => {
                 <div className="flex gap-1">
                     <Image
                         src={`${
-                            checkIsLiked()
+                            like
                                 ? "/icons/liked.svg"
                                 : "/icons/like.svg"
                         }`}
                         alt="like"
                         width={30}
                         height={30}
-                        onClick={(e) => handleLikePost(e)}
+                        onClick={handleLikePost}
                         className="cursor-pointer"
                     />
                     <p className="text-sm font-medium flex justify-center items-center lg:base-medium">
-                        69
+                        {stats.likes}
                     </p>
                 </div>
                 <div className="flex gap-1">
@@ -45,7 +46,7 @@ export const PostStats = ({ toggleComments }) => {
                         onClick={() => toggleComments((prev) => !prev)}
                     />
                     <p className="text-sm font-medium flex justify-center items-center lg:base-medium">
-                        30
+                        {stats.comments}
                     </p>
                 </div>
             </div>
@@ -56,7 +57,7 @@ export const PostStats = ({ toggleComments }) => {
                     width={30}
                     height={30}
                     className="cursor-pointer"
-                    onClick={(e) => handleSavePost(e)}
+                    onClick={handleSavePost}
                 />
             </div>
         </div>
