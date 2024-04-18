@@ -2,11 +2,30 @@
 import Link from "next/link";
 import Image from "next/image";
 import getSvgs, { sidebarLinks } from "../../lib/constants";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "../UI/button";
 
 const Leftbar = () => {
   const pathname = usePathname();
+  const router = useRouter();
+  const HandleLogout = async () => {
+    try {
+      const response = await fetch("/api/logout", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        router.push("/login");
+      } else {
+        console.error("Failed to logout");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   return (
     <nav className="sticky hidden top-0 h-screen md:flex flex-col min-w-[270px] bg-bar">
       <div className="h-full flex flex-col justify-between px-6 py-10 gap-y-8 custom-scrollbar overflow-y-scroll">
@@ -63,6 +82,7 @@ const Leftbar = () => {
         <Button
           variant="ghost"
           className="flex gap-4 items-center justify-start"
+          onClick={HandleLogout}
         >
           <Image
             src="/icons/logout.svg"

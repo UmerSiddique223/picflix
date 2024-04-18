@@ -162,7 +162,7 @@ function LoginPage() {
           <div className="w-full  text-center">
             <p className="mt-6">
               New to Picflix ?{" "}
-              <Link href="/login" className="text-primary hover:underline">
+              <Link href="/signup" className="text-primary hover:underline">
                 Signup here
               </Link>
             </p>
