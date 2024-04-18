@@ -19,7 +19,6 @@ import Link from "next/link";
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -27,6 +26,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/UI/alert-dialog";
+import { useUserContext } from "@/lib/context/UserContext";
+import Image from "next/image";
 
 //yup schema
 const schema = yup.object({
@@ -44,6 +45,7 @@ const schema = yup.object({
 //main function
 function SignupPage() {
   const [error, Seterror] = useState("");
+  const { setUser } = useUserContext();
 
   const form = useForm({
     defaultValues: {
@@ -57,8 +59,9 @@ function SignupPage() {
   const { formState } = form;
   const { errors } = formState;
   // console.log("form Errors", errors);
-
+  const router = useRouter();
   const handleSubmit = async (values) => {
+    Seterror(null);
     try {
       await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/signup`, {
         method: "POST",
@@ -75,6 +78,7 @@ function SignupPage() {
           if (!data.success) {
             Seterror(data.message);
           } else {
+            setUser(data.userData);
             router.push("/");
           }
         });
@@ -82,25 +86,27 @@ function SignupPage() {
       console.error("Error:", error);
     }
   };
-
   return (
     <>
-      <div className="grid grid-cols-6 gap-4">
-        <div className="col-span-1"></div>
-        <div className="col-span-3">
-          <img
-            src="/images/juicy-girl-with-shopping-bags-calling-a-taxi-on-mobile-phone.gif"
-            className="z-20 h-[40rem] bg-cover"
-            alt="Juicy girl with shopping bags calling a taxi on mobile phone"
-          ></img>
+      <div className="flex justify-center px-32">
+        <div className="w-1/2 flex justify-end">
+          <Image
+            width={800}
+            height={800}
+            src="/icons/homeIcon.svg"
+            className="z-20 bg-cover"
+            alt="image"
+          />
         </div>
 
-        <div className="col-span-2  flex flex-col justify-center items-center">
-          <h1 className="text-3xl font-bold text-primary mb-4">Sign Up</h1>
+        <div className="flex flex-col w-1/2 px-20 justify-center items-end">
           <div className="w-2/3">
+            <h1 className="text-3xl w-full font-bold text-center text-primary mb-4">
+              Sign Up
+            </h1>
             <Form {...form}>
               <form
-                className="flex flex-col   gap-5"
+                className="flex flex-col gap-5"
                 onSubmit={form.handleSubmit(handleSubmit)}
               >
                 <FormField
@@ -112,7 +118,7 @@ function SignupPage() {
                         <FormLabel>Username</FormLabel>
                         <FormControl>
                           <Input
-                            className=" bg-input   border border-border"
+                            className=" bg-input border border-border"
                             type="text"
                             {...field}
                           />
@@ -130,7 +136,7 @@ function SignupPage() {
                       <FormLabel>Email</FormLabel>
                       <FormControl>
                         <Input
-                          className=" bg-input   border border-border"
+                          className=" bg-input border border-border"
                           type="text"
                           {...field}
                         />
@@ -147,7 +153,7 @@ function SignupPage() {
                       <FormLabel>Password</FormLabel>
                       <FormControl>
                         <Input
-                          className=" bg-input  border border-border"
+                          className=" bg-input border border-border"
                           type="password"
                           {...field}
                         />
@@ -176,14 +182,14 @@ function SignupPage() {
                 </AlertDialog>
               </form>
             </Form>
-          </div>
-          <div className="">
-            <p className="mt-4">
-              Already have an account?{" "}
-              <Link href="/login" className="text-primary hover:underline">
-                Login here
-              </Link>
-            </p>
+            <div className=" w-full text-center">
+              <p className="mt-6">
+                Already have an account?{" "}
+                <Link href="/login" className="text-primary hover:underline">
+                  Login here
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>

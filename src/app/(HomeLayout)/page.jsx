@@ -30,10 +30,10 @@ export const getPosts = async () => {
   }
 };
 
-export default async function Home() {
-  const { user } = useUserContext();
-  console.log("user", user);
-  const posts = await getPosts();
+export default function Home() {
+  // const { user } = useUserContext();
+  // console.log("user", user);
+  // const posts = await getPosts();
   return (
     <div>
       <div className="flex ">
@@ -41,9 +41,9 @@ export default async function Home() {
           <div className="flex flex-col items-center gap-10 py-10 sm:px-5 md:px-8 lg:p-10 custom-scrollbar">
             <h2 className="text-2xl font-bold tracking-tighter">Home Feed</h2>
             <div className="flex flex-col gap-9 w-full">
-              {posts.map((post) => (
+              {/* {posts.map((post) => (
                 <PostCard key={post.id} post={post} />
-              ))}
+              ))} */}
             </div>
           </div>
         </div>

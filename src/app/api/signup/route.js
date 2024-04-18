@@ -21,18 +21,13 @@ export async function POST(req, res) {
       status: 400,
     });
   }
-  if (existingUsername.rowsAffected > 0) {
-    return NextResponse.json({
-      succes: false,
-      message: "Username already exists",
-    });
-  }
+
   const existingEmail = await pool
     .request()
     .input("email", email)
     .query("SELECT * FROM Users WHERE email = @email");
   if (existingEmail.recordset.length > 0) {
-    return res.status(400).json({
+    return NextResponse.json({
       success: false,
       message: "Email already exists",
     });
@@ -54,10 +49,17 @@ export async function POST(req, res) {
   const token = jwt.sign({ username, email }, process.env.SIGNUP_KEY, {
     expiresIn: "5d",
   });
+  const userData = {
+    username: username,
+    email: email,
+    profile_picture: null,
+    bio: null,
+    name: null,
+    created_at: null,
+  };
 
   const response = NextResponse.json(
-    { succes: true },
-    { message: "User Registered successfully" },
+    { success: true, message: "User Registered successfully", userData },
     { status: 200 }
   );
   response.cookies.set("token", token, { httpOnly: true });

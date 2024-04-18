@@ -1,6 +1,6 @@
 "use client";
 import "../globals.css";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -12,7 +12,7 @@ import {
   FormMessage,
   FormField,
 } from "@/components/UI/form";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/UI/input";
 import { Button } from "@/components/UI/button";
 import Link from "next/link";
@@ -27,6 +27,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/UI/alert-dialog";
 import { useUserContext } from "@/lib/context/UserContext";
+import Image from "next/image";
 
 //yup schema
 const schema = yup.object({
@@ -57,6 +58,7 @@ function LoginPage() {
   // console.log("form Errors", errors);
 
   const handleSubmit = async (values) => {
+    Seterror(null);
     try {
       await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/login`, {
         method: "POST",
@@ -69,37 +71,38 @@ function LoginPage() {
           return response.json();
         })
         .then((data) => {
-          setUser(data.userData);
           if (!data.success) {
             Seterror(data.message);
           } else {
-            // router.push("/");
+            setUser(data.userData);
+            router.push("/");
           }
         });
     } catch (error) {
       console.error("Error:", error);
     }
   };
-  console.log("user inside login ", user);
 
   return (
-    <div className="grid grid-cols-6 gap-4">
-      <div className="col-span-1"></div>
-      <div className="col-span-3">
-        <img
-          src="/images/juicy-girl-with-shopping-bags-calling-a-taxi-on-mobile-phone.gif"
-          className="z-20 h-[40rem] bg-cover"
-          alt="Juicy girl with shopping bags calling a taxi on mobile phone"
-        ></img>
+    <div className="flex justify-center px-32 gap-">
+      <div className="w-1/2 flex justify-end">
+        <Image
+          width={800}
+          height={800}
+          src="/icons/homeIcon.svg"
+          className="z-20 bg-cover"
+          alt="image"
+        />
       </div>
 
-      <div className="col-span-2  flex flex-col justify-center items-center">
-        <h1 className="text-3xl font-bold text-primary mb-4">Login</h1>
+      <div className="flex flex-col w-1/2 px-20 justify-center items-end">
         <div className="w-2/3">
+          <h1 className="text-3xl w-full font-bold text-center text-primary mb-4">
+            Login
+          </h1>
           <Form {...form}>
             <form
-              className="flex flex-col   gap-5
-            "
+              className="flex flex-col gap-5"
               onSubmit={form.handleSubmit(handleSubmit)}
             >
               <FormField
@@ -110,7 +113,7 @@ function LoginPage() {
                     <FormLabel>Username</FormLabel>
                     <FormControl>
                       <Input
-                        className=" bg-input   border border-border"
+                        className=" bg-input border border-border"
                         type="text"
                         {...field}
                       />
@@ -127,7 +130,7 @@ function LoginPage() {
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input
-                        className=" bg-input  border border-border"
+                        className=" bg-input border border-border"
                         type="password"
                         {...field}
                       />
@@ -156,14 +159,14 @@ function LoginPage() {
               </AlertDialog>
             </form>
           </Form>
-        </div>
-        <div className="">
-          <p className="mt-4">
-            New to Picflix ?{" "}
-            <Link href="/login" className="text-primary hover:underline">
-              Signup here
-            </Link>
-          </p>
+          <div className="w-full  text-center">
+            <p className="mt-6">
+              New to Picflix ?{" "}
+              <Link href="/login" className="text-primary hover:underline">
+                Signup here
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>

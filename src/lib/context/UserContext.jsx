@@ -6,7 +6,7 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const savedUser = sessionStorage.getItem("user");
+    const savedUser = localStorage.getItem("user");
     if (savedUser) {
       setUser(JSON.parse(savedUser));
     }
@@ -15,7 +15,7 @@ export const UserProvider = ({ children }) => {
   // Save user to session storage whenever it changes
   useEffect(() => {
     if (user) {
-      sessionStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(user));
     }
   }, [user]);
 
