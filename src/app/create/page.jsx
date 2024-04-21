@@ -36,10 +36,50 @@ function Create() {
         },
         resolver: yupResolver(schema),
     });
-    const {formState} = form;
-    const {errors} = formState;
-    console.log(errors)
-    const handleSubmit = (value) => {};
+    const { formState } = form;
+    const { errors } = formState;
+    const uploadMedia = async (file) => {
+        const formData = new FormData();
+
+        file.forEach((f) => {
+            formData.append("file", f);
+        });
+
+        fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/upload`, {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("HTTP Error: " + response.status);
+                }
+                return response.json();
+            })
+            .catch((error) => {
+                console.error("File upload failed. Error: " + error.message);
+            });
+    };
+    const handleSubmit = (values) => {
+        uploadMedia(values.media);
+        fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/posts`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ ...values, user_id: 1 }), //user id is hardcoded for now
+        })
+            .then((res) => {
+                if (res.ok) {
+                    toast("Post created successfully", "success");
+                    router.push("/");
+                } else {
+                    toast("Failed to create post", "error");
+                }
+            })
+            .catch(() => {
+                toast("Failed to create post", "error");
+            });
+    };
 
     return (
         // temporary styling because no right section
@@ -53,7 +93,7 @@ function Create() {
                 />
                 <h1 className="text-xl font-semibold">Create Post</h1>
             </div>
-            <div className="">
+            <div>
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(handleSubmit)}
@@ -87,7 +127,11 @@ function Create() {
                                             fieldChange={field.onChange}
                                         />
                                     </FormControl>
-                                    {errors.media && <FormMessage>{errors.media.message}</FormMessage>}
+                                    {errors.media && (
+                                        <FormMessage>
+                                            {errors.media.message}
+                                        </FormMessage>
+                                    )}
                                 </FormItem>
                             )}
                         />

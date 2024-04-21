@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import getSvgs, { sidebarLinks } from "@/lib/constants";
+import getSvgs, { sidebarLinks } from "../../lib/constants";
 import { usePathname } from "next/navigation";
-import { Button } from "@/components/UI/button";
+import { Button } from "../UI/button";
 
 const Leftbar = () => {
     const pathname = usePathname();
