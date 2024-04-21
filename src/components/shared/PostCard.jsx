@@ -2,11 +2,11 @@
 import Image from "next/image";
 import { PostStats } from "./PostStats";
 import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
 } from "@/components/UI/carousel";
 import { useEffect, useState } from "react";
 import parseDate from "@/lib/dateParser";

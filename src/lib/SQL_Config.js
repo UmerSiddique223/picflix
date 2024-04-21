@@ -1,5 +1,5 @@
 // utils/db.js
-import {ConnectionPool} from "mssql";
+import { ConnectionPool } from "mssql";
 
 const {USER,PASSWORD,SERVER,DATABASE} = process.env;
 // Configure the database connection
@@ -10,7 +10,7 @@ const config = {
   database: DATABASE,
   options: {
     enableArithAbort: true,
-    encrypt: false
+    encrypt: false,
   },
 };
 
@@ -18,7 +18,6 @@ const config = {
 const poolPromise = new ConnectionPool(config)
   .connect()
   .then((pool) => {
-
     console.log("Connected to SQL Server");
     return pool;
   })
