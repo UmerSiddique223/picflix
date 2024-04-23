@@ -63,7 +63,7 @@ function SignupPage() {
   const handleSubmit = async (values) => {
     Seterror(null);
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/signup`, {
+      await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,10 +71,10 @@ function SignupPage() {
         body: JSON.stringify(values),
       })
         .then((response) => {
-          console.log(response.json);
           return response.json();
         })
         .then((data) => {
+          console.log(data);
           if (!data.success) {
             Seterror(data.message);
           } else {

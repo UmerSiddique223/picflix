@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken";
 import { compare } from "bcrypt";
+
 import poolPromise from "@/lib/SQL_Config";
 import { NextResponse } from "next/server";
 
-export async function POST(req, res) {
+export async function POST(req) {
   const body = await req.json();
   const { username, password } = body;
-  console.log("pass", password);
   // Check if username exists
   const pool = await poolPromise;
   const existingUser = await pool
@@ -45,7 +45,7 @@ export async function POST(req, res) {
     process.env.SIGNUP_KEY,
     { expiresIn: "5d" }
   );
-
+  console.log("token",token)
   const response = NextResponse.json({
     status: 303,
     success: true,
