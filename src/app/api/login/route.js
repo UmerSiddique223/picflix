@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 export async function POST(req, res) {
   const body = await req.json();
   const { username, password } = body;
-  console.log("pass", password);
+
   // Check if username exists
   const pool = await poolPromise;
   const existingUser = await pool

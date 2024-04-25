@@ -1,11 +1,9 @@
-import bcrypt from "bcrypt";
 import poolPromise from "@/lib/SQL_Config";
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import jwt from "jsonwebtoken";
-export async function POST(req, res) {
+
+export async function POST(req) {
   const body = await req.json();
-  const { username, email, password } = body;
+  const { username, email } = body;
   // Check if username or email already exists
   const pool = await poolPromise;
 
@@ -34,34 +32,23 @@ export async function POST(req, res) {
   }
 
   // Hash the password
-  const hashedPassword = await bcrypt.hash(password, 10);
 
-  // Store the user in the database
-  await pool
-    .request()
-    .input("username", username)
-    .input("email", email)
-    .input("password", hashedPassword)
-    .query(
-      "INSERT INTO users (username, email, password) VALUES (@username, @email, @password)"
-    );
-
-  const token = jwt.sign({ username, email }, process.env.SIGNUP_KEY, {
-    expiresIn: "5d",
-  });
-  const userData = {
-    username: username,
-    email: email,
-    profile_picture: null,
-    bio: null,
-    name: null,
-    created_at: null,
-  };
+  // const token = jwt.sign({ username, email }, process.env.SIGNUP_KEY, {
+  //   expiresIn: "5d",
+  // });
+  // const userData = {
+  //   username: username,
+  //   email: email,
+  //   profile_picture: null,
+  //   bio: null,
+  //   name: null,
+  //   created_at: null,
+  // };
 
   const response = NextResponse.json(
-    { success: true, message: "User Registered successfully", userData },
+    { success: true, message: "Email and username does not exist in database" },
     { status: 200 }
   );
-  response.cookies.set("token", token, { httpOnly: true });
+  // response.cookies.set("token", token, { httpOnly: true });
   return response;
 }

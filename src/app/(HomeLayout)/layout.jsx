@@ -16,9 +16,9 @@ export default function RootLayout({ children }) {
     <div className="w-full md:flex items-start">
       <Topbar />
       <Leftbar />
-      <UserProvider>
-        <section className="min-h-screen">{children}</section>
-      </UserProvider>
+      {/* <UserProvider> */}
+      <section className="min-h-screen">{children}</section>
+      {/* </UserProvider> */}
       <BottomBar />
     </div>
   );

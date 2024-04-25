@@ -60,7 +60,7 @@ function LoginPage() {
   const handleSubmit = async (values) => {
     Seterror(null);
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/login`, {
+      await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
