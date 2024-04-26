@@ -4,8 +4,17 @@ import Image from "next/image";
 import getSvgs, { sidebarLinks } from "../../lib/constants";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "../UI/button";
+import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import { useTheme } from "next-themes";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Leftbar = () => {
+  const { setTheme } = useTheme();
   const pathname = usePathname();
   const router = useRouter();
   const HandleLogout = async () => {
@@ -27,15 +36,40 @@ const Leftbar = () => {
     }
   };
   return (
-    <nav className="sticky hidden top-0 h-screen md:flex flex-col min-w-[270px] bg-bar">
+    <nav className="sticky hidden top-0 h-screen lg:flex flex-col min-w-[270px] bg-bar">
       <div className="h-full flex flex-col justify-between px-6 py-10 gap-y-8 custom-scrollbar overflow-y-scroll">
         <div className="flex flex-col gap-10">
-          <Link
-            href="/"
-            className="flex gap-3 items-center text-primary text-4xl"
-          >
-            PicFLix
-          </Link>
+          <div className="flex justify-between items-center">
+            <Link
+              href="/"
+              className="flex gap-3 items-center text-primary text-4xl"
+            >
+              PicFLix
+            </Link>
+            <div>
+              {" "}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="icon">
+                    <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                    <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                    <span className="sr-only">Toggle theme</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => setTheme("light")}>
+                    Light
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTheme("dark")}>
+                    Dark
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTheme("system")}>
+                    System
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
           <div className="flex gap-3 items-center">
             <Image
               src="/images/hq720.jpg"

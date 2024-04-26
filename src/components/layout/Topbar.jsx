@@ -25,7 +25,7 @@ const Topbar = () => {
     }
   };
   return (
-    <section className="sticky top-0 z-50 md:hidden bg-bar w-full">
+    <section className="sticky top-0 z-50 lg:hidden bg-bar w-full">
       <div className="flex justify-between items-center py-4 px-5">
         <Link
           href="/"

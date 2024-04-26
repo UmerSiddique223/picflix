@@ -1,68 +1,67 @@
-// import {
-//   Html,
-//   Head,
-//   Font,
-//   Preview,
-//   Heading,
-//   Row,
-//   Section,
-//   Text,
-//   Button,
-// } from "@react-email/components";
+import {
+  Html,
+  Head,
+  Font,
+  Preview,
+  Heading,
+  Row,
+  Section,
+  Text,
+  Button,
+} from "@react-email/components";
 
-// export default function VerificationEmail({ username, otp }) {
+export default function VerificationEmail({ username, otp }) {
+  return (
+    <Html lang="en" dir="ltr">
+      <Head>
+        <title>Verification Code</title>
+        <Font
+          fontFamily="Roboto"
+          fallbackFontFamily="Verdana"
+          webFont={{
+            url: "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2",
+            format: "woff2",
+          }}
+          fontWeight={400}
+          fontStyle="normal"
+        />
+      </Head>
+      <Preview>Here&apos;s your verification code: {otp}</Preview>
+      <Section>
+        <Row>
+          <Heading as="h2">Hello {username},</Heading>
+        </Row>
+        <Row>
+          <Text>
+            Thank you for registering. Please use the following verification
+            code to complete your registration:
+          </Text>
+        </Row>
+        <Row>
+          <Text>{otp}</Text>
+        </Row>
+        <Row>
+          <Text>
+            If you did not request this code, please ignore this email.
+          </Text>
+        </Row>
+        <Row></Row>
+      </Section>
+    </Html>
+  );
+}
+// import { Button, Html } from "@react-email/components";
+// import * as React from "react";
+
+// export default function Email() {
 //   return (
-//     <Html lang="en" dir="ltr">
-//       <Head>
-//         <title>Verification Code</title>
-//         <Font
-//           fontFamily="Roboto"
-//           fallbackFontFamily="Verdana"
-//           webFont={{
-//             url: "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2",
-//             format: "woff2",
-//           }}
-//           fontWeight={400}
-//           fontStyle="normal"
-//         />
-//       </Head>
-//       <Preview>Here&apos;s your verification code: {otp}</Preview>
-//       <Section>
-//         <Row>
-//           <Heading as="h2">Hello {username},</Heading>
-//         </Row>
-//         <Row>
-//           <Text>
-//             Thank you for registering. Please use the following verification
-//             code to complete your registration:
-//           </Text>
-//         </Row>
-//         <Row>
-//           <Text>{otp}</Text>
-//         </Row>
-//         <Row>
-//           <Text>
-//             If you did not request this code, please ignore this email.
-//           </Text>
-//         </Row>
-//         <Row>
-//           <Button
-//             href={`http://localhost:3000/login`}
-//             style={{ color: "hsl(271.5 81.3% 55.9%)" }}
-//           >
-//             Verify here
-//           </Button>
-//         </Row>
-//       </Section>
+//     <Html>
+//       <Button
+//         href="https://example.com"
+//         style={{ background: "#000", color: "#fff", padding: "12px 20px" }}
+//       >
+//         Click me
+//       </Button>
 //     </Html>
 //   );
 // }
-import * as React from "react";
-
-export const VerificationEmail = ({ firstName }) => (
-  <div>
-    <h1>Welcome, {firstName}!</h1>
-  </div>
-);
-
-export default VerificationEmail;

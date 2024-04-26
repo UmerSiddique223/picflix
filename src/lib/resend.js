@@ -1,3 +1,3 @@
 import { Resend } from "resend";
 
-export const resend = new Resend("re_eBJ3d5i2_28KLd9Lw17ddmw6FzizPAe5h");
+export const resend = new Resend("re_UpC15ATU_ErH9r4NAEsCbug8Xy1pLUu3E");
