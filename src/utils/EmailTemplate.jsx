@@ -45,15 +45,23 @@ export default function VerificationEmail({ username, otp }) {
             If you did not request this code, please ignore this email.
           </Text>
         </Row>
-        <Row>
-          <Button
-            href={`http://localhost:3000/verify/${username}`}
-            style={{ color: "hsl(271.5 81.3% 55.9%)" }}
-          >
-            Verify here
-          </Button>
-        </Row>
+        <Row></Row>
       </Section>
     </Html>
   );
 }
+// import { Button, Html } from "@react-email/components";
+// import * as React from "react";
+
+// export default function Email() {
+//   return (
+//     <Html>
+//       <Button
+//         href="https://example.com"
+//         style={{ background: "#000", color: "#fff", padding: "12px 20px" }}
+//       >
+//         Click me
+//       </Button>
+//     </Html>
+//   );
+// }

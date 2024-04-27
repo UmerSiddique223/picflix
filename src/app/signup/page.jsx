@@ -1,6 +1,6 @@
 "use client";
 import "../globals.css";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -12,9 +12,7 @@ import {
   FormMessage,
   FormField,
 } from "@/components/UI/form";
-import { useRouter } from "next/navigation";
 import { Input } from "@/components/UI/input";
-import { Button } from "@/components/UI/button";
 import Link from "next/link";
 import {
   AlertDialog,
@@ -26,15 +24,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/UI/alert-dialog";
-import { useUserContext } from "@/lib/context/UserContext";
 import Image from "next/image";
+import OTPform from "@/components/shared/OTPform";
 
 //yup schema
 const schema = yup.object({
   username: yup
     .string()
-    .min(3, "Username cannot be less than 3 words")
+    .min(2, "Username cannot be less than 2 characters")
     .required(),
+  name: yup.string().min(3, "Name cannot be less than 3 characters").required(),
   email: yup.string().email().required(),
   password: yup
     .string()
@@ -45,11 +44,15 @@ const schema = yup.object({
 //main function
 function SignupPage() {
   const [error, Seterror] = useState("");
-  const { setUser } = useUserContext();
+  const [showform, Setshowform] = useState(false);
+  const buttonRef = useRef(null);
+  const childbutRef = useRef(null);
+  const [buttonClicked, setButtonClicked] = useState(false);
 
   const form = useForm({
     defaultValues: {
       username: "",
+      name: "",
       email: "",
       password: "",
     },
@@ -59,9 +62,10 @@ function SignupPage() {
   const { formState } = form;
   const { errors } = formState;
   // console.log("form Errors", errors);
-  const router = useRouter();
   const handleSubmit = async (values) => {
     Seterror(null);
+    Setshowform(false);
+
     try {
       await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/signup`, {
         method: "POST",
@@ -77,9 +81,13 @@ function SignupPage() {
           console.log(data);
           if (!data.success) {
             Seterror(data.message);
+            buttonRef.current.click();
           } else {
-            setUser(data.userData);
-            router.push("/");
+            Setshowform(true);
+            if (!buttonClicked) {
+              setButtonClicked(true);
+              if (childbutRef.current) childbutRef.current.click();
+            }
           }
         });
     } catch (error) {
@@ -89,6 +97,22 @@ function SignupPage() {
   return (
     <>
       <div className="flex justify-center px-32">
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <button ref={buttonRef}></button>
+          </AlertDialogTrigger>
+          {error && (
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Signup Error</AlertDialogTitle>
+                <AlertDialogDescription>{error}</AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogAction>OK</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          )}{" "}
+        </AlertDialog>
         <div className="w-1/2 flex justify-end">
           <Image
             width={800}
@@ -116,6 +140,25 @@ function SignupPage() {
                     <div className="">
                       <FormItem>
                         <FormLabel>Username</FormLabel>
+                        <FormControl>
+                          <Input
+                            className=" bg-input border border-border"
+                            type="text"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    </div>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <div className="">
+                      <FormItem>
+                        <FormLabel>Name</FormLabel>
                         <FormControl>
                           <Input
                             className=" bg-input border border-border"
@@ -162,24 +205,14 @@ function SignupPage() {
                     </FormItem>
                   )}
                 />
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button type="submit" className="whitespace-nowrap mt-8">
-                      Sign Up
-                    </Button>
-                  </AlertDialogTrigger>
-                  {error && (
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Signup Error</AlertDialogTitle>
-                        <AlertDialogDescription>{error}</AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogAction>OK</AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  )}{" "}
-                </AlertDialog>
+                <OTPform
+                  butRef={childbutRef}
+                  formValues={form.getValues()}
+                  showform={showform}
+                  SetShowform={Setshowform}
+                  Seterror={Seterror}
+                  SetErrorRef={buttonRef}
+                />
               </form>
             </Form>
             <div className=" w-full text-center">

@@ -1,12 +1,13 @@
 import jwt from "jsonwebtoken";
 import { compare } from "bcrypt";
-
 import poolPromise from "@/lib/SQL_Config";
 import { NextResponse } from "next/server";
+import { setUser } from "@/lib/userInfo";
 
-export async function POST(req) {
+export async function POST(req, res) {
   const body = await req.json();
   const { username, password } = body;
+
   // Check if username exists
   const pool = await poolPromise;
   const existingUser = await pool
@@ -30,14 +31,6 @@ export async function POST(req) {
       message: "Username or password is incorrect",
     });
   }
-  const userData = {
-    username: username,
-    email: user.email,
-    profile_picture: user.profile_picture,
-    bio: user.bio,
-    name: user.name,
-    created_at: user.created_at,
-  };
 
   // Sign JWT token
   const token = jwt.sign(
@@ -45,7 +38,15 @@ export async function POST(req) {
     process.env.SIGNUP_KEY,
     { expiresIn: "5d" }
   );
-  console.log("token",token)
+  const userData = {
+    user_id: user.user_id,
+    username: username,
+    email: user.email,
+    profile_picture: user.profile_picture,
+    bio: user.bio,
+    name: user.name,
+    created_at: user.created_at,
+  };
   const response = NextResponse.json({
     status: 303,
     success: true,

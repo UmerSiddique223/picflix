@@ -1,12 +1,13 @@
 "use client";
+"use client";
 import Image from "next/image";
 import { PostStats } from "./PostStats";
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
 } from "@/components/UI/carousel";
 import { useEffect, useState } from "react";
 import parseDate from "@/lib/dateParser";
@@ -16,7 +17,8 @@ const PostCard = ({ key, post }) => {
     const [current, setCurrent] = useState(0);
     const [commentSection, toggleCommentSection] = useState(false);
     const [comments, setComments] = useState([]);
-    const [stats, setStats] = useState({ likes: 0, comments: 0});
+    const [isLiked, setIsLiked] = useState(false);
+    const [stats, setStats] = useState({ likes: 0, comments: 0 });
     useEffect(() => {
         if (!api) {
             return;
@@ -27,36 +29,47 @@ const PostCard = ({ key, post }) => {
         });
     }, [api]);
     useEffect(() => {
-        const fetchComments = async () => {
-            await fetch(
-                `${process.env.NEXT_PUBLIC_DOMAIN}/api/comments/${post.post_id}`
-            ).then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-            }).then((data) => {
-                setComments(data);
-                setStats({
-                    likes: post.num_likes?post.num_likes:0,
-                    comments: data.length?data.length:0,
+        const fetchStats = async () => {
+            await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/stats`, {
+                method: "POST",
+                body: JSON.stringify({
+                    post_id: post.post_id,
+                    user_id: 1,
+                }),
+            })
+                .then((res) => {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                })
+                .then((data) => {
+                    setComments(data.comments);
+                    setStats({
+                        likes: data.likes?.length ? data.likes.length : 0,
+                        comments: data.comments?.length
+                            ? data.comments.length
+                            : 0,
+                    });
+                    if(data.likes.some(item => item.likes === 1)) {
+                        setIsLiked(true);
+                    }
                 });
-            });
         };
-        fetchComments();
+        fetchStats();
     }, []);
-    useEffect(()=>{
-        setStats((prev)=>({
+    useEffect(() => {
+        setStats((prev) => ({
             ...prev,
-            comments: comments.length
-        }))
-    },[comments])
+            comments: comments.length,
+        }));
+    }, [comments]);
     return (
         <div
             key={key}
             className="bg-card rounded-3xl border border-border p-5 lg:p-7 w-full max-w-screen-sm"
         >
             <div className="flex justify-between items-center">
-                <div className="flex justify-center items-center gap-3">
+                <div className="flex justify-center items-center gap-3 mb-5">
                     <Image
                         src={`/images/${post.profile_picture}`}
                         alt="creator"
@@ -119,8 +132,20 @@ const PostCard = ({ key, post }) => {
             <p className="my-3 text-sm font-semibold leading-5 lg:small-regular">
                 {post.caption}
             </p>
-            <PostStats stats={stats} setStats={setStats} toggleComments={toggleCommentSection}/>
-            {commentSection&&<CommentSection comments={comments} setComments={setComments} post={post.post_id} />}
+            <PostStats
+                post={post.post_id}
+                isLiked={isLiked}
+                stats={stats}
+                setStats={setStats}
+                toggleComments={toggleCommentSection}
+            />
+            {commentSection && (
+                <CommentSection
+                    comments={comments}
+                    setComments={setComments}
+                    post={post.post_id}
+                />
+            )}
         </div>
     );
 };
