@@ -28,7 +28,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRouter } from "next/navigation";
-import { useUserContext } from "@/lib/context/UserContext";
+import { setUser } from "@/lib/userInfo";
 const schema = yup.object({
   pin: yup.string().min(6, "Pin must of 6 characters").required(),
 });
@@ -44,41 +44,39 @@ const OTPform = ({
   const [isCalled, setIsCalled] = useState(true);
   const [otp, setOtp] = useState("123456");
   const [isemail, setIsemail] = useState(false);
-  const { setUser } = useUserContext();
-  // const HandleEmail = async (email, username) => {
-  //   setIsCalled(false);
-  //   const OTP = Math.floor(100000 + Math.random() * 900000);
-  //   console.log(email, username, OTP);
-  //   try {
-  //     await fetch(
-  //       `${process.env.NEXT_PUBLIC_DOMAIN}/api/signup/sendverificationemail`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           email: email,
-  //           username: username,
-  //           verifyCode: OTP,
-  //         }),
-  //       }
-  //     )
-  //       .then((response) => {
-  //         console.log(response.json);
-  //         return response.json();
-  //       })
-  //       .then((data) => {
-  //         if (!data.success) {
-  //         } else {
-  //           // setUser(data.userData);
-  //           // router.push("/");
-  //         }
-  //       });
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
+
+  const HandleEmail = async (email, username) => {
+    setIsCalled(false);
+    const OTP = Math.floor(100000 + Math.random() * 900000);
+    try {
+      await fetch(
+        `${process.env.NEXT_PUBLIC_DOMAIN}/api/signup/sendverificationemail`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            username: username,
+            verifyCode: OTP,
+          }),
+        }
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (!data.success) {
+            throw new Error("Failed to send Email");
+          } else {
+            setOtp(OTP.toString());
+          }
+        });
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   const form = useForm({
     defaultValues: {
@@ -92,9 +90,6 @@ const OTPform = ({
   const router = useRouter();
   const handleSubmit = async (values) => {
     try {
-      console.log("values", values.pin);
-      console.log("values", otp);
-
       if (values.pin !== otp) {
         Seterror("Invalid OTP");
         SetErrorRef.current.click();
@@ -114,7 +109,6 @@ const OTPform = ({
             throw new Error("Failed to fetch user data");
           }
           const insertedData = await response.json();
-          console.log("User data:", insertedData);
           setUser(insertedData.userData);
           router.push("/");
         } catch (error) {
@@ -157,7 +151,7 @@ const OTPform = ({
             )}
             {isemail && (
               <div>
-                {/* {isCalled && HandleEmail(email, username)} */}
+                {/* {isCalled && HandleEmail(formValues.email, formValues.username)} */}
 
                 <DialogDescription>
                   We have sent an 6 letter code to{" "}
@@ -200,7 +194,6 @@ const OTPform = ({
                       onClick={() => {
                         handleSubmit(form.getValues());
                         SetShowform(false);
-                        setIsCalled(true);
                       }}
                     >
                       Confirm

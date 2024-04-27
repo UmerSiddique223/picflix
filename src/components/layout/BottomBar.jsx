@@ -6,7 +6,7 @@ import getSvgs, { bottombarLinks } from "../../lib/constants";
 const BottomBar = () => {
   const pathname = usePathname();
   return (
-    <section className="z-10 flex justify-around w-full sticky bottom-0 bg-[#09090A] px-5 py-4 md:hidden">
+    <section className="z-10 flex justify-around w-full sticky bottom-0 bg-[#09090A] px-5 py-4 lg:hidden">
       {bottombarLinks.map((link) => {
         const isActive = pathname === link.route;
         return (
