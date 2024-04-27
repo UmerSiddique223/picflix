@@ -1,7 +1,7 @@
 // utils/db.js
 import { ConnectionPool } from "mssql";
 
-const {USER,PASSWORD,SERVER,DATABASE} = process.env;
+const { USER, PASSWORD, SERVER, DATABASE } = process.env;
 // Configure the database connection
 const config = {
   server: SERVER,

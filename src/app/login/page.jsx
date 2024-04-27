@@ -26,8 +26,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/UI/alert-dialog";
-import { useUserContext } from "@/lib/context/UserContext";
 import Image from "next/image";
+import { setUser } from "@/lib/userInfo";
 
 //yup schema
 const schema = yup.object({
@@ -41,7 +41,6 @@ const schema = yup.object({
 //main function
 function LoginPage() {
   const [error, Seterror] = useState("");
-  const { user, setUser } = useUserContext();
 
   const router = useRouter();
 

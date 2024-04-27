@@ -8,10 +8,10 @@ export async function POST(req) {
 
   try {
     const response = await resend.emails.send({
-      from: "Acme <onboarding@resend.dev>",
-      to: "hafiz.afnan322@gmail.com",
+      from: "onboarding@resend.dev",
+      to: email,
       subject: "Picflix Verification Code",
-      react: VerificationEmail({ username }),
+      react: VerificationEmail({ username, otp: verifyCode }),
     });
     console.log(Response.json(response));
     return NextResponse.json({

@@ -2,8 +2,9 @@ import bcrypt from "bcrypt";
 import poolPromise from "@/lib/SQL_Config";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
+import { setUser } from "@/lib/userInfo";
 
-export async function POST(req, res) {
+export async function POST(req) {
   const body = await req.json();
   const pool = await poolPromise;
   const { username, name, email, password } = body;
@@ -19,28 +20,31 @@ export async function POST(req, res) {
     .query(
       "INSERT INTO users (username,name, email, password,created_at) VALUES (@username,@name, @email, @password,CAST(GETDATE() AS DATE))"
     );
-  const userData = {
-    username: username,
-    email: email,
-    profile_picture: null,
-    bio: null,
-    name: null,
-    created_at: getCurrentDate(),
-  };
+
   const token = jwt.sign({ username, email }, process.env.SIGNUP_KEY, {
     expiresIn: "5d",
   });
+
+  const existingUser = await pool
+    .request()
+    .input("username", username)
+    .query("SELECT * FROM Users WHERE username = @username");
+
+  const user = existingUser.recordset[0];
+
+  const userData = {
+    user_id: user.user_id,
+    username: username,
+    email: user.email,
+    profile_picture: user.profile_picture,
+    bio: user.bio,
+    name: user.name,
+    created_at: user.created_at,
+  };
   const response = NextResponse.json(
     { success: true, message: "User Registered successfully", userData },
     { status: 200 }
   );
   response.cookies.set("token", token, { httpOnly: true });
   return response;
-}
-function getCurrentDate() {
-  const currentDate = new Date();
-  const month = currentDate.getMonth() + 1;
-  const day = currentDate.getDate();
-  const year = currentDate.getFullYear();
-  return `${year}/${month}/${day}`;
 }

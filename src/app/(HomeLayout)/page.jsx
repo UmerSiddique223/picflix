@@ -2,9 +2,9 @@ import PostCard from "@/components/shared/PostCard";
 import poolPromise from "@/lib/SQL_Config";
 
 export const getPosts = async () => {
-    try {
-        const pool = await poolPromise;
-        const result = await pool.request().query(`
+  try {
+    const pool = await poolPromise;
+    const result = await pool.request().query(`
         SELECT Posts.*, Users.name, Users.profile_picture, Media.media_url AS media FROM Posts
         JOIN Users ON Users.user_id=Posts.user_id
         LEFT JOIN Media ON Posts.post_id = Media.post_id ORDER BY Posts.created_at DESC;
@@ -24,11 +24,11 @@ export const getPosts = async () => {
             return acc;
         }, []);
 
-        return posts;
-    } catch (err) {
-        console.error("Error executing query:", err);
-        return [];
-    }
+    return posts;
+  } catch (err) {
+    console.error("Error executing query:", err);
+    return [];
+  }
 };
 
 export default async function Home() {
