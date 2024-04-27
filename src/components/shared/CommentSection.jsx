@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Input } from "../UI/input";
 import parseDate from "@/lib/dateParser";
 import { Button } from "../UI/button";
@@ -11,7 +11,7 @@ function CommentSection({ comments, setComments, post }) {
             setError("Comment cannot be empty");
             return;
         }
-        await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/comments/${post}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/stats/comment`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -26,7 +26,6 @@ function CommentSection({ comments, setComments, post }) {
                 return res.json();
             }
         }).then((data) => {
-            console.log(data);
             setComment("");
             setError("");
             setComments([...comments, {...data, name: "You"}]);

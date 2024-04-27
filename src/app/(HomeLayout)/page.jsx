@@ -1,6 +1,5 @@
 import PostCard from "@/components/shared/PostCard";
 import poolPromise from "@/lib/SQL_Config";
-import Image from "next/image";
 
 export const getPosts = async () => {
     try {
@@ -11,13 +10,15 @@ export const getPosts = async () => {
         LEFT JOIN Media ON Posts.post_id = Media.post_id ORDER BY Posts.created_at DESC;
         `);
         const posts = result.recordset.reduce((acc, row) => {
-            const existingPost = acc.find(post => post.post_id === row.post_id);
+            const existingPost = acc.find(
+                (post) => post.post_id === row.post_id
+            );
             if (existingPost) {
                 existingPost.media.push(row.media);
             } else {
                 acc.push({
                     ...row,
-                    media: [row.media]
+                    media: [row.media],
                 });
             }
             return acc;
@@ -47,7 +48,7 @@ export default async function Home() {
                 </div>
             </div>
             {/* //Right side  data */}
-            <div className=" hidden lg:block "> RIght data</div>
+            <div className=" hidden lg:block ">Right data</div>
         </div>
     );
 }
