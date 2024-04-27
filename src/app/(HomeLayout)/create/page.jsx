@@ -38,7 +38,7 @@ function Create() {
   });
   const { formState } = form;
   const { errors } = formState;
-  console.log(errors);
+
   const handleSubmit = (value) => {};
   return (
     // temporary styling because no right section
