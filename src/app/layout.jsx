@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={cn("min-h-screen  font-sans antialiased", inter.className)}
+        className={cn("min-h-screen custom-scrollbar  font-sans antialiased", inter.className)}
       >
         <ThemeProvider
           attribute="class"

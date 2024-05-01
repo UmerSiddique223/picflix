@@ -1,5 +1,4 @@
 "use client";
-"use client";
 import Image from "next/image";
 import { PostStats } from "./PostStats";
 import {
@@ -18,7 +17,7 @@ const PostCard = ({ key, post }) => {
     const [commentSection, toggleCommentSection] = useState(false);
     const [comments, setComments] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
-    const [stats, setStats] = useState({ likes: 0, comments: 0 });
+    const [stats, setStats] = useState({ likes: 0, comments: 0, isSaved: false});
     useEffect(() => {
         if (!api) {
             return;
@@ -49,6 +48,7 @@ const PostCard = ({ key, post }) => {
                         comments: data.comments?.length
                             ? data.comments.length
                             : 0,
+                        isSaved: data.isSaved,
                     });
                     if(data.likes.some(item => item.likes === 1)) {
                         setIsLiked(true);

@@ -9,11 +9,14 @@ export const PostStats = ({
     toggleComments,
 }) => {
     const [like, setLike] = useState(false);
-    const [isSaved, setIsSaved] = useState(false);
+    const [saved, setSaved] = useState(false);
     const [debouncedLike, setDebouncedLike] = useState(like);
+    const [debouncedSaved, setDebouncedSaved] = useState(stats.isSaved);
+    const updateSavedTimeout = useRef(null);
     const updateLikesTimeout = useRef(null);
+
     function handleSavePost() {
-        setIsSaved(!isSaved);
+        setSaved(!saved);
     }
     function handleLikePost() {
         if (like) {
@@ -23,6 +26,7 @@ export const PostStats = ({
         }
         setLike(!like);
     }
+
     const updateLikesInDatabase = () => {
         if ((debouncedLike && !isLiked) || (!debouncedLike && isLiked)) {
             fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/stats/like`, {
@@ -35,14 +39,37 @@ export const PostStats = ({
             });
         }
     };
+    const updateSavedInDatabase = () => {
+        if ((debouncedSaved && !stats.isSaved) || (!debouncedSaved && stats.isSaved)) {
+            fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/stats/save`, {
+                method: "POST",
+                body: JSON.stringify({
+                    post_id: post,
+                    user_id: 1,
+                    isSaved: debouncedSaved,
+                }),
+            });
+        }
+    };
+
     useEffect(() => {
         if (isLiked) {
             setLike(true);
         }
     }, [isLiked]);
     useEffect(() => {
+        if(stats.isSaved) {
+            setSaved(true);
+        }
+    }, [stats.isSaved]);
+
+    useEffect(() => {
+        updateSavedInDatabase();
+    }, [debouncedSaved]);
+    useEffect(() => {
         updateLikesInDatabase();
     }, [debouncedLike]);
+
     useEffect(() => {
         if (updateLikesTimeout.current) {
             clearTimeout(updateLikesTimeout.current);
@@ -51,6 +78,15 @@ export const PostStats = ({
             setDebouncedLike(like);
         }, 1000);
     }, [like]);
+    useEffect(() => {
+        if (updateSavedTimeout.current) {
+            clearTimeout(updateSavedTimeout.current);
+        }
+        updateSavedTimeout.current = setTimeout(() => {
+            setDebouncedSaved(saved);
+        }, 1000);
+    }, [saved]);
+
     return (
         <div className="flex justify-between items-center z-10 mb-4">
             <div className="flex gap-3">
@@ -83,7 +119,7 @@ export const PostStats = ({
             </div>
             <div className="flex gap-2">
                 <Image
-                    src={isSaved ? "/icons/saved.svg" : "/icons/save.svg"}
+                    src={saved ? "/icons/saved.svg" : "/icons/save.svg"}
                     alt="share"
                     width={30}
                     height={30}
