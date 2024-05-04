@@ -19,6 +19,9 @@ module.exports = {
       },
     },
     extend: {
+      backgroundImage: {
+        'card-gradient': 'linear-gradient(to top, #160f1c 0%, #100817 40%)',
+      },
       colors: {
         bar: "hsl(var(--bar))",
         border: "hsl(var(--border))",
