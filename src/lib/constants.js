@@ -11,9 +11,14 @@ export const sidebarLinks = [
     label: "Home",
   },
   {
+    name: "home",
+    route: "/search",
+    label: "Search",
+  },
+  {
     name: "people",
-    route: "/all-users",
-    label: "People",
+    route: "/friends",
+    label: "Friends",
   },
   {
     name: "bookmark",

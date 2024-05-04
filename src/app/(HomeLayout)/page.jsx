@@ -10,6 +10,7 @@ export const getPosts = async () => {
         JOIN Users ON Users.user_id=Posts.user_id
         LEFT JOIN Media ON Posts.post_id = Media.post_id ORDER BY Posts.created_at DESC;
         `);
+
     const posts = result.recordset.reduce((acc, row) => {
       const existingPost = acc.find((post) => post.post_id === row.post_id);
       if (existingPost) {
@@ -22,7 +23,6 @@ export const getPosts = async () => {
       }
       return acc;
     }, []);
-
     return posts;
   } catch (err) {
     console.error("Error executing query:", err);
@@ -38,9 +38,9 @@ export default async function Home() {
         <div className="flex flex-col items-center gap-10 py-10 sm:px-5 md:px-8 lg:p-10 custom-scrollbar">
           <h2 className="text-2xl font-bold tracking-tighter">Home Feed</h2>
           <div className="flex flex-col gap-9 w-full">
-            {posts.map((post) => (
+            {/* {posts.map((post) => (
               <PostCard key={post.id} post={post} />
-            ))}
+            ))} */}
           </div>
         </div>
       </div>

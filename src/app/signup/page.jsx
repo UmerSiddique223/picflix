@@ -65,7 +65,6 @@ function SignupPage() {
   const handleSubmit = async (values) => {
     Seterror(null);
     Setshowform(false);
-
     try {
       await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/signup`, {
         method: "POST",

@@ -18,7 +18,7 @@ import { Input } from "@/components/UI/input";
 import { Button } from "@/components/UI/button";
 import { useToast } from "@/components/UI/use-toast";
 import MediaUploader from "@/components/shared/MediaUploader";
-import { useUserContext } from "@/lib/context/UserContext";
+import { getUser } from "@/lib/userInfo";
 
 const schema = yup.object({
   caption: yup.string(),
@@ -27,8 +27,9 @@ const schema = yup.object({
 });
 
 function Create() {
+  const user = getUser();
   const router = useRouter();
-  const { toast } = useToast(); //will use this later ok
+  const { toast } = useToast(); //will use this later
   const form = useForm({
     defaultValues: {
       caption: "",
@@ -39,10 +40,49 @@ function Create() {
   });
   const { formState } = form;
   const { errors } = formState;
-  console.log(errors);
-  const handleSubmit = (value) => {};
-  const { user } = useUserContext();
-  console.log("user", user);
+  const uploadMedia = async (file) => {
+    const formData = new FormData();
+
+    file.forEach((f) => {
+      formData.append("file", f);
+    });
+
+    fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/upload`, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("HTTP Error: " + response.status);
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        console.error("File upload failed. Error: " + error.message);
+      });
+  };
+  const handleSubmit = (values) => {
+    uploadMedia(values.media);
+    fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/posts`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...values, user_id: user.user_id }), //user id is hardcoded for now
+    })
+      .then((res) => {
+        if (res.ok) {
+          toast("Post created successfully", "success");
+          router.push("/");
+        } else {
+          toast("Failed to create post", "error");
+        }
+      })
+      .catch(() => {
+        toast("Failed to create post", "error");
+      });
+  };
+
   return (
     // temporary styling because no right section
     <div className="px-16 my-24 w-[800px]">
@@ -55,7 +95,7 @@ function Create() {
         />
         <h1 className="text-xl font-semibold">Create Post</h1>
       </div>
-      <div className="">
+      <div>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}

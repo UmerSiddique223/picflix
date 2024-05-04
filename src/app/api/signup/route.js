@@ -30,25 +30,9 @@ export async function POST(req) {
       message: "Email already exists",
     });
   }
-
-  // Hash the password
-
-  // const token = jwt.sign({ username, email }, process.env.SIGNUP_KEY, {
-  //   expiresIn: "5d",
-  // });
-  // const userData = {
-  //   username: username,
-  //   email: email,
-  //   profile_picture: null,
-  //   bio: null,
-  //   name: null,
-  //   created_at: null,
-  // };
-
   const response = NextResponse.json(
     { success: true, message: "Email and username does not exist in database" },
     { status: 200 }
   );
-  // response.cookies.set("token", token, { httpOnly: true });
   return response;
 }

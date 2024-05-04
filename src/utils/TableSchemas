@@ -30,3 +30,8 @@
 --     comment_text nvarchar(max),
 --     created_at DATETIME
 -- );
+-- create table Friends (
+-- [user_id] int ,
+-- [friend_id] int,
+-- primary key([user_id],friend_id)
+-- );

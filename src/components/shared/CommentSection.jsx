@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Input } from "../UI/input";
 import parseDate from "@/lib/dateParser";
 import { Button } from "../UI/button";
+import { getUser } from "@/lib/userInfo";
 
 function CommentSection({ comments, setComments, post }) {
+  const user = getUser();
   const [comment, setComment] = useState("");
   const [error, setError] = useState("");
   const handleComment = async () => {
@@ -18,7 +20,7 @@ function CommentSection({ comments, setComments, post }) {
       },
       body: JSON.stringify({
         post_id: post,
-        user_id: 1, //hardcoded for now
+        user_id: user.user_id, //hardcoded Set
         comment_text: comment,
       }),
     })
