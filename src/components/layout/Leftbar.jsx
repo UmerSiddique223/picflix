@@ -92,21 +92,41 @@ const Leftbar = () => {
                     isActive && "bg-primary"
                   }`}
                 >
-                  <Link
-                    href={link.route}
-                    className="flex gap-4 items-center p-4"
-                  >
-                    <Image
-                      src={getSvgs(link.name)}
-                      alt={link.label}
-                      className={`group-hover:brightness-0 group-hover:invert ${
-                        isActive && "invert brightness-0"
-                      }`}
-                      width={24}
-                      height={24}
-                    />
-                    {link.label}
-                  </Link>
+                  {link.route === "/profile" ? (
+                    <Link
+                      href={`${link.route}/${user.user_id}`}
+                      className="flex gap-4 items-center p-4"
+                    >
+                      {" "}
+                      <Image
+                        src={getSvgs(link.name)}
+                        alt={link.label}
+                        className={`group-hover:brightness-0 group-hover:invert ${
+                          isActive && "invert brightness-0"
+                        }`}
+                        width={24}
+                        height={24}
+                      />
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <Link
+                      href={link.route}
+                      className="flex gap-4 items-center p-4"
+                    >
+                      {" "}
+                      <Image
+                        src={getSvgs(link.name)}
+                        alt={link.label}
+                        className={`group-hover:brightness-0 group-hover:invert ${
+                          isActive && "invert brightness-0"
+                        }`}
+                        width={24}
+                        height={24}
+                      />
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               );
             })}
@@ -115,6 +135,7 @@ const Leftbar = () => {
         <Button
           variant="ghost"
           className="flex gap-4 items-center justify-start"
+          onClick={HandleLogout}
           onClick={HandleLogout}
         >
           <Image

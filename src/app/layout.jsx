@@ -10,23 +10,23 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-    return (
-        <html lang="en">
-            <body
-                className={cn(
-                    "min-h-screen custom-scrollbar  font-sans antialiased",
-                    inter.className
-                )}
-            >
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
-                >
-                    {children}
-                </ThemeProvider>
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <body
+        className={cn(
+          "min-h-screen custom-scrollbar font-sans antialiased",
+          inter.className
+        )}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
+    </html>
+  );
 }

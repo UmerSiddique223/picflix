@@ -34,9 +34,9 @@ export async function POST(request) {
             INSERT INTO Media (entity_id, entity_type, media_url)
             VALUES ${mediaValues};
         `);
-        return NextResponse.json({ message: "Post created successfully" });
-    } catch (err) {
-        console.error("Error executing query:", err);
-        return NextResponse.error(new Error("Error executing query"));
-    }
+    return NextResponse.json({ message: "Post created successfully" });
+  } catch (err) {
+    console.error("Error executing query:", err);
+    return NextResponse.error(new Error("Error executing query"));
+  }
 }

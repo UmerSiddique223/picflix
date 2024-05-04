@@ -51,3 +51,9 @@ CREATE TABLE SavedPosts (
     post_id INT FOREIGN KEY REFERENCES Posts(post_id),
     PRIMARY KEY (user_id, post_id)
 );
+
+CREATE TABLE Friends (
+    user_id INT FOREIGN KEY REFERENCES Users(user_id),
+    friend_id INT FOREIGN KEY REFERENCES Users(user_id),
+    PRIMARY KEY(user_id,friend_id)
+);
