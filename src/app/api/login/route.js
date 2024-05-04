@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 import { compare } from "bcrypt";
 import poolPromise from "@/lib/SQL_Config";
 import { NextResponse } from "next/server";
-import { setUser } from "@/lib/userInfo";
 
 export async function POST(req, res) {
   const body = await req.json();
@@ -53,5 +52,9 @@ export async function POST(req, res) {
     userData,
   });
   response.cookies.set("token", token, { httpOnly: true });
+  response.cookies.set("user", JSON.stringify(userData), {
+    httpOnly: true,
+    expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+  });
   return response;
 }

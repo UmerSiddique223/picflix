@@ -78,7 +78,6 @@ function SignupPage() {
           return response.json();
         })
         .then((data) => {
-          console.log(data);
           if (!data.success) {
             Seterror(data.message);
             buttonRef.current.click();

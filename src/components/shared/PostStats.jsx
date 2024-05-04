@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 export const PostStats = ({
+    user,
     post,
     isLiked,
     stats,
@@ -33,7 +34,7 @@ export const PostStats = ({
                 method: "POST",
                 body: JSON.stringify({
                     post_id: post,
-                    user_id: 1,
+                    user_id: user,
                     isliked: debouncedLike,
                 }),
             });
@@ -45,7 +46,7 @@ export const PostStats = ({
                 method: "POST",
                 body: JSON.stringify({
                     post_id: post,
-                    user_id: 1,
+                    user_id: user,
                     isSaved: debouncedSaved,
                 }),
             });

@@ -11,13 +11,17 @@ import {
 import { useEffect, useState } from "react";
 import parseDate from "@/lib/dateParser";
 import CommentSection from "./CommentSection";
-const PostCard = ({ key, post }) => {
+const PostCard = ({ key, user, post }) => {
     const [api, setApi] = useState();
     const [current, setCurrent] = useState(0);
     const [commentSection, toggleCommentSection] = useState(false);
     const [comments, setComments] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
-    const [stats, setStats] = useState({ likes: 0, comments: 0, isSaved: false});
+    const [stats, setStats] = useState({
+        likes: 0,
+        comments: 0,
+        isSaved: false,
+    });
     useEffect(() => {
         if (!api) {
             return;
@@ -33,7 +37,7 @@ const PostCard = ({ key, post }) => {
                 method: "POST",
                 body: JSON.stringify({
                     post_id: post.post_id,
-                    user_id: 1,
+                    user_id: user.user_id,
                 }),
             })
                 .then((res) => {
@@ -50,7 +54,7 @@ const PostCard = ({ key, post }) => {
                             : 0,
                         isSaved: data.isSaved,
                     });
-                    if(data.likes.some(item => item.likes === 1)) {
+                    if (data.likes.some((item) => item.likes === 1)) {
                         setIsLiked(true);
                     }
                 });
@@ -105,34 +109,37 @@ const PostCard = ({ key, post }) => {
                             <Image
                                 width={600}
                                 height={500}
-                                src={`/images/${file}`}
+                                src={file}
                                 alt="image"
                                 className="h-64 sm:h-[400px] lg:h-[450px] w-full rounded-[24px] object-cover"
                             />
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <CarouselPrevious className="left-4" />
-                <CarouselNext className="right-4" />
                 {post.media.length > 1 && (
-                    <div className="flex justify-center items-center gap-1 mt-2">
-                        {post.media.map((_, index) => (
-                            <div
-                                key={index}
-                                className={`${
-                                    current === index
-                                        ? "h-3 w-3 bg-primary"
-                                        : "h-2 w-2 bg-muted"
-                                } rounded-full`}
-                            ></div>
-                        ))}
-                    </div>
+                    <>
+                        <CarouselPrevious className="left-4" />
+                        <CarouselNext className="right-4" />
+                        <div className="flex justify-center items-center gap-1 mt-2">
+                            {post.media.map((_, index) => (
+                                <div
+                                    key={index}
+                                    className={`${
+                                        current === index
+                                            ? "h-3 w-3 bg-primary"
+                                            : "h-2 w-2 bg-muted"
+                                    } rounded-full`}
+                                ></div>
+                            ))}
+                        </div>
+                    </>
                 )}
             </Carousel>
             <p className="my-3 text-sm font-semibold leading-5 lg:small-regular">
                 {post.caption}
             </p>
             <PostStats
+                user={user.user_id}
                 post={post.post_id}
                 isLiked={isLiked}
                 stats={stats}
@@ -141,6 +148,7 @@ const PostCard = ({ key, post }) => {
             />
             {commentSection && (
                 <CommentSection
+                    user={user.user_id}
                     comments={comments}
                     setComments={setComments}
                     post={post.post_id}

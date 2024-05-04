@@ -44,7 +44,11 @@ export async function POST(req) {
   //   name: null,
   //   created_at: null,
   // };
-
+  response.cookies.set("user", JSON.stringify(userData), {
+    httpOnly: true,
+    expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+  });
+  return response;
   const response = NextResponse.json(
     { success: true, message: "Email and username does not exist in database" },
     { status: 200 }

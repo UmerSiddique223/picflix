@@ -1,8 +1,10 @@
-"use client";
 export const setUser = (userData) => {
-  localStorage.setItem("user", JSON.stringify(userData));
+    if (typeof window !== "undefined")
+        localStorage.setItem("user", JSON.stringify(userData));
 };
 
 export const getUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
+    if (typeof window !== "undefined"){
+        return JSON.parse(localStorage.getItem("user"));
+    }
 };

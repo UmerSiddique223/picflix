@@ -13,7 +13,6 @@ import Image from "next/image";
 const MediaUploader = ({ fieldChange }) => {
     const [file, setFile] = useState([]);
     const [fileUrl, setFileUrl] = useState("");
-
     const onDrop = useCallback(
         (acceptedFiles) => {
             if (file.length === 0) {

@@ -3,7 +3,7 @@ import { Input } from "../UI/input";
 import parseDate from "@/lib/dateParser";
 import { Button } from "../UI/button";
 
-function CommentSection({ comments, setComments, post }) {
+function CommentSection({ user, comments, setComments, post }) {
     const [comment, setComment] = useState("");
     const [error, setError] = useState("");
     const handleComment = async () => {
@@ -18,7 +18,7 @@ function CommentSection({ comments, setComments, post }) {
             },
             body: JSON.stringify({
                 post_id: post,
-                user_id: 1, //hardcoded for now
+                user_id: user,
                 comment_text: comment,
             }),
         }).then((res) => {
