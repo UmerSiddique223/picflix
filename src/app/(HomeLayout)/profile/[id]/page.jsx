@@ -13,6 +13,12 @@ import {
   DialogTrigger,
 } from "@/components/UI/dialog";
 import EditProfileForm from "@/components/shared/EditProfileForm";
+import {
+  getAllLinksandUser,
+  getPostStats,
+  handleAddFriend,
+  handleremoveFriend,
+} from "@/lib/controllers/ProfileController";
 
 const ProfilePage = ({ params }) => {
   const [user, setUser] = useState({});
@@ -32,72 +38,27 @@ const ProfilePage = ({ params }) => {
     if (typeof window !== "undefined") {
       setUser(getUser());
     }
-    const getPostStats = async () => {
-      try {
-        await fetch(
-          `${process.env.NEXT_PUBLIC_DOMAIN}/api/profile/getprofilestats`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              user_id: profileId,
-            }),
-          }
-        )
-          .then((response) => {
-            return response.json();
-          })
-          .then((data) => {
-            setTotalLinks(data.totalLinks);
-            if (data.postData) {
-              setProfilePosts(data.postData);
-              setTotalPosts(data.postData.length);
-            }
-          });
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-    getPostStats();
+    getPostStats(profileId, setTotalLinks, setProfilePosts, setTotalPosts);
   }, []);
 
   if (currentUserId === null && user.user_id) {
     setCurrentUserId(user.user_id);
   }
+
   var isOwnProfile = null;
 
   if (user.user_id && isOwnProfile === null && currentUserId) {
     isOwnProfile = currentUserId == profileId;
   }
-  const getAllLinksandUser = async () => {
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/links/getlinks&user`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          curr_user_id: currentUserId,
-          user_id: profileId,
-        }),
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          setallLinks(data.Links);
-          console.log(data.User);
-          setUser(data.User);
-          setisGotData(true);
-        });
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+
   if (!isgotData && user.user_id && isOwnProfile === false) {
-    getAllLinksandUser();
+    getAllLinksandUser(
+      profileId,
+      currentUserId,
+      setallLinks,
+      setUser,
+      setisGotData
+    );
   }
 
   if (isgotData && isFriend === null && isOwnProfile === false) {
@@ -106,62 +67,6 @@ const ProfilePage = ({ params }) => {
     });
     setisFriend(friendExists);
   }
-
-  // add a link
-  const handleAddFriend = async () => {
-    setIsInteracting(true);
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/links/addlink`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ user_id: currentUserId, friend_id: profileId }),
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          if (!data.success) {
-            throw new Error("Failed to insert in db");
-          } else {
-            setisFriend(true);
-          }
-        });
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      setIsInteracting(false);
-    }
-  };
-
-  // remove a link
-  const handleremoveFriend = async () => {
-    setIsInteracting(true);
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/links/removelink`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ user_id: currentUserId, friend_id: profileId }),
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          if (!data.success) {
-            throw new Error("Failed to delete db");
-          } else {
-            setisFriend(false);
-          }
-        });
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      setIsInteracting(false);
-    }
-  };
 
   return (
     <div className="flex mb-2 flex-col">
@@ -230,7 +135,14 @@ const ProfilePage = ({ params }) => {
               </Dialog>
             ) : isFriend ? (
               <Button
-                onClick={() => handleremoveFriend()}
+                onClick={() =>
+                  handleremoveFriend(
+                    currentUserId,
+                    profileId,
+                    setIsInteracting,
+                    setisFriend
+                  )
+                }
                 disabled={isinteracting}
                 className="mt-2 h-9"
               >
@@ -239,7 +151,14 @@ const ProfilePage = ({ params }) => {
             ) : (
               <div>
                 <Button
-                  onClick={() => handleAddFriend()}
+                  onClick={() =>
+                    handleAddFriend(
+                      currentUserId,
+                      profileId,
+                      setIsInteracting,
+                      setisFriend
+                    )
+                  }
                   disabled={isinteracting}
                   className="mt-2 h-9"
                 >
