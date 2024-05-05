@@ -22,11 +22,42 @@ const ProfilePage = ({ params }) => {
   const [isgotData, setisGotData] = useState(false);
   const [isFriend, setisFriend] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
+  const [totalLinks, setTotalLinks] = useState(0);
+  const [totalPosts, setTotalPosts] = useState(0);
+  const [profilePosts, setProfilePosts] = useState([]);
+
+  const profileId = params.id;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setUser(getUser());
     }
+    const getPostStats = async () => {
+      try {
+        await fetch(
+          `${process.env.NEXT_PUBLIC_DOMAIN}/api/profile/getprofilestats`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              user_id: profileId,
+            }),
+          }
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            setProfilePosts(data.postData);
+            setTotalLinks(data.totalLinks);
+          });
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+    getPostStats();
   }, []);
 
   if (currentUserId === null && user.user_id) {
@@ -34,7 +65,6 @@ const ProfilePage = ({ params }) => {
   }
   var isOwnProfile = null;
 
-  const profileId = params.id;
   if (user.user_id && isOwnProfile === null && currentUserId) {
     isOwnProfile = currentUserId == profileId;
   }
@@ -161,11 +191,11 @@ const ProfilePage = ({ params }) => {
           <h1 className="text-2xl font-bold ">{user.username} </h1>
           <div className=" flex items-center gap-4">
             <p className="text-lg mt-4 font-bold">
-              10 <span className="font-normal">posts </span>
+              {profilePosts.length} <span className="font-normal">posts </span>
             </p>
             <span className="text-lg mt-4">|</span>
             <p className="text-lg mt-4 font-bold">
-              100 <span className="font-normal">links</span>
+              {totalLinks} <span className="font-normal">links</span>
             </p>
           </div>
           <div>
@@ -225,61 +255,42 @@ const ProfilePage = ({ params }) => {
           <p>Account created at: {user.created_at}</p>
         </div>
         <div className="mt-10 flex flex-col justify-center items-center">
-          <hr className="  w-[75%] mb-10 " />
+          <hr className="w-[75%] mb-10 " />
           <div className="grid grid-cols-3 gap- ">
-            <div className="relative group">
-              <Image
-                height={300}
-                width={200}
-                src="/images/afnan.png"
-                alt="Post"
-                className="lg:w-80 lg:h-80 h-56 w-64 hover:brightness-75  border col-span-1"
-              />
-              <div className=" flex gap-16 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity ">
-                <div className="flex gap-1 items-center">
-                  <Image
-                    width={40}
-                    height={40}
-                    src="/icons/like.svg"
-                    alt="like"
-                  />
-                  <span className="ml-1 font-bold">10</span>
-                </div>
-                <div className="flex gap-1 items-center">
-                  <Image
-                    width={40}
-                    height={40}
-                    src="/icons/comment.svg"
-                    alt="comments"
-                  />
-                  <span className="ml-1 font-bold">10</span>
+            {profilePosts.map((post) => (
+              <div
+                key={post.post_id}
+                className="relative hover:brightness-90 group"
+              >
+                <Image
+                  height={300}
+                  width={200}
+                  src={`/images/${post.media[0]}`}
+                  alt="Post"
+                  className="lg:w-80 lg:h-80 h-56 w-64 border col-span-1"
+                />
+                <div className="flex gap-16 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity ">
+                  <div className="flex gap-1 items-center">
+                    <Image
+                      width={50}
+                      height={50}
+                      src="/icons/like.svg"
+                      alt="like"
+                    />
+                    <span className="ml-1 font-extrabold">10</span>
+                  </div>
+                  <div className="flex gap-1 items-center">
+                    <Image
+                      width={45}
+                      height={45}
+                      src="/icons/comment.svg"
+                      alt="comments"
+                    />
+                    <span className="ml-1 text font-extrabold">10</span>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <Image
-              height={300}
-              width={200}
-              src="/images/shera.jpg"
-              alt="Post"
-              className=" lg:w-80 lg:h-80 h-64 w-64 border rounded-md col-span-1"
-            />
-
-            <Image
-              height={300}
-              width={200}
-              src="/images/lamp-lights-lantern-wallpaper-preview.jpg"
-              alt="Post"
-              className=" lg:w-80 lg:h-80 h-64 w-64 border rounded-md col-span-1"
-            />
-
-            <Image
-              src="/images/lamp-lights-lantern-wallpaper-preview.jpg"
-              alt="Post"
-              className="lg:w-80 lg:h-80 h-64 w-64 border rounded-md"
-              height={300}
-              width={200}
-            />
+            ))}
           </div>
         </div>
       </div>

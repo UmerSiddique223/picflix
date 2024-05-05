@@ -1,11 +1,9 @@
 "use client";
-import { Button } from "@/components/UI/button";
 import { Input } from "@/components/UI/input";
 import React from "react";
 import { useRef, useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
-
+import "@/utils/loader.css";
 export default function SearchBar() {
   const searchParams = useSearchParams();
   const defaultQuery = searchParams.get("query") || "";
@@ -25,7 +23,7 @@ export default function SearchBar() {
       <div className="mx-auto font-bold text-3xl mb-10 text-purple-500">
         Search a User{" "}
       </div>
-      <div className="h-14 flex items-center justify-center rounded-md">
+      <div className="h-10 flex items-center gap-1 justify-center rounded-md">
         <Input
           disabled={isSearching}
           value={query}
@@ -43,15 +41,15 @@ export default function SearchBar() {
           className="border w-96 lg:w-[40rem] border-border"
         />
 
-        <Button
+        <button
           disabled={isSearching}
           size="sm"
           onClick={search}
           variant=""
-          className="relative bg-transparent hover:bg-transparent h-14 w-14"
+          className="button h-11 border  w-12 bg-background"
         >
-          <Image src="/icons/search.svg" fill alt="search"></Image>
-        </Button>
+          <span class="span">🔎</span>
+        </button>
       </div>
     </div>
   );

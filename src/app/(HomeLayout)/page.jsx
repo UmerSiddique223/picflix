@@ -6,7 +6,7 @@ export const getPosts = async () => {
   try {
     const pool = await poolPromise;
     const result = await pool.request().query(`
-        SELECT Posts.*, Users.name, Users.profile_picture, Media.media_url AS media FROM Posts
+        SELECT Posts.*, Users.[name], Users.profile_picture, Media.media_url AS media FROM Posts
         JOIN Users ON Users.user_id=Posts.user_id
         LEFT JOIN Media ON Posts.post_id = Media.post_id ORDER BY Posts.created_at DESC;
         `);
