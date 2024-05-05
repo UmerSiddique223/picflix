@@ -28,29 +28,11 @@ export async function POST(req) {
     return NextResponse.json({
       success: false,
       message: "Email already exists",
+      status: 400,
     });
   }
-
-  // Hash the password
-
-  // const token = jwt.sign({ username, email }, process.env.SIGNUP_KEY, {
-  //   expiresIn: "5d",
-  // });
-  // const userData = {
-  //   username: username,
-  //   email: email,
-  //   profile_picture: null,
-  //   bio: null,
-  //   name: null,
-  //   created_at: null,
-  // };
-  const response = NextResponse.json(
-    { success: true, message: "User created successfully" },
-    { status: 200 }
-  );
-  response.cookies.set("user", JSON.stringify(userData), {
-    httpOnly: true,
-    expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+  return NextResponse.json({
+    success: true,
+    message: "User is unique",
   });
-  return response;
 }

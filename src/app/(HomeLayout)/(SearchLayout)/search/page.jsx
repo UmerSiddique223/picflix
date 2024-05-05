@@ -16,10 +16,9 @@ const SearchPage = async () => {
     }
   };
   const friends = await getFriends();
-  // console.log("jfeoijfoefwpofewkpofwe;l", friends);
   return (
     <div className="lg:-ml-20  mx-auto">
-      <h1 className="text-2xl font-bold mt-4 mb-2">Existing Links</h1>
+      <h1 className="text-2xl font-bold mt-10 mb-2">Existing Links</h1>
       <ul className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 mt-10 gap-5">
         {friends.map((user) => (
           <li

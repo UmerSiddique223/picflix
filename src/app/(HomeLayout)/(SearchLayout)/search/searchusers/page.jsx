@@ -1,27 +1,25 @@
 import poolPromise from "@/lib/SQL_Config";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import React from "react";
 
-const SearchProfilePage = async ({ params }) => {
-  const searchQuery = params.searchquery;
-  console.log(searchQuery);
+const SearchProfilePage = async ({ searchParams }) => {
+  const query = searchParams.query;
   const getSearchResults = async () => {
     try {
       const pool = await poolPromise;
       const result = await pool
         .request()
         .query(
-          `SELECT * FROM Users WHERE name LIKE '%${searchQuery}%' OR username LIKE '%${searchQuery}%'`
+          `SELECT * FROM Users WHERE name LIKE '%${query}%' OR username LIKE '%${query}%'`
         );
-      console.log(result.recordset);
       return result.recordset;
     } catch (error) {
       console.error("Error executing query:", error);
       return [];
     }
   };
+
   const Users = await getSearchResults();
   return (
     <>
