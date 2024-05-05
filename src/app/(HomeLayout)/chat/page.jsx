@@ -26,7 +26,7 @@ export const getUserConversations = async (user) => {
     }
 };
 
-export default async function Saved() {
+export default async function Conversations() {
     const user = getUserCookie();
     const conversations = await getUserConversations(user);
     return (
@@ -35,6 +35,7 @@ export default async function Saved() {
             <div className="flex flex-col items-center gap-10 py-10 sm:px-5 md:px-8 lg:p-10 custom-scrollbar">
               <h2 className="text-2xl font-bold tracking-tighter">Your Conversations</h2>
               <div className="flex flex-col gap-9 w-full">
+                {/* Here, make this clickable please. */}
                 {conversations.map((conversation) => (
                   <ConversationBox userid={conversation.first_user === user.user_id ? conversation.second_user : conversation.first_user}
                   conversation={conversation}/>
