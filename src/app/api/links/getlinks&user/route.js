@@ -12,7 +12,6 @@ export async function POST(req) {
       .input("user_id", curr_user_id)
       .query("Select * from friends where user_id=@user_id");
     const Links = result.recordset;
-    console.log(result.recordset, "links");
 
     const result1 = await pool
       .request()
@@ -20,7 +19,6 @@ export async function POST(req) {
       .query("Select * from Users where user_id=@user_id");
 
     const User = result1.recordset[0];
-    console.log(result1.recordset, "user");
 
     // Respond with success message
     return NextResponse.json({

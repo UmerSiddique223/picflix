@@ -108,7 +108,7 @@ const Leftbar = () => {
                       <Image
                         src={getSvgs(link.name)}
                         alt={link.label}
-                        className={`group-hover:brightness-0 group-hover:invert ${
+                        className={`group-hover:brightness-0 h-6 w-6 group-hover:invert ${
                           isActive && "invert brightness-0"
                         }`}
                         width={24}
@@ -125,7 +125,7 @@ const Leftbar = () => {
                       <Image
                         src={getSvgs(link.name)}
                         alt={link.label}
-                        className={`group-hover:brightness-0 group-hover:invert ${
+                        className={`group-hover:brightness-0  h-6 w-6 group-hover:invert ${
                           isActive && "invert brightness-0"
                         }`}
                         width={24}

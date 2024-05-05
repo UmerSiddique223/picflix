@@ -24,7 +24,8 @@ const schema = yup.object({
 setUser;
 const EditProfileForm = ({ buttonRef }) => {
   const [user, setuser] = useState({});
-  const [photoUrl, setPhotoUrl] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("n");
+  const [ischanged, setischanged] = useState(false);
   const [file, setFile] = useState([]);
 
   const form = useForm({
@@ -44,7 +45,6 @@ const EditProfileForm = ({ buttonRef }) => {
         profile_pic: [{ path: temp_user.profile_pic }],
       };
       form.reset(reset_user);
-      setPhotoUrl(temp_user.profile_picture);
       setuser(temp_user);
     }
   }, []);
@@ -54,15 +54,16 @@ const EditProfileForm = ({ buttonRef }) => {
 
   const onDrop = useCallback(
     (acceptedFiles) => {
-      setFile(acceptedFiles);
+      setFile(acceptedFiles[0]);
       form.setValue("profile_pic", acceptedFiles);
-      setPhotoUrl(acceptedFiles[0].path);
+      setPhotoUrl(URL.createObjectURL(acceptedFiles[0]));
     },
     [form]
   );
 
   const handleRemovePhoto = () => {
     setPhotoUrl("");
+    setischanged(true);
   };
 
   const { getRootProps, getInputProps, open } = useDropzone({
@@ -98,7 +99,7 @@ const EditProfileForm = ({ buttonRef }) => {
     if (
       values.name !== user.name ||
       values.bio !== user.bio ||
-      values.profile_pic[0].path !== user.profile_pitcure
+      values.profile_pic[0].path !== user.profile_picture
     ) {
       uploadMedia(values.profile_pic);
       fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/profile`, {
@@ -116,7 +117,7 @@ const EditProfileForm = ({ buttonRef }) => {
             ...user,
             name: values.name,
             bio: values.bio,
-            profile_pic: values.profile_pic[0].path,
+            profile_picture: values.profile_pic[0].path,
           });
           window.location.reload();
         })
@@ -163,19 +164,37 @@ const EditProfileForm = ({ buttonRef }) => {
                     className="flex justify-center items-center flex-col bg-input border border-border rounded-xl"
                   >
                     <input {...getInputProps()} className="cursor-pointer" />
+
                     {photoUrl ? (
                       <div className="mb-4">
-                        <Image
-                          width={300}
-                          height={100}
-                          src={`/images/${photoUrl}`}
-                          alt="Profile"
-                          className="rounded-full w-32 h-32 mx-auto mb-4"
-                        />
+                        {ischanged ? (
+                          <Image
+                            width={300}
+                            height={100}
+                            src={URL.createObjectURL(file)}
+                            alt="Profile"
+                            className="rounded-full w-32 h-32 mx-auto mb-4"
+                          />
+                        ) : user.profile_picture ? (
+                          <Image
+                            width={300}
+                            height={100}
+                            src={`/images/${user.profile_picture}`}
+                            alt="Profile"
+                            className="rounded-full w-32 h-32 mx-auto mb-4"
+                          />
+                        ) : (
+                          <Image
+                            width={300}
+                            height={100}
+                            src={`/images/default photo.png`}
+                            alt="Profile"
+                            className="rounded-full w-32 h-32 mx-auto mb-4"
+                          />
+                        )}
                         <Button
                           onClick={handleRemovePhoto}
                           variant="destructive"
-                          // className="block mx-auto px-4 py-2 bg-red-500 text-white rounded"
                         >
                           Change Photo
                         </Button>
