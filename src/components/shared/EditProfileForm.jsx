@@ -175,11 +175,19 @@ const EditProfileForm = ({ buttonRef }) => {
                             alt="Profile"
                             className="rounded-full w-32 h-32 mx-auto mb-4"
                           />
-                        ) : (
+                        ) : user.profile_picture ? (
                           <Image
                             width={300}
                             height={100}
                             src={`/images/${user.profile_picture}`}
+                            alt="Profile"
+                            className="rounded-full w-32 h-32 mx-auto mb-4"
+                          />
+                        ) : (
+                          <Image
+                            width={300}
+                            height={100}
+                            src={`/images/default photo.png`}
                             alt="Profile"
                             className="rounded-full w-32 h-32 mx-auto mb-4"
                           />
