@@ -19,7 +19,6 @@ import { Button } from "@/components/UI/button";
 import { useToast } from "@/components/UI/use-toast";
 import MediaUploader from "@/components/shared/MediaUploader";
 import { getUser } from "@/lib/userInfo";
-import { getUser } from "@/lib/userInfo";
 
 const schema = yup.object({
     caption: yup.string(),
@@ -68,7 +67,7 @@ function Create() {
             type: file.type,
             path: file.name,
         }));
-        const user = await getUser();
+        const user = getUser();
         fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/posts`, {
             method: "POST",
             headers: {

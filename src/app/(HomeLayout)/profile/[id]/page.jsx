@@ -24,9 +24,7 @@ const ProfilePage = ({ params }) => {
   const [currentUserId, setCurrentUserId] = useState(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
       setUser(getUser());
-    }
   }, []);
 
   if (currentUserId === null && user.user_id) {

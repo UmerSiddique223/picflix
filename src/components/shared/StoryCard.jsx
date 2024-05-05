@@ -3,12 +3,7 @@ import parseDate from "@/lib/dateParser";
 import Image from "next/image";
 import {
     Dialog,
-    DialogClose,
     DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
     DialogTrigger,
 } from "@/components/UI/dialog";
 import {
