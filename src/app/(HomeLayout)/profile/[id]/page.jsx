@@ -36,10 +36,8 @@ const ProfilePage = ({ params }) => {
   const profileId = params.id;
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
       setUser(getUser());
-    }
-    getPostStats(profileId, setTotalLinks, setProfilePosts, setTotalPosts);
+      getPostStats(profileId, setTotalLinks, setProfilePosts, setTotalPosts);
   }, []);
 
   if (currentUserId === null && user.user_id) {

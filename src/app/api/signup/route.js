@@ -24,13 +24,13 @@ export async function POST(req) {
     .request()
     .input("email", email)
     .query("SELECT * FROM Users WHERE email = @email");
-  if (existingEmail.recordset.length > 0) {
-    return NextResponse.json({
-      success: false,
-      message: "Email already exists",
-      status: 400,
-    });
-  }
+    if (existingEmail.recordset.length > 0) {
+      return NextResponse.json({
+        success: false,
+        message: "Email already exists",
+        status: 400,
+      });
+    }
   return NextResponse.json({
     success: true,
     message: "User is unique",

@@ -1,3 +1,4 @@
+import CreateStory from "@/components/shared/CreateStory";
 import PostCard from "@/components/shared/PostCard";
 import StoryCard from "@/components/shared/StoryCard";
 import poolPromise from "@/lib/SQL_Config";
@@ -55,11 +56,11 @@ export const getStories = async () => {
       return acc;
     }, []);
 
-    return stories;
-  } catch (err) {
-    console.error("Error in fetching stories:", err);
-    return [];
-  }
+        return stories;
+    } catch (err) {
+        console.error("Error in fetching stories:", err);
+        return [];
+    }
 };
 export default async function Home() {
   const posts = await getPosts();
@@ -82,12 +83,15 @@ export default async function Home() {
           Stories & Updates
         </h2>
 
-        <div className="flex flex-col w-full">
-          {stories.map((story) => (
-            <StoryCard key={story.story_id} story={story} />
-          ))}
+                <div className="flex flex-col w-full">
+                    {stories.map((story) => (
+                        <StoryCard key={story.story_id} story={story} />
+                    ))}
+                </div>
+            </div>
+            <div>
+                <CreateStory />
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }

@@ -28,8 +28,6 @@ CREATE TABLE Media (
     entity_type VARCHAR(50),
     media_url VARCHAR(255),
     PRIMARY KEY (entity_id, entity_type, media_url),
-    FOREIGN KEY (entity_id) REFERENCES Posts(post_id),
-    FOREIGN KEY (entity_id) REFERENCES Stories(story_id)
 );
 
 CREATE TABLE Comments (

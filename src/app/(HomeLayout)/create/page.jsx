@@ -47,46 +47,46 @@ function Create() {
       formData.append("file", f);
     });
 
-    fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/upload`, {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("HTTP Error: " + response.status);
-        }
-        return response.json();
-      })
-      .catch((error) => {
-        console.error("File upload failed. Error: " + error.message);
-      });
-  };
-  const handleSubmit = async (values) => {
-    await uploadMedia(values.media);
-    values.media = values.media.map((file) => ({
-      type: file.type,
-      path: file.name,
-    }));
-    const user = await getUser();
-    fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/posts`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ...values, user_id: user.user_id }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          toast("Post created successfully", "success");
-          router.push("/");
-        } else {
-          toast("Failed to create post", "error");
-        }
-      })
-      .catch(() => {
-        toast("Failed to create post", "error");
-      });
-  };
+        fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/upload`, {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("HTTP Error: " + response.status);
+                }
+                return response.json();
+            })
+            .catch((error) => {
+                console.error("File upload failed. Error: " + error.message);
+            });
+    };
+    const handleSubmit = async (values) => {
+        await uploadMedia(values.media);
+        values.media = values.media.map((file) => ({
+            type: file.type,
+            path: file.name,
+        }));
+        const user = getUser();
+        fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/posts`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ ...values, user_id: user.user_id }),
+        })
+            .then((res) => {
+                if (res.ok) {
+                    toast("Post created successfully", "success");
+                    router.push("/");
+                } else {
+                    toast("Failed to create post", "error");
+                }
+            })
+            .catch(() => {
+                toast("Failed to create post", "error");
+            });
+    };
 
   return (
     // temporary styling because no right section
