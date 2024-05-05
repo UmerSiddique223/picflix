@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 import { compare } from "bcrypt";
 import poolPromise from "@/lib/SQL_Config";
 import { NextResponse } from "next/server";
-import { setUser } from "@/lib/userInfo";
 
 export async function POST(req, res) {
   const body = await req.json();

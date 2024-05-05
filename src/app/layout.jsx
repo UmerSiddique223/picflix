@@ -4,9 +4,9 @@ import { cn } from "../lib/utils";
 import { ThemeProvider } from "@/utils/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
-  title: "Sign In",
-  description:
-    "Become a new member or give Credentials if you are already a member.",
+    title: "Sign In",
+    description:
+        "Become a new member or give Credentials if you are already a member.",
 };
 
 export default function RootLayout({ children }) {

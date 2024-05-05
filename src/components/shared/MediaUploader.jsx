@@ -11,46 +11,45 @@ import {
 
 import Image from "next/image";
 const MediaUploader = ({ fieldChange }) => {
-  const [file, setFile] = useState([]);
-  const [fileUrl, setFileUrl] = useState("");
-
-  const onDrop = useCallback(
-    (acceptedFiles) => {
-      if (file.length === 0) {
-        setFile(acceptedFiles);
-        fieldChange(acceptedFiles);
-      } else {
-        setFile([...file, ...acceptedFiles]);
-        fieldChange([...file, ...acceptedFiles]);
-      }
-    },
-    [file]
-  );
-  const { getRootProps, getInputProps, open } = useDropzone({
-    multiple: true,
-    noClick: true,
-    onDrop,
-    accept: {
-      "image/*": [".png", ".jpeg", ".jpg"],
-      "video/*": [".mp4", ".mov"],
-    },
-  });
-  const deleteFile = (target) => () => {
-    setFile(file.filter((f) => f !== target));
-  };
-  useEffect(() => {
-    if (file.length === 0) {
-      setFileUrl("");
-    } else {
-      setFileUrl(file.map((file) => URL.createObjectURL(file)));
-    }
-  }, [file]);
-  return (
-    <div
-      {...getRootProps()}
-      className="flex justify-center items-center flex-col bg-input border border-border rounded-xl"
-    >
-      <input {...getInputProps()} className="cursor-pointer" />
+    const [file, setFile] = useState([]);
+    const [fileUrl, setFileUrl] = useState("");
+    const onDrop = useCallback(
+        (acceptedFiles) => {
+            if (file.length === 0) {
+                setFile(acceptedFiles);
+                fieldChange(acceptedFiles);
+            } else {
+                setFile([...file, ...acceptedFiles]);
+                fieldChange([...file, ...acceptedFiles]);
+            }
+        },
+        [file]
+    );
+    const { getRootProps, getInputProps, open } = useDropzone({
+        multiple: true,
+        noClick: true,
+        onDrop,
+        accept: {
+            "image/*": [".png", ".jpeg", ".jpg"],
+            "video/*": [".mp4", ".mov"],
+        },
+    });
+    const deleteFile = (target) => () => {
+        setFile(file.filter((f) => f !== target));
+    };
+    useEffect(() => {
+        if (file.length === 0) {
+            setFileUrl("");
+        } else {
+            setFileUrl(file.map((file) => URL.createObjectURL(file)));
+        }
+    }, [file]);
+    return (
+        <div
+            {...getRootProps()}
+            className="flex justify-center items-center flex-col bg-input border border-border rounded-xl"
+        >
+            <input {...getInputProps()} className="cursor-pointer" />
 
       {fileUrl ? (
         <>

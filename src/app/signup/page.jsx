@@ -74,7 +74,6 @@ function SignupPage() {
         body: JSON.stringify(values),
       })
         .then((response) => {
-          console.log(response.json);
           return response.json();
         })
         .then((data) => {
