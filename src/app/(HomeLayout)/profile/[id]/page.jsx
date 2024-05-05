@@ -19,6 +19,7 @@ import {
   handleAddFriend,
   handleremoveFriend,
 } from "@/lib/controllers/ProfileController";
+import { ShowProfilePosts } from "@/components/shared/ShowProfilePosts";
 
 const ProfilePage = ({ params }) => {
   const [user, setUser] = useState({});
@@ -180,38 +181,7 @@ const ProfilePage = ({ params }) => {
           <hr className="w-[75%] mb-10 " />
           <div className="grid grid-cols-3 gap- ">
             {profilePosts.map((post) => (
-              <div
-                key={post.post_id}
-                className="relative hover:brightness-90 group"
-              >
-                <Image
-                  height={300}
-                  width={200}
-                  src={`/images/${post.media[0]}`}
-                  alt="Post"
-                  className="lg:w-80 lg:h-80 h-56 w-64 border col-span-1"
-                />
-                <div className="flex gap-16 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity ">
-                  <div className="flex gap-1 items-center">
-                    <Image
-                      width={50}
-                      height={50}
-                      src="/icons/like.svg"
-                      alt="like"
-                    />
-                    <span className="ml-1 font-extrabold">10</span>
-                  </div>
-                  <div className="flex gap-1 items-center">
-                    <Image
-                      width={45}
-                      height={45}
-                      src="/icons/comment.svg"
-                      alt="comments"
-                    />
-                    <span className="ml-1 text font-extrabold">10</span>
-                  </div>
-                </div>
-              </div>
+              <ShowProfilePosts key={post.post_id} post={post} user={user} />
             ))}
           </div>
         </div>

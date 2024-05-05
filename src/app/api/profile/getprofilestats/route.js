@@ -9,13 +9,11 @@ export async function POST(req) {
     const pool = await poolPromise;
 
     const result = await pool.request().input("user_id", user_id).query(`
-    SELECT Posts.*, Media.media_url AS media
-    FROM Posts
-    JOIN Users ON Users.user_id = Posts.user_id
-    LEFT JOIN Media ON Posts.post_id = Media.entity_id
-    LEFT JOIN Friends ON Users.user_id = Friends.user_id
-    WHERE Posts.user_id = @user_id
-    ORDER BY Posts.created_at DESC;`);
+    SELECT Posts.*, Users.name, Users.profile_picture, Media.media_url AS media FROM Posts
+        JOIN Users ON Users.user_id=Posts.user_id
+        LEFT JOIN Media ON Posts.post_id = Media.entity_id
+        WHERE Media.entity_type= 'post'
+        ORDER BY Posts.created_at DESC;`);
 
     const postData = result.recordset.reduce((acc, row) => {
       const existingPost = acc.find((post) => post.post_id === row.post_id);
