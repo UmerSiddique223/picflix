@@ -50,8 +50,11 @@ const ProfilePage = ({ params }) => {
             return response.json();
           })
           .then((data) => {
-            setProfilePosts(data.postData);
             setTotalLinks(data.totalLinks);
+            if (data.postData) {
+              setProfilePosts(data.postData);
+              setTotalPosts(data.postData.length);
+            }
           });
       } catch (error) {
         console.error("Error:", error);
@@ -191,7 +194,7 @@ const ProfilePage = ({ params }) => {
           <h1 className="text-2xl font-bold ">{user.username} </h1>
           <div className=" flex items-center gap-4">
             <p className="text-lg mt-4 font-bold">
-              {profilePosts.length} <span className="font-normal">posts </span>
+              {totalPosts} <span className="font-normal">posts </span>
             </p>
             <span className="text-lg mt-4">|</span>
             <p className="text-lg mt-4 font-bold">

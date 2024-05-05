@@ -12,7 +12,7 @@ export async function POST(req) {
     SELECT Posts.*, Media.media_url AS media
     FROM Posts
     JOIN Users ON Users.user_id = Posts.user_id
-    LEFT JOIN Media ON Posts.post_id = Media.post_id
+    LEFT JOIN Media ON Posts.post_id = Media.entity_id
     LEFT JOIN Friends ON Users.user_id = Friends.user_id
     WHERE Posts.user_id = @user_id
     ORDER BY Posts.created_at DESC;`);

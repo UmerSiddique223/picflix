@@ -12,10 +12,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/UI/dropdown-menu";
+import { getUser } from "@/lib/userInfo";
+import { useEffect, useState } from "react";
 
 const Leftbar = () => {
   const pathname = usePathname();
   const { setTheme } = useTheme();
+
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    if (typeof window !== "undefined") setUser(getUser());
+  }, []);
+
   const router = useRouter();
   const HandleLogout = async () => {
     try {
@@ -135,7 +143,6 @@ const Leftbar = () => {
         <Button
           variant="ghost"
           className="flex gap-4 items-center justify-start"
-          onClick={HandleLogout}
           onClick={HandleLogout}
         >
           <Image
