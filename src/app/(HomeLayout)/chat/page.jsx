@@ -1,6 +1,7 @@
 import ConversationBox from "@/components/shared/ConversationCard";
 import poolPromise from "@/lib/SQL_Config";
 import { getUserCookie } from "@/lib/userCookie";
+import { getUser } from "@/lib/userInfo";
 
 export const getUserConversations = async (user) => {
   try {
@@ -25,32 +26,33 @@ export const getUserConversations = async (user) => {
 };
 // get all user at the same time
 
-// export const getUserFromDB = (userid) => {
-//   return poolPromise
-//     .then((pool) => {
-//       return pool.request().input("user_id", userid).query(`
-//           SELECT * from Users where user_id = @user_id;
-//         `);
-//     })
-//     .then((result) => {
-//       if (result.recordset.length > 0) {
-//         return result.recordset[0];
-//       } else {
-//         // If no user found, return null or handle it as per your requirement
-//         return null;
-//       }
-//     })
-//     .catch((err) => {
-//       console.error("Error executing query:", err);
-//       return []; // or return null or handle it as per your requirement
-//     });
-// };
+export const getUserFromDB = (userid) => {
+  return poolPromise
+    .then((pool) => {
+      return pool.request().input("user_id", userid).query(`
+          SELECT * from Users where user_id = @user_id;
+        `);
+    })
+    .then((result) => {
+      if (result.recordset.length > 0) {
+        return result.recordset[0];
+      } else {
+        // If no user found, return null or handle it as per your requirement
+        return null;
+      }
+    })
+    .catch((err) => {
+      console.error("Error executing query:", err);
+      return []; // or return null or handle it as per your requirement
+    });
+};
 
 export default async function Conversations() {
   const user = getUserCookie();
   const conversations = await getUserConversations(user);
   // This is sample code
-  // const allUsers=await getAllUsers();
+//   const allUsers=await getAllUsers();
+// const user = await getUserFromDB();
   return (
     <div className="flex w-full pr-8">
       <div className="flex-grow w-2/3">
@@ -61,17 +63,20 @@ export default async function Conversations() {
           <div className="flex flex-col gap-9 w-full">
             {/* Here, make this clickable please.   okk */}
 
-            {conversations.map((conversation) => (
-              <ConversationBox
-                key={conversation}
-                userid={
-                  conversation.first_user === user.user_id
-                    ? conversation.second_user
-                    : conversation.first_user
-                }
-                conversation={conversation}
-              />
-            ))}
+            {conversations.map(async (conversation) => {
+              const otherUserId = conversation.first_user === user.user_id
+                ? conversation.second_user
+                : conversation.first_user;
+              const userInfo = await getUserFromDB(otherUserId);
+
+              return (
+                <ConversationBox
+                  key={conversation.conversation_id}
+                  user={userInfo} // Pass user info as prop
+                  conversation={conversation}
+                />
+              );
+            })}
           </div>
         </div>
       </div>

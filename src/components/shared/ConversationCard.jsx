@@ -1,15 +1,17 @@
-"üse client";
+"use client";
 import parseDate from "@/lib/dateParser";
-import poolPromise from "@/lib/SQL_Config";
+import { useRouter } from 'next/navigation';
 
-function function1() {}
-
-function ConversationBox({ userid, conversation }) {
-  // const user = await getUserFromDB(userid); cant get user here
-
+function ConversationBox({ user, conversation }) {
   // console.log(user);
+  const router = useRouter();
+
+  const handleConversationClick = (Id) => {
+    // Redirect the user to the conversation page with the selected user
+    router.push(`/chat/${Id}`);
+  };
   return (
-    <button onClick={function1}>
+    <button onClick={() => handleConversationClick(conversation.conversation_id)}>
       <div className="flex flex-col max-h-96 overflow-auto custom-scrollbar gap-3 mt-3">
         <div key={user.user_id} className="flex gap-3">
           <img
