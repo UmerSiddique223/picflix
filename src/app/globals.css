@@ -3,7 +3,7 @@
 @tailwind utilities;
 @layer base {
     :root {
-        --background: 0, 0%, 100%, 1;
+        --background: 244.74, 59.38%, 87.45%, 1;
         --foreground: 271.5 5% 10%;
         --bar: 240 5% 11%;
         --card: 271.5 50% 90%;
@@ -75,21 +75,7 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #7878a3;
 }
-.text-gradient {
-  background: radial-gradient(
-    64.18% 64.18% at 71.16% 35.69%,
-    #def9fa 0.89%,
-    #bef3f5 17.23%,
-    #9dedf0 42.04%,
-    #7de7eb 55.12%,
-    #5ce1e6 71.54%,
-    #33bbcf 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-fill-color: transparent;
-}
+/* 
 .yellow{
         background: radial-gradient(circle, #3C2D19, transparent);
         width: 100%;
@@ -103,6 +89,12 @@
         height: 100vh;
       
       
+} */
+.save-post-image {
+    transition: transform 0.3s ease;
 }
 
+.save-post-image:hover {
+    transform: scale(1.1);
+}
 

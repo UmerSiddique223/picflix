@@ -44,7 +44,7 @@ const Leftbar = () => {
     }
   };
   return (
-    <nav className="sticky hidden top-0 h-screen lg:flex flex-col min-w-[270px] bg-bar">
+    <nav className="sticky hidden top-0 h-screen text-white lg:flex flex-col min-w-[270px] bg-bar">
       <div className="h-full flex flex-col justify-between px-6 py-10 gap-y-8 custom-scrollbar overflow-y-scroll">
         <div className="flex flex-col gap-10">
           <div className="flex justify-between items-center">
@@ -57,9 +57,9 @@ const Leftbar = () => {
             <div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon">
-                    <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                    <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                  <Button variant="ghost" size="icon">
+                    <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0  scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                    <MoonIcon className="absolute h-[1.2rem] w-[1.2rem]  rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                     <span className="sr-only">Toggle theme</span>
                   </Button>
                 </DropdownMenuTrigger>
