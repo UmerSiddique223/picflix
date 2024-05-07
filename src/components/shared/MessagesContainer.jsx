@@ -4,8 +4,8 @@ import { Input } from "../UI/input";
 import parseDate from "@/lib/dateParser";
 import { Button } from "../UI/button";
 import { useRouter } from 'next/navigation';
-import MyMessage from "@/components/shared/MyMessage";
 import OtherMessage from "@/components/shared/OtherMessage";
+import MyMessage from "@/components/shared/MyMessage";
 import Link from "next/link";
 
 function MessagesContainer({ user, otherUser, messages, conversation_id }) {
