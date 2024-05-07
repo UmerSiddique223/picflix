@@ -5,7 +5,9 @@ import parseDate from "@/lib/dateParser";
 import { Button } from "../UI/button";
 import { useRouter } from "next/navigation";
 import MyMessage from "@/components/shared/MyMessage";
+import { useRouter } from "next/navigation";
 import OtherMessage from "@/components/shared/OtherMessage";
+import MyMessage from "@/components/shared/MyMessage";
 import Link from "next/link";
 import io from "socket.io-client";
 

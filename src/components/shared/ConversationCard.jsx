@@ -1,5 +1,5 @@
 "use client";
-import parseDate from "@/lib/dateParser";
+import parseDateTime from "@/lib/dateTimeParser";
 import { useRouter } from 'next/navigation';
 
 function ConversationBox({ user, conversation }) {
@@ -23,7 +23,7 @@ function ConversationBox({ user, conversation }) {
             <p className="font-semibold">
               {user.name}
               <span className="text-xs ml-1 text-neutral-400">
-                {parseDate(conversation.last_updated)}
+                {parseDateTime(conversation.last_updated)}
               </span>
             </p>
           </div>
