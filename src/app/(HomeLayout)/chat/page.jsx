@@ -1,4 +1,5 @@
 import ConversationBox from "@/components/shared/ConversationCard";
+import FriendsCard from "@/components/shared/FriendsCard";
 import poolPromise from "@/lib/SQL_Config";
 import { getUserCookie } from "@/lib/userCookie";
 import { getUser } from "@/lib/userInfo";
@@ -47,9 +48,30 @@ export const getUserFromDB = (userid) => {
     });
 };
 
+export const getUserFriends = async (user) => {
+  try {
+    const pool = await poolPromise;
+    const result = await pool.request().input("user_id", user.user_id).query(`
+            select Users.user_id, Users.name, users.profile_picture from Friends
+            inner join Users on friends.friend_id = users.user_id
+            where Friends.user_id = @user_id;
+        `);
+    const friends = result.recordset.map((row) => ({
+      ...row,
+      media: [row.media],
+    }));
+
+    return friends;
+  } catch (err) {
+    console.error("Error executing query:", err);
+    return [];
+  }
+};
+
 export default async function Conversations() {
   const user = getUserCookie();
   const conversations = await getUserConversations(user);
+  const friends = await getUserFriends(user);
   // This is sample code
 //   const allUsers=await getAllUsers();
 // const user = await getUserFromDB();
@@ -76,6 +98,34 @@ export default async function Conversations() {
                   conversation={conversation}
                 />
               );
+            })}
+          </div>
+          <h2 className="text-2xl font-bold tracking-tighter">
+            Start a new Conversation with your Friends:
+          </h2>
+          <div className="flex flex-col gap-9 w-full">
+            {/* Here, make this clickable please.   okk */}
+            
+            {friends.map(async (friend) => {
+              let conversationExists = false;
+              {conversations.map((conversation) => {
+                if (friend.user_id === conversation.first_user){
+                    conversationExists = true;
+                }
+                else if (friend.user_id === conversation.second_user){
+                  conversationExists = true;
+              }
+              })
+              }
+              if (!conversationExists){
+                {console.log(user)}
+              return (
+                <FriendsCard
+                  user={user}
+                  friend={friend}
+                />
+              );
+            }
             })}
           </div>
         </div>
