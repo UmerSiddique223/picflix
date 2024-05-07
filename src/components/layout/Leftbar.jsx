@@ -71,13 +71,24 @@ const Leftbar = ({ user }) => {
             </div>
           </div>
           <div className="flex gap-3 items-center">
-            <Image
-              src={`/images/${user.profile_picture}`}
-              alt="img"
-              className="w-14 h-14 rounded-full"
-              width={56}
-              height={56}
-            />
+            {user.profile_picture ? (
+              <Image
+                src={`/images/${user.profile_picture}`}
+                alt="img"
+                className="w-14 h-14 rounded-full"
+                width={56}
+                height={56}
+              />
+            ) : (
+              <Image
+                src={`/images/default photo.png`}
+                alt="img"
+                className="w-14 h-14 rounded-full"
+                width={56}
+                height={56}
+              />
+            )}
+
             <div className="flex flex-col">
               <p className="text-lg font-bold">{user.name}</p>
               <p className="text-sm font-normal">@{user.username}</p>

@@ -106,27 +106,26 @@ export default async function Conversations() {
           </h2>
           <div className="flex flex-col gap-9 w-full">
             {/* Here, make this clickable please.   okk */}
-            
+
             {friends.map(async (friend) => {
               let conversationExists = false;
-              {conversations.map((conversation) => {
-                if (friend.user_id === conversation.first_user){
+              {
+                conversations.map((conversation) => {
+                  if (friend.user_id === conversation.first_user) {
                     conversationExists = true;
+                  } else if (friend.user_id === conversation.second_user) {
+                    conversationExists = true;
+                  }
+                });
+              }
+              if (!conversationExists) {
+                {
+                  console.log(user);
                 }
-                else if (friend.user_id === conversation.second_user){
-                  conversationExists = true;
+                return (
+                  <FriendsCard key={user.id} user={user} friend={friend} />
+                );
               }
-              })
-              }
-              if (!conversationExists){
-                {console.log(user)}
-              return (
-                <FriendsCard
-                  user={user}
-                  friend={friend}
-                />
-              );
-            }
             })}
           </div>
         </div>

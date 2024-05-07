@@ -5,31 +5,9 @@ import parseDate from "@/lib/dateParser";
 import { Button } from "../UI/button";
 import { useRouter } from "next/navigation";
 import MyMessage from "@/components/shared/MyMessage";
-import { useRouter } from "next/navigation";
 import OtherMessage from "@/components/shared/OtherMessage";
-import MyMessage from "@/components/shared/MyMessage";
 import Link from "next/link";
 import io from "socket.io-client";
-
-const socket = io("http://localhost:3001");
-
-//   return (
-//     <div>
-//       <h1>Real-Time Chat</h1>
-//       <div>
-//         {messages.map((message, index) => (
-//           <div key={index}>{message}</div>
-//         ))}
-//       </div>
-//       <input
-//         type="text"
-//         value={newMessage}
-//         onChange={(e) => setNewMessage(e.target.value)}
-//       />
-//       <button onClick={sendMessage}>Send</button>
-//     </div>
-//   );
-// };
 
 function MessagesContainer({
   user,
@@ -37,23 +15,35 @@ function MessagesContainer({
   initialMessages,
   conversation_id,
 }) {
+  const socket = io("http://localhost:3001");
   const [messages, setMessages] = useState(initialMessages);
   const [newMessage, setNewMessage] = useState("");
-
   useEffect(() => {
     socket.on("chat message", (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
+      if (message.conversation_id === conversation_id) {
+        setMessages((prevMessages) => [...prevMessages, message]);
+      }
     });
   }, []);
 
   const sendMessage = () => {
-    socket.emit("chat message", newMessage);
+    const message = {
+      message_id: Math.random(),
+      sent_on: Date.now() + 5 * 60 * 60 * 1000,
+      message_body: newMessage,
+      created_by: user.user_id,
+      conversation_id: conversation_id,
+      message_media_url: null,
+      name: user.name,
+      profile_picture: user.profile_picture,
+    };
+    socket.emit("chat message", message);
     setNewMessage("");
   };
 
-  const [new_message, setMessage] = useState("");
+  //   const [newMessage, setNewMessage] = useState("");
   const handleNewMessage = async () => {
-    if (!new_message) {
+    if (!newMessage) {
       setError("Message cannot be empty");
       return;
     }
@@ -63,19 +53,16 @@ function MessagesContainer({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        message_body: new_message,
+        message_body: newMessage,
         user_id: user.user_id,
         conversation_id: conversation_id,
       }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .then((data) => {
-        setMessage("");
-      });
+    }).then((res) => {
+      if (res.ok) {
+        setNewMessage("");
+        return res.json();
+      }
+    });
   };
   return (
     <div>
@@ -96,12 +83,20 @@ function MessagesContainer({
         <div className="flex items-center gap-3">
           <Input
             type="text"
-            value={new_message}
-            onChange={(e) => setMessage(e.target.value)}
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Enter Message"
             className="bg-input border-border"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleNewMessage();
+                sendMessage();
+              }
+            }}
           />
           <Button
+            disabled={!newMessage}
             onClick={() => {
               handleNewMessage();
               sendMessage();
