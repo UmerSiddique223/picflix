@@ -12,11 +12,6 @@ export const sidebarLinks = [
     label: "Home",
   },
   {
-    name: "chat",
-    route: "/chat",
-    label: "Chat"
-  },
-  {
     name: "search",
     route: "/search",
     label: "Search",
