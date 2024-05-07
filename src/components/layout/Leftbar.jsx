@@ -12,19 +12,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/UI/dropdown-menu";
-import { useEffect, useState } from "react";
-import { getUser } from "@/lib/userInfo";
 
-const Leftbar = () => {
+const Leftbar = ({ user }) => {
   const pathname = usePathname();
   const { setTheme } = useTheme();
-  const [user, setUser] = useState({});
   const router = useRouter();
-  useEffect(() => {
-    const user=getUser();
-    setUser(user);
-  }
-  , []);
   const HandleLogout = async () => {
     try {
       const response = await fetch("/api/logout", {
@@ -100,7 +92,7 @@ const Leftbar = () => {
                     isActive && "bg-primary"
                   }`}
                 >
-                  {link.route === "/profile" ? (
+                  {link.route === "/profile" && user && (
                     <Link
                       href={`${link.route}/${user.user_id}`}
                       className="flex gap-4 items-center p-4"
@@ -116,7 +108,8 @@ const Leftbar = () => {
                       />
                       {link.label}
                     </Link>
-                  ) : (
+                  )}
+                  {link.route !== "/profile" && (
                     <Link
                       href={link.route}
                       className="flex gap-4 items-center p-4"

@@ -18,8 +18,8 @@ export const sidebarLinks = [
   },
   {
     name: "people",
-    route: "/friends",
-    label: "Friends",
+    route: "/chat",
+    label: "Chat",
   },
   {
     name: "bookmark",

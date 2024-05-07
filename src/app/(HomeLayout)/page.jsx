@@ -9,8 +9,8 @@ export const getPosts = async () => {
     const pool = await poolPromise;
     const result = await pool.request().query(`
         SELECT Posts.*, Users.name, Users.profile_picture, Media.media_url AS media FROM Posts
-        JOIN Users ON Users.user_id=Posts.user_id
-        LEFT JOIN Media ON Posts.post_id = Media.entity_id
+        JOIN Users ON Users.[user_id]=Posts.[user_id]
+        LEFT JOIN Media ON Posts.post_id = Media.[entity_id]
         WHERE Media.entity_type= 'post'
         ORDER BY Posts.created_at DESC;
         `);
@@ -56,11 +56,11 @@ export const getStories = async () => {
       return acc;
     }, []);
 
-        return stories;
-    } catch (err) {
-        console.error("Error in fetching stories:", err);
-        return [];
-    }
+    return stories;
+  } catch (err) {
+    console.error("Error in fetching stories:", err);
+    return [];
+  }
 };
 export default async function Home() {
   const posts = await getPosts();
@@ -83,15 +83,15 @@ export default async function Home() {
           Stories & Updates
         </h2>
 
-                <div className="flex flex-col w-full">
-                    {stories.map((story) => (
-                        <StoryCard key={story.story_id} story={story} />
-                    ))}
-                </div>
-            </div>
-            <div>
-                <CreateStory />
-            </div>
+        <div className="flex flex-col w-full">
+          {stories.map((story) => (
+            <StoryCard key={story.story_id} story={story} />
+          ))}
         </div>
-    );
+      </div>
+      <div>
+        <CreateStory />
+      </div>
+    </div>
+  );
 }
