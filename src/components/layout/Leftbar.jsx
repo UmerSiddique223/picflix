@@ -17,6 +17,11 @@ const Leftbar = ({ user }) => {
   const pathname = usePathname();
   const { setTheme } = useTheme();
   const router = useRouter();
+  useEffect(() => {
+    const user=getUser();
+    setUser(user);
+  }
+  , []);
   const HandleLogout = async () => {
     try {
       const response = await fetch("/api/logout", {

@@ -12,6 +12,11 @@ export const sidebarLinks = [
     label: "Home",
   },
   {
+    name: "chat",
+    route: "/chat",
+    label: "Chat"
+  },
+  {
     name: "search",
     route: "/search",
     label: "Search",
@@ -66,6 +71,9 @@ const getSvgs = (name) => {
 
   switch (name) {
     case "home":
+      SvgComponent = home;
+      break;
+    case "chat":
       SvgComponent = home;
       break;
     case "wallpaper":
