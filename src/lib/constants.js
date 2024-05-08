@@ -18,8 +18,8 @@ export const sidebarLinks = [
   },
   {
     name: "people",
-    route: "/friends",
-    label: "Friends",
+    route: "/chat",
+    label: "Chat",
   },
   {
     name: "bookmark",
@@ -66,6 +66,9 @@ const getSvgs = (name) => {
 
   switch (name) {
     case "home":
+      SvgComponent = home;
+      break;
+    case "chat":
       SvgComponent = home;
       break;
     case "wallpaper":

@@ -12,19 +12,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/UI/dropdown-menu";
-import { useEffect, useState } from "react";
-import { getUser } from "@/lib/userInfo";
 
-const Leftbar = () => {
+const Leftbar = ({ user }) => {
   const pathname = usePathname();
   const { setTheme } = useTheme();
-  const [user, setUser] = useState({});
   const router = useRouter();
-  useEffect(() => {
-    const user=getUser();
-    setUser(user);
-  }
-  , []);
+
   const HandleLogout = async () => {
     try {
       const response = await fetch("/api/logout", {
@@ -78,16 +71,27 @@ const Leftbar = () => {
             </div>
           </div>
           <div className="flex gap-3 items-center">
-            <Image
-              src="/images/hq720.jpg"
-              alt="img"
-              className="w-14 h-14 rounded-full"
-              width={56}
-              height={56}
-            />
+            {user.profile_picture ? (
+              <Image
+                src={`/images/${user.profile_picture}`}
+                alt="img"
+                className="w-14 h-14 rounded-full"
+                width={56}
+                height={56}
+              />
+            ) : (
+              <Image
+                src={`/images/default photo.png`}
+                alt="img"
+                className="w-14 h-14 rounded-full"
+                width={56}
+                height={56}
+              />
+            )}
+
             <div className="flex flex-col">
-              <p className="text-lg font-bold">Butt Sahb</p>
-              <p className="text-sm font-normal">@butt.sheracom</p>
+              <p className="text-lg font-bold">{user.name}</p>
+              <p className="text-sm font-normal">@{user.username}</p>
             </div>
           </div>
           <ul className=" flex flex-col gap-4">
@@ -100,7 +104,7 @@ const Leftbar = () => {
                     isActive && "bg-primary"
                   }`}
                 >
-                  {link.route === "/profile" ? (
+                  {link.route === "/profile" && user && (
                     <Link
                       href={`${link.route}/${user.user_id}`}
                       className="flex gap-4 items-center p-4"
@@ -116,7 +120,8 @@ const Leftbar = () => {
                       />
                       {link.label}
                     </Link>
-                  ) : (
+                  )}
+                  {link.route !== "/profile" && (
                     <Link
                       href={link.route}
                       className="flex gap-4 items-center p-4"

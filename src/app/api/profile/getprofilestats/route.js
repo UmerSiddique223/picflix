@@ -12,7 +12,7 @@ export async function POST(req) {
     SELECT Posts.*, Users.name, Users.profile_picture, Media.media_url AS media FROM Posts
         JOIN Users ON Users.user_id=Posts.user_id
         LEFT JOIN Media ON Posts.post_id = Media.entity_id
-        WHERE Media.entity_type= 'post'
+        WHERE Media.entity_type= 'post' and posts.user_id=@user_id
         ORDER BY Posts.created_at DESC;`);
 
     const postData = result.recordset.reduce((acc, row) => {

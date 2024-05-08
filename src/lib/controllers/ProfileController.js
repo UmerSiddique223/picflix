@@ -4,6 +4,7 @@ export const getPostStats = async (
   setProfilePosts,
   setTotalPosts
 ) => {
+  console.log(profileId);
   try {
     await fetch(
       `${process.env.NEXT_PUBLIC_DOMAIN}/api/profile/getprofilestats`,
@@ -24,6 +25,7 @@ export const getPostStats = async (
         setTotalLinks(data.totalLinks);
         if (data.postData) {
           setProfilePosts(data.postData);
+          console.log;
           setTotalPosts(data.postData.length);
         }
       });
@@ -55,7 +57,6 @@ export const getAllLinksandUser = async (
       })
       .then((data) => {
         setallLinks(data.Links);
-        console.log(data.User);
         setUser(data.User);
         setisGotData(true);
       });
