@@ -68,7 +68,7 @@ const PostCard = ({ key, user, post }) => {
   return (
     <div
       key={key}
-      className="bg-card rounded-3xl border border-border p-5 lg:p-7 w-full max-w-screen-sm"
+      className="bg-card rounded-3xl border border-border p-5  w-[80%] max-w-screen-sm"
     >
       <div className="flex justify-between items-center">
         <div className="flex justify-center items-center gap-3 mb-5">
@@ -83,17 +83,17 @@ const PostCard = ({ key, user, post }) => {
           <div className="flex gap-1 flex-col">
             <div className="flex items-center justify-center gap-2">
               <div>
-                <p className="text-xl  font-medium lg:font-bold">{post.name}</p>
+                <p className="text-lg  font-medium lg:font-bold">{post.name}</p>
               </div>
               <div>
                 {" "}
-                <p className="text-[0.78rem] mt-2  font-normal lg:small-regular">
+                <p className="text-[0.78rem] mt-1  font-normal lg:small-regular">
                   {parseDate(post.created_at)}
                 </p>
               </div>
             </div>
             <div className="flex-center gap-2 text-text_light">
-              <p className="text-base font-semibold lg:small-regular">
+              <p className="text-sm font-semibold lg:small-regular">
                 {post.location}
               </p>
             </div>
@@ -104,15 +104,15 @@ const PostCard = ({ key, user, post }) => {
         <CarouselContent>
           {post.media.map((file, index) => (
             <CarouselItem
-              className="flex items-center my-4 justify-center"
+              className="flex items-center my-2 justify-center"
               key={index}
             >
               <Image
-                width={600}
+                width={500}
                 height={500}
                 src={file}
                 alt="image"
-                className="h-72 sm:h-[450px] lg:h-[500px] w-full rounded-[24px] object-cover"
+                className="h-72 sm:h-[400px] lg:h-[450px] w-full rounded-[24px] object-cover"
               />
             </CarouselItem>
           ))}
@@ -121,7 +121,7 @@ const PostCard = ({ key, user, post }) => {
           <>
             <CarouselPrevious className="left-4" />
             <CarouselNext className="right-4" />
-            <div className="flex justify-center items-center gap-1 mt-2">
+            <div className="flex justify-center items-center gap-1">
               {post.media.map((_, index) => (
                 <div
                   key={index}

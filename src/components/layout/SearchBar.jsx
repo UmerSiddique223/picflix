@@ -50,7 +50,7 @@ export default function SearchBar() {
           variant=""
           className="button relative h-[42px] border w-12 bg-background"
         >
-          <Image src="/icons/search.svg" fill alt="Search" class="span" />
+          <Image src="/icons/search.svg" fill alt="Search" className="span" />
         </button>
       </div>
     </div>

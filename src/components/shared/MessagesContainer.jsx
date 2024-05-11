@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Input } from "../UI/input";
 import parseDate from "@/lib/dateParser";
 import { Button } from "../UI/button";
@@ -8,6 +8,7 @@ import MyMessage from "@/components/shared/MyMessage";
 import OtherMessage from "@/components/shared/OtherMessage";
 import Link from "next/link";
 import io from "socket.io-client";
+const socket = io("http://localhost:3001", { autoConnect: false });
 
 function MessagesContainer({
   user,
@@ -15,20 +16,38 @@ function MessagesContainer({
   initialMessages,
   conversation_id,
 }) {
-  const socket = io("http://localhost:3001");
   const [messages, setMessages] = useState(initialMessages);
   const [newMessage, setNewMessage] = useState("");
+  const lastMessageRef = useRef(null);
+  useEffect(() => {
+    socket.connect();
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   useEffect(() => {
     socket.on("chat message", (message) => {
       if (message.conversation_id === conversation_id) {
         setMessages((prevMessages) => [...prevMessages, message]);
       }
     });
+    return () => {
+      socket.off("chat message", (message) => {
+        if (message.conversation_id === conversation_id) {
+          setMessages((prevMessages) => [...prevMessages, message]);
+        }
+      });
+    };
   }, []);
+
+  useEffect(() => {
+    lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const sendMessage = () => {
     const message = {
-      message_id: Math.random(),
       sent_on: Date.now() + 5 * 60 * 60 * 1000,
       message_body: newMessage,
       created_by: user.user_id,
@@ -41,7 +60,6 @@ function MessagesContainer({
     setNewMessage("");
   };
 
-  //   const [newMessage, setNewMessage] = useState("");
   const handleNewMessage = async () => {
     if (!newMessage) {
       setError("Message cannot be empty");
@@ -75,9 +93,9 @@ function MessagesContainer({
           const sentBy = isMine ? user : otherUser;
 
           return (
-            <>
+            <div key={message} ref={lastMessageRef}>
               <MessageComponent user={sentBy} message={message} />
-            </>
+            </div>
           );
         })}
         <div className="flex items-center gap-3">
@@ -92,12 +110,14 @@ function MessagesContainer({
                 e.preventDefault();
                 handleNewMessage();
                 sendMessage();
+                document.activeElement.blur();
               }
             }}
           />
           <Button
             disabled={!newMessage}
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
               handleNewMessage();
               sendMessage();
             }}
