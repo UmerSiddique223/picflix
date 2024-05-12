@@ -76,11 +76,11 @@ const ProfilePage = ({ params }) => {
             <Image
               width={1600}
               height={160}
-              src="/images/profile-default_photo.jpg"
+              src="/images/bg-cover.jpg"
               alt="default image"
               className="mr-2 w-[100rem] rounded-sm h-40 lg:h-44"
             />
-            <div className="flex flex-col items-center justify-center gap-2">
+            <div className="flex flex-col items-center justify-center">
               {user.profile_picture ? (
                 <Image
                   height={106}
@@ -93,19 +93,30 @@ const ProfilePage = ({ params }) => {
                 <Image
                   height={106}
                   width={106}
-                  src={`/images/default photo.png`}
+                  src={`/images/default-photo.png`}
                   alt="Profile Picture"
                   className="rounded-full h-32 w-32 -mt-16"
                 />
               )}
-              <h1 className="text-2xl font-bold ">{user.username} </h1>
-              <div className=" flex items-center gap-4">
-                <p className="text-lg mt-4 font-bold">
-                  {totalPosts} <span className="font-normal">posts </span>
+              <div className="my-2">
+                <h1 className="text-2xl font-bold text-center">{user.name}</h1>
+                <h2 className="text-lg text-muted-foreground text-center">
+                  {user.username}
+                </h2>
+                <p className="max-w-72 text-center mt-2">{user.bio}</p>
+              </div>
+              <div className="flex items-center gap-4 w-3/4 mb-4">
+                <p className="flex justify-center gap-2 text-lg mt-4 font-semibold w-1/3 py-4 border-r-2 border-primary">
+                  <span className="font-normal">Joined on</span>
+                  {parseDate(user.created_at)}
                 </p>
-                <span className="text-lg mt-4">|</span>
-                <p className="text-lg mt-4 font-bold">
-                  {totalLinks} <span className="font-normal">links</span>
+                <p className="flex justify-center gap-2 text-lg mt-4 font-bold w-1/3 py-4 border-r-2 border-primary">
+                  {totalPosts}
+                  <span className="font-normal">posts</span>
+                </p>
+                <p className="flex justify-center gap-2 text-lg mt-4 font-bold w-1/3 py-4">
+                  {totalLinks}
+                  <span className="font-normal">links</span>
                 </p>
               </div>
               <div>
@@ -171,27 +182,17 @@ const ProfilePage = ({ params }) => {
               </div>
             </div>
           </div>
-          <div>
-            <div className="flex flex-col gap-3 ml-20 mt-2">
-              <h2 className="text-lg font-bold text-primary"> {user.name}</h2>
-              {/* {bio} */}
-              <p> {user.bio}</p>
-              <p>Account created at: {user.created_at}</p>
-            </div>
-            <div className="mt-10">
-              <div className="relative flex flex-col justify-center items-center">
-                <hr className="w-[75%] mb-10" />
-                <div className="grid grid-cols-3 lg:gap-1">
-                  {profilePosts.map((post) => (
-                    <ShowProfilePosts
-                      key={post.post_id}
-                      post={post}
-                      user={user}
-                      isOwnProfile={isOwnProfile}
-                    />
-                  ))}
-                </div>
-              </div>
+          <div className="my-8 flex flex-col justify-center items-center">
+            <hr className="w-[75%] mb-10" />
+            <div className="grid grid-cols-3 lg:gap-1">
+              {profilePosts.map((post) => (
+                <ShowProfilePosts
+                  key={post.post_id}
+                  post={post}
+                  user={user}
+                  isOwnProfile={isOwnProfile}
+                />
+              ))}
             </div>
           </div>
         </div>

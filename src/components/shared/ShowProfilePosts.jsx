@@ -7,6 +7,7 @@ import {
   DialogTrigger,
 } from "@/components/UI/dialog";
 import PostCard from "./PostCard";
+import { Button } from "../UI/button";
 export const ShowProfilePosts = ({ post, user, isOwnProfile }) => {
   console.log(post);
   const handleDeletePost = async () => {
@@ -30,7 +31,7 @@ export const ShowProfilePosts = ({ post, user, isOwnProfile }) => {
     <Dialog>
       <div className="flex flex-col gap-1">
         <DialogTrigger asChild>
-          <div className="relative hover:brightness-90 group">
+          <div className="relative hover:brightness-75 group">
             <Image
               height={300}
               width={200}
@@ -38,26 +39,6 @@ export const ShowProfilePosts = ({ post, user, isOwnProfile }) => {
               alt="Post"
               className="lg:w-80 lg:h-80 h-56 w-64 border col-span-1"
             />
-            <div className="flex gap-16 text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-              <div className="flex gap-1 items-center">
-                <Image
-                  width={50}
-                  height={50}
-                  src="/icons/like.svg"
-                  alt="like"
-                />
-                <span className="ml-1 text-2xl font-extrabold">10</span>
-              </div>
-              <div className="flex gap-1 items-center">
-                <Image
-                  width={45}
-                  height={45}
-                  src="/icons/comment.svg"
-                  alt="comments"
-                />
-                <span className="ml-1 text-2xl font-extrabold">10</span>
-              </div>
-            </div>
           </div>
         </DialogTrigger>
       </div>
