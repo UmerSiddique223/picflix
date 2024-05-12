@@ -94,7 +94,7 @@ function SignupPage() {
   };
   return (
     <>
-      <div className="flex justify-center px-32">
+      <div className="flex justify-center lg:px-32">
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <button ref={buttonRef}></button>
@@ -111,18 +111,18 @@ function SignupPage() {
             </AlertDialogContent>
           )}{" "}
         </AlertDialog>
-        <div className="w-1/2 flex justify-end">
+        <div className="lg:w-1/2 flex lg:justify-end">
           <Image
             width={800}
             height={800}
             src="/icons/homeIcon.svg"
-            className="z-20 bg-cover"
+            className="z-20 hidden lg:block bg-cover"
             alt="image"
           />
         </div>
 
-        <div className="flex flex-col w-1/2 px-20 justify-center items-end">
-          <div className="w-2/3">
+        <div className="flex flex-col lg:w-1/2 lg:px-20 justify-center h-screen  items-center lg:items-end">
+          <div className="xl:w-2/3 lg:w-[300px] md:w-[400px] w-[300px]">
             <h1 className="text-3xl w-full font-bold text-center text-primary mb-4">
               Sign Up
             </h1>

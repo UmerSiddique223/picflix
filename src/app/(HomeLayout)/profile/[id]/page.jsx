@@ -177,16 +177,19 @@ const ProfilePage = ({ params }) => {
               <p> {user.bio}</p>
               <p>Account created at: {user.created_at}</p>
             </div>
-            <div className="mt-10 flex flex-col justify-center items-center">
-              <hr className="w-[75%] mb-10 " />
-              <div className="grid grid-cols-3 gap- ">
-                {profilePosts.map((post) => (
-                  <ShowProfilePosts
-                    key={post.post_id}
-                    post={post}
-                    user={user}
-                  />
-                ))}
+            <div className="mt-10">
+              <div className="relative flex flex-col justify-center items-center">
+                <hr className="w-[75%] mb-10" />
+                <div className="grid grid-cols-3 lg:gap-1">
+                  {profilePosts.map((post) => (
+                    <ShowProfilePosts
+                      key={post.post_id}
+                      post={post}
+                      user={user}
+                      isOwnProfile={isOwnProfile}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
