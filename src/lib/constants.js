@@ -3,6 +3,7 @@ import home from "/public/icons/home.svg";
 import addImage from "/public/icons/gallery-add.svg";
 import people from "/public/icons/people.svg";
 import wallpaper from "/public/icons/wallpaper.svg";
+import search from "/public/icons/search_iconforbar.svg";
 
 export const sidebarLinks = [
   {
@@ -11,9 +12,14 @@ export const sidebarLinks = [
     label: "Home",
   },
   {
+    name: "search",
+    route: "/search",
+    label: "Search",
+  },
+  {
     name: "people",
-    route: "/all-users",
-    label: "People",
+    route: "/chat",
+    label: "Chat",
   },
   {
     name: "bookmark",
@@ -62,8 +68,14 @@ const getSvgs = (name) => {
     case "home":
       SvgComponent = home;
       break;
+    case "chat":
+      SvgComponent = home;
+      break;
     case "wallpaper":
       SvgComponent = wallpaper;
+      break;
+    case "search":
+      SvgComponent = search;
       break;
     case "people":
       SvgComponent = people;

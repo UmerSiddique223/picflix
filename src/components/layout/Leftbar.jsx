@@ -13,10 +13,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/UI/dropdown-menu";
 
-const Leftbar = () => {
+const Leftbar = ({ user }) => {
   const pathname = usePathname();
   const { setTheme } = useTheme();
   const router = useRouter();
+
   const HandleLogout = async () => {
     try {
       const response = await fetch("/api/logout", {
@@ -36,7 +37,7 @@ const Leftbar = () => {
     }
   };
   return (
-    <nav className="sticky hidden top-0 h-screen lg:flex flex-col min-w-[270px] bg-bar">
+    <nav className="sticky hidden top-0 h-screen text-white lg:flex flex-col min-w-[270px] bg-bar">
       <div className="h-full flex flex-col justify-between px-6 py-10 gap-y-8 custom-scrollbar overflow-y-scroll">
         <div className="flex flex-col gap-10">
           <div className="flex justify-between items-center">
@@ -49,9 +50,9 @@ const Leftbar = () => {
             <div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon">
-                    <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                    <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                  <Button variant="ghost" size="icon">
+                    <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0  scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                    <MoonIcon className="absolute h-[1.2rem] w-[1.2rem]  rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                     <span className="sr-only">Toggle theme</span>
                   </Button>
                 </DropdownMenuTrigger>
@@ -70,16 +71,27 @@ const Leftbar = () => {
             </div>
           </div>
           <div className="flex gap-3 items-center">
-            <Image
-              src="/images/hq720.jpg"
-              alt="img"
-              className="w-14 h-14 rounded-full"
-              width={56}
-              height={56}
-            />
+            {user.profile_picture ? (
+              <Image
+                src={`/images/${user.profile_picture}`}
+                alt="img"
+                className="w-14 h-14 rounded-full"
+                width={56}
+                height={56}
+              />
+            ) : (
+              <Image
+                src={`/images/default photo.png`}
+                alt="img"
+                className="w-14 h-14 rounded-full"
+                width={56}
+                height={56}
+              />
+            )}
+
             <div className="flex flex-col">
-              <p className="text-lg font-bold">Butt Sahb</p>
-              <p className="text-sm font-normal">@butt.sheracom</p>
+              <p className="text-lg font-bold">{user.name}</p>
+              <p className="text-sm font-normal">@{user.username}</p>
             </div>
           </div>
           <ul className=" flex flex-col gap-4">
@@ -92,21 +104,41 @@ const Leftbar = () => {
                     isActive && "bg-primary"
                   }`}
                 >
-                  <Link
-                    href={link.route}
-                    className="flex gap-4 items-center p-4"
-                  >
-                    <Image
-                      src={getSvgs(link.name)}
-                      alt={link.label}
-                      className={`group-hover:brightness-0 group-hover:invert ${
-                        isActive && "invert brightness-0"
-                      }`}
-                      width={24}
-                      height={24}
-                    />
-                    {link.label}
-                  </Link>
+                  {link.route === "/profile" && user && (
+                    <Link
+                      href={`${link.route}/${user.user_id}`}
+                      className="flex gap-4 items-center p-4"
+                    >
+                      <Image
+                        src={getSvgs(link.name)}
+                        alt={link.label}
+                        className={`group-hover:brightness-0 h-6 w-6 group-hover:invert ${
+                          isActive && "invert brightness-0"
+                        }`}
+                        width={24}
+                        height={24}
+                      />
+                      {link.label}
+                    </Link>
+                  )}
+                  {link.route !== "/profile" && (
+                    <Link
+                      href={link.route}
+                      className="flex gap-4 items-center p-4"
+                    >
+                      {" "}
+                      <Image
+                        src={getSvgs(link.name)}
+                        alt={link.label}
+                        className={`group-hover:brightness-0  h-6 w-6 group-hover:invert ${
+                          isActive && "invert brightness-0"
+                        }`}
+                        width={24}
+                        height={24}
+                      />
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               );
             })}

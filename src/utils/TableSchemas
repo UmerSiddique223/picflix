@@ -28,8 +28,6 @@ CREATE TABLE Media (
     entity_type VARCHAR(50),
     media_url VARCHAR(255),
     PRIMARY KEY (entity_id, entity_type, media_url),
-    FOREIGN KEY (entity_id) REFERENCES Posts(post_id),
-    FOREIGN KEY (entity_id) REFERENCES Stories(story_id)
 );
 
 CREATE TABLE Comments (
@@ -51,3 +49,24 @@ CREATE TABLE SavedPosts (
     post_id INT FOREIGN KEY REFERENCES Posts(post_id),
     PRIMARY KEY (user_id, post_id)
 );
+
+CREATE TABLE Friends (
+    user_id INT FOREIGN KEY REFERENCES Users(user_id),
+    friend_id INT FOREIGN KEY REFERENCES Users(user_id),
+    PRIMARY KEY(user_id,friend_id)
+);
+create table Conversations (
+conversation_id int primary key identity(1,1),
+first_user int foreign key references Users(user_id),
+second_user int foreign key references Users(user_id),
+last_updated datetime
+)
+
+create table Messages (
+message_id int primary key identity(1,1),
+created_by int foreign key references Users(user_id),
+conversation_id int foreign key references Conversations(conversation_id),
+message_body nvarchar(max) not null,
+message_media_url nvarchar(255),
+sent_on datetime
+)

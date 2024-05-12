@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Input } from "../UI/input";
 import parseDate from "@/lib/dateParser";
 import { Button } from "../UI/button";
+import { getUser } from "@/lib/userInfo";
 
 function CommentSection({ user, comments, setComments, post }) {
     const [comment, setComment] = useState("");

@@ -18,7 +18,7 @@ export async function POST(req) {
     .input("email", email)
     .input("password", hashedPassword)
     .query(
-      "INSERT INTO users (username,name, email, password,created_at) VALUES (@username,@name, @email, @password,CAST(GETDATE() AS DATE))"
+      "INSERT INTO users (username,name, email, password,created_at,profile_picture) VALUES (@username,@name, @email, @password,GETDATE(),'default photo.png')"
     );
 
   const token = jwt.sign({ username, email }, process.env.SIGNUP_KEY, {
@@ -46,5 +46,9 @@ export async function POST(req) {
     { status: 200 }
   );
   response.cookies.set("token", token, { httpOnly: true });
+  response.cookies.set("user", JSON.stringify(userData), {
+    httpOnly: true,
+    expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+  });
   return response;
 }
