@@ -70,3 +70,22 @@ message_body nvarchar(max) not null,
 message_media_url nvarchar(255),
 sent_on datetime
 )
+
+ALTER TABLE Likes
+ADD CONSTRAINT FK_Likes_post_id
+FOREIGN KEY (post_id)
+REFERENCES post(post_id)
+ON DELETE CASCADE;
+
+
+ALTER TABLE Comments
+ADD CONSTRAINT FK_Comments_post
+FOREIGN KEY (post_id)
+REFERENCES posts(post_id)
+ON DELETE CASCADE;
+
+ALTER TABLE SavedPosts
+ADD CONSTRAINT FK_SavedPosts_post
+FOREIGN KEY (post_id)
+REFERENCES posts(post_id)
+ON DELETE CASCADE;
