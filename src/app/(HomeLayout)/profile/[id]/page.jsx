@@ -21,6 +21,7 @@ import {
 } from "@/lib/controllers/ProfileController";
 import { ShowProfilePosts } from "@/components/shared/ShowProfilePosts";
 import Loading from "../../loading";
+import parseDate from "@/lib/dateParser";
 
 const ProfilePage = ({ params }) => {
   const [user, setUser] = useState({});

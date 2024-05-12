@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Button } from "@/components/UI/button";
 import {
   Dialog,
   DialogClose,

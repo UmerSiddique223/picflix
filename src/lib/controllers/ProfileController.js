@@ -42,7 +42,7 @@ export const getAllLinksandUser = async (
   setisGotData
 ) => {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/links/getlinks&user`, {
+    await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/links/getLinksAndUser`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
