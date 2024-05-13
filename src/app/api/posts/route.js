@@ -16,7 +16,6 @@ export async function POST(request) {
                 OUTPUT INSERTED.post_id
                 VALUES (@user_id, @caption, GETDATE(), @location);`
             );
-            console.log(media);
         const postId = result.recordset[0].post_id;
         const mediaWithType = media.map((item) => {
             if (item.type.startsWith("image")) {

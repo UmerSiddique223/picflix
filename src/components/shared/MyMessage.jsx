@@ -38,7 +38,7 @@ const MyMessage = ({ user, message }) => {
                         </p>
                         {/* </div> */}
                         <div className="flex-center gap-2">
-                            <p className="text-base font-small lg:font-regular">
+                            <p className="text-base font-small lg:font-regular md:max-w-[600px] max-w-[250px] break-words">
                                 {message.message_body}
                             </p>
                         </div>
