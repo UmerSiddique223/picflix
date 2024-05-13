@@ -3,6 +3,24 @@ import Image from "next/image";
 import parseDateTime, { parseDateTimeGMT } from "@/lib/dateTimeParser";
 
 const MyMessage = ({ user, message }) => {
+
+    const handleMessageDelete = async () => {
+        await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/chat/delete-message`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message_id: message.message_id,
+          }),
+        }).then((res) => {
+          if (res.ok) {
+            window.location.reload();
+            return res.json();
+          }
+        });
+      };
+
     return (
         <div
             key={message.message_id}
@@ -33,6 +51,9 @@ const MyMessage = ({ user, message }) => {
                         <p className="text-xs font-semiboldZ font-small lg:small-regular">
                             {parseDateTimeGMT(message.sent_on)}
                         </p>
+                        <button className="text-base font-medium lg:font-bold" onClick={handleMessageDelete}>
+                            Delete
+                        </button>
                         <p className="text-base font-medium lg:font-bold">
                             {user.name}
                         </p>
