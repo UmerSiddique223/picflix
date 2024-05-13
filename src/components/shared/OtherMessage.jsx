@@ -30,7 +30,7 @@ const OtherMessage = ({ user, message }) => {
 
                     <div className="flex flex-col">
                         {/* <div className="flex flex-row"> */}
-                        <p className="text-xs font-semiboldZ font-small lg:small-regular">
+                        <p className="text-xs font-semibold font-small lg:small-regular">
                             {parseDateTimeGMT(message.sent_on)}
                         </p>
                         <p className="text-base font-medium lg:font-bold">
@@ -38,7 +38,7 @@ const OtherMessage = ({ user, message }) => {
                         </p>
                         {/* </div> */}
                         <div className="flex-center gap-2">
-                            <p className="text-base font-small lg:font-regular">
+                            <p className="text-base font-small lg:font-regular md:max-w-[600px] max-w-[250px] break-words">
                                 {message.message_body}
                             </p>
                         </div>

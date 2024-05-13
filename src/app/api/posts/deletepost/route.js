@@ -21,7 +21,6 @@ export async function POST(req) {
   if (result.rowsAffected[0] === 0) {
     return NextResponse.error(new Error("Failed to delete Post"));
   }
-  console.log(result1.rowsAffected[0], result.rowsAffected[0], "SQSSQ");
 
   return NextResponse.json({ message: "Profile updated successfully" });
 }

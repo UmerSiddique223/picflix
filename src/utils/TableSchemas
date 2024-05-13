@@ -170,7 +170,7 @@ FOREIGN KEY (post_id)
 REFERENCES posts(post_id)
 ON DELETE CASCADE;
 
-                             -- Triggers
+-- Triggers
 CREATE TRIGGER UpdateLastUpdated
 ON Messages
 AFTER INSERT

@@ -103,7 +103,7 @@ export default async function Messages({ params }) {
     return (
         <div className="flex w-full pr-8">
             <div className="flex-grow w-2/3">
-                <div className="flex flex-col items-center gap-10 py-10 sm:px-5 md:px-8 lg:p-10 custom-scrollbar">
+                <div className="flex flex-col items-center gap-10 pt-10 sm:px-5 md:px-8 lg:px-10 custom-scrollbar">
                     <h2 className="text-2xl font-bold tracking-tighter"></h2>
                     <div className="flex flex-col gap-9 w-full">
                         <MessagesContainer

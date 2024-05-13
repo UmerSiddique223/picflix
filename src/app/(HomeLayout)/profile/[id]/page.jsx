@@ -4,69 +4,68 @@ import { getUser } from "@/lib/userInfo";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from "@/components/UI/dialog";
 import EditProfileForm from "@/components/shared/EditProfileForm";
 import {
-  getAllLinksandUser,
-  getPostStats,
-  handleAddFriend,
-  handleremoveFriend,
+    getAllLinksandUser,
+    getPostStats,
+    handleAddFriend,
+    handleremoveFriend,
 } from "@/lib/controllers/ProfileController";
 import { ShowProfilePosts } from "@/components/shared/ShowProfilePosts";
 import Loading from "../../loading";
 import parseDate from "@/lib/dateParser";
 
 const ProfilePage = ({ params }) => {
-  const [user, setUser] = useState({});
-  const buttonRef = useRef(null);
-  const [isinteracting, setIsInteracting] = useState(false);
-  const [allLinks, setallLinks] = useState([]);
-  const [isgotData, setisGotData] = useState(false);
-  const [isFriend, setisFriend] = useState(null);
-  const [currentUserId, setCurrentUserId] = useState(null);
-  const [totalLinks, setTotalLinks] = useState(0);
-  const [totalPosts, setTotalPosts] = useState(0);
-  const [profilePosts, setProfilePosts] = useState([]);
-  const [isOwnProfile, setIsOwnProfile] = useState([]);
+    const [user, setUser] = useState({});
+    const buttonRef = useRef(null);
+    const [isinteracting, setIsInteracting] = useState(false);
+    const [allLinks, setallLinks] = useState([]);
+    const [isgotData, setisGotData] = useState(false);
+    const [isFriend, setisFriend] = useState(null);
+    const [currentUserId, setCurrentUserId] = useState(null);
+    const [totalLinks, setTotalLinks] = useState(0);
+    const [totalPosts, setTotalPosts] = useState(0);
+    const [profilePosts, setProfilePosts] = useState([]);
+    const [isOwnProfile, setIsOwnProfile] = useState([]);
 
-  const profileId = params.id;
+    const profileId = params.id;
 
-  useEffect(() => {
-    const currUser = getUser();
-    setCurrentUserId(currUser.user_id);
-    const currentUserId = currUser.user_id;
-    const isOwnProfile = currentUserId == profileId;
-    setIsOwnProfile(currentUserId == profileId);
-    console.log(isOwnProfile, currentUserId, currUser);
-    if (isOwnProfile) {
-      setUser(currUser);
+    useEffect(() => {
+        const currUser = getUser();
+        setCurrentUserId(currUser.user_id);
+        const currentUserId = currUser.user_id;
+        const isOwnProfile = currentUserId == profileId;
+        setIsOwnProfile(currentUserId == profileId);
+        if (isOwnProfile) {
+            setUser(currUser);
+        }
+        getPostStats(profileId, setTotalLinks, setProfilePosts, setTotalPosts);
+    }, [profileId, currentUserId]);
+
+    if (!isgotData && isOwnProfile === false) {
+        getAllLinksandUser(
+            profileId,
+            currentUserId,
+            setallLinks,
+            setUser,
+            setisGotData
+        );
     }
-    getPostStats(profileId, setTotalLinks, setProfilePosts, setTotalPosts);
-  }, [profileId, currentUserId]);
 
-  if (!isgotData && isOwnProfile === false) {
-    getAllLinksandUser(
-      profileId,
-      currentUserId,
-      setallLinks,
-      setUser,
-      setisGotData
-    );
-  }
-
-  if (isgotData && isFriend === null && isOwnProfile === false) {
-    const friendExists = allLinks.some((link) => {
-      return link.friend_id == parseInt(profileId);
-    });
-    setisFriend(friendExists);
-  }
+    if (isgotData && isFriend === null && isOwnProfile === false) {
+        const friendExists = allLinks.some((link) => {
+            return link.friend_id == parseInt(profileId);
+        });
+        setisFriend(friendExists);
+    }
 
   return (
     <>

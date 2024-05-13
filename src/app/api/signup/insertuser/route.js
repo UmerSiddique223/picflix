@@ -5,10 +5,10 @@ import jwt from "jsonwebtoken";
 import { setUser } from "@/lib/userInfo";
 
 export async function POST(req) {
-  const body = await req.json();
-  const pool = await poolPromise;
-  const { username, name, email, password } = body;
-  const hashedPassword = await bcrypt.hash(password, 10);
+    const body = await req.json();
+    const pool = await poolPromise;
+    const { username, name, email, password } = body;
+    const hashedPassword = await bcrypt.hash(password, 10);
 
   // Store the user in the database
   await pool

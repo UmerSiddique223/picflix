@@ -55,7 +55,7 @@ const SearchProfilePage = async ({ searchParams }) => {
                                     )}
                                 </div>
                                 <p className="text-lg font-bold">{user.name}</p>
-                                <p className="text-sm">
+                                <p className="text-sm text-purple-300">
                                     {user.username}
                                 </p>
                             </Link>
