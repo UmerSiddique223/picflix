@@ -59,15 +59,21 @@ function CreateStory() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({ media:body, user_id: user.user_id }),
+        }).then((response) => {
+            return response.json();
         })
-            .then((res) => {
-                if (res.ok) {
-                    setError({message:"Story created successfully.", status:"success"});
-                    router.push("/");
-                } else {
-                    setError({message:"Failed to create story.", status:"error"});
-                }
-            })
+        .then((res) => {
+            if(res.success){
+                setError({message:"Story created successfully.", status:"success"});
+                router.refresh();
+            }
+            else if (res.duplicate){
+                setError({message:"Cannot create duplicate story.", status:"error"});
+            }
+            else{
+                setError({message:"Failed to create story.", status:"error"});
+            }
+        })
             .catch(() => {
                 setError({message:"Failed to create story.", status:"error"});
             });

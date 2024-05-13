@@ -44,7 +44,6 @@ const ProfilePage = ({ params }) => {
         const currentUserId = currUser.user_id;
         const isOwnProfile = currentUserId == profileId;
         setIsOwnProfile(currentUserId == profileId);
-        console.log(isOwnProfile, currentUserId, currUser);
         if (isOwnProfile) {
             setUser(currUser);
         }
