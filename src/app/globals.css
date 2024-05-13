@@ -3,10 +3,10 @@
 @tailwind utilities;
 @layer base {
     :root {
-        --background: 244.74, 59.38%, 87.45%, 1;
+        --background: 244.74, 59.38%, 97.45%, 1;
         --foreground: 271.5 5% 10%;
         --bar: 240 5% 11%;
-        --card: 271.5 50% 90%;
+        --card: 271.5 50% 94%;
         --card-foreground: 271.5 5% 15%;
         --popover: 271.5 100% 95%;
         --popover-foreground: 271.5 100% 10%;
@@ -21,7 +21,7 @@
         --destructive: 0 100% 30%;
         --destructive-foreground: 271.5 5% 90%;
         --border: 271.5 30% 50%;
-        --input: 271.5 50% 90%;
+        --input: 271.5 50% 97%;
         --ring: 271.5 81.3% 55.9%;
         --radius: 0.5rem;
     }
