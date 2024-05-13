@@ -29,7 +29,7 @@
         --background: 271.5 50% 6%;
         --foreground: 271.5 5% 90%;
         --bar: 240 5% 5%;
-        --card: 271.5 40% 7%;
+        --card: 271.5 40% 9%;
         --card-foreground: 271.5 5% 90%;
         --popover: 271.5 50% 5%;
         --popover-foreground: 271.5 5% 90%;
@@ -43,7 +43,7 @@
         --accent-foreground: 271.5 5% 90%;
         --destructive: 0 100% 30%;
         --destructive-foreground: 271.5 5% 90%;
-        --border: 271.5 30% 26%;
+        --border: 271.5 30% 30%;
         --input: 261 64% 8%;
         --ring: 271.5 81.3% 55.9%;
         --radius: 0.5rem;
