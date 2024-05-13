@@ -12,10 +12,10 @@ export default function RootLayout({ children }) {
   const user = getUserCookie();
   return (
     <div className="lg:flex items-start">
-      <Topbar />
+      <Topbar user={user} />
       <Leftbar user={user} />
       {children}
-      <BottomBar />
+      <BottomBar user={user} />
     </div>
   );
 }

@@ -4,6 +4,8 @@ import addImage from "/public/icons/gallery-add.svg";
 import people from "/public/icons/people.svg";
 import wallpaper from "/public/icons/wallpaper.svg";
 import search from "/public/icons/search_iconforbar.svg";
+import chat from "/public/icons/chat.svg";
+import profile from "/public/icons/profile.svg";
 
 export const sidebarLinks = [
   {
@@ -17,7 +19,7 @@ export const sidebarLinks = [
     label: "Search",
   },
   {
-    name: "people",
+    name: "chat",
     route: "/chat",
     label: "Chat",
   },
@@ -32,7 +34,7 @@ export const sidebarLinks = [
     label: "Create Post",
   },
   {
-    name: "wallpaper",
+    name: "profile",
     route: "/profile",
     label: "Profile",
   },
@@ -45,9 +47,9 @@ export const bottombarLinks = [
     label: "Home",
   },
   {
-    name: "bookmark",
-    route: "/saved",
-    label: "Saved",
+    name: "people",
+    route: "/chat",
+    label: "Chat",
   },
   {
     name: "gallery-add",
@@ -55,7 +57,7 @@ export const bottombarLinks = [
     label: "Create Post",
   },
   {
-    name: "wallpaper",
+    name: "profile",
     route: "/profile",
     label: "Profile",
   },
@@ -68,14 +70,14 @@ const getSvgs = (name) => {
     case "home":
       SvgComponent = home;
       break;
-    case "chat":
-      SvgComponent = home;
-      break;
     case "wallpaper":
       SvgComponent = wallpaper;
       break;
     case "search":
       SvgComponent = search;
+      break;
+    case "chat":
+      SvgComponent = chat;
       break;
     case "people":
       SvgComponent = people;
@@ -86,6 +88,9 @@ const getSvgs = (name) => {
     case "gallery-add":
       SvgComponent = addImage;
       break;
+    case "profile":
+      SvgComponent = profile;
+      break;
     default:
       break;
   }
@@ -94,15 +99,3 @@ const getSvgs = (name) => {
 };
 
 export default getSvgs;
-
-export const profilePictureSources = [
-  {
-    source: "/images/lamp-lights-lantern-wallpaper-preview.jpg",
-  },
-  {
-    source: "/images/post_img1.jpeg",
-  },
-  {
-    source: "/images/maaz_photo.jpg",
-  },
-];

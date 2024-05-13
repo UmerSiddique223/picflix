@@ -71,14 +71,14 @@ const ProfilePage = ({ params }) => {
   return (
     <>
       {user.user_id ? (
-        <div className="flex mb-2 flex-col">
+        <div className="flex w-full mb-2 flex-col">
           <div className="flex flex-col">
             <Image
               width={1600}
               height={160}
               src="/images/bg-cover.jpg"
               alt="default image"
-              className="mr-2 w-[100rem] rounded-sm h-40 lg:h-44"
+              className="h-40 lg:h-52"
             />
             <div className="flex flex-col items-center justify-center">
               {user.profile_picture ? (
@@ -184,7 +184,7 @@ const ProfilePage = ({ params }) => {
           </div>
           <div className="my-8 flex flex-col justify-center items-center">
             <hr className="w-[75%] mb-10" />
-            <div className="grid grid-cols-3 lg:gap-1">
+            <div className="grid grid-cols-2 lg:grid-cols-3 lg:gap-1">
               {profilePosts.map((post) => (
                 <ShowProfilePosts
                   key={post.post_id}

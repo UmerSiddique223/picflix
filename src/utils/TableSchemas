@@ -1,3 +1,83 @@
+                                                Store procedure
+                                                <1>
+CREATE PROCEDURE GetFriendPosts
+    @user_id INT
+AS
+BEGIN
+    SELECT Posts.*, Users.name, Users.profile_picture, Media.media_url AS media
+    FROM Posts
+    JOIN Users ON Users.user_id = Posts.user_id
+    JOIN Friends ON Users.user_id = Friends.friend_id
+    LEFT JOIN Media ON Posts.post_id = Media.entity_id
+    WHERE Friends.user_id = @user_id
+    AND Media.entity_type = 'post'
+    
+    UNION
+    
+    SELECT Posts.*, Users.name, Users.profile_picture, Media.media_url AS media
+    FROM Posts
+    JOIN Users ON Users.user_id = Posts.user_id
+    LEFT JOIN Media ON Posts.post_id = Media.entity_id
+    WHERE Users.user_id = @user_id
+    AND Media.entity_type = 'post'
+    
+    ORDER BY created_at DESC;
+END
+
+                                                <2>
+ CREATE PROCEDURE GetFriendStories
+    @userId INT
+AS
+BEGIN
+    SELECT Stories.*, Users.name, Users.profile_picture, Media.media_url AS media
+    FROM Stories
+    JOIN Users ON Users.user_id = Stories.user_id
+    JOIN Friends ON Users.user_id = Friends.friend_id
+    LEFT JOIN Media ON Stories.story_id = Media.entity_id
+    WHERE Friends.user_id = @userId
+    AND Media.entity_type = 'story'
+    
+    UNION
+    
+    SELECT Stories.*, Users.name, Users.profile_picture, Media.media_url AS media
+    FROM Stories
+    JOIN Users ON Users.user_id = Stories.user_id
+    LEFT JOIN Media ON Stories.story_id = Media.entity_id
+    WHERE Users.user_id = @userId
+    AND Media.entity_type = 'story'
+    
+    ORDER BY Stories.created_at DESC;
+END
+
+
+                                                <3>
+     CREATE PROCEDURE InsertPost
+    @user_id INT,
+    @caption NVARCHAR(MAX),
+    @location VARCHAR(50)
+AS
+BEGIN
+    INSERT INTO Posts (user_id, caption, created_at, location)
+    OUTPUT INSERTED.post_id
+    VALUES (@user_id, @caption, GETDATE(), @location);
+END
+ 
+                                                <4>
+CREATE PROCEDURE CreateUser
+    @username VARCHAR(255),
+    @name VARCHAR(255),
+    @email VARCHAR(255),
+    @password VARCHAR(255)
+AS
+BEGIN
+    INSERT INTO Users (username, name, email, password, created_at)
+    VALUES (@username, @name, @email, @password, GETDATE());
+END
+
+
+
+
+
 CREATE TABLE Users (
     user_id INT PRIMARY KEY,
     name VARCHAR(255),
@@ -89,3 +169,22 @@ ADD CONSTRAINT FK_SavedPosts_post
 FOREIGN KEY (post_id)
 REFERENCES posts(post_id)
 ON DELETE CASCADE;
+
+                             -- Triggers
+CREATE TRIGGER UpdateLastUpdated
+ON Messages
+AFTER INSERT
+AS
+BEGIN
+    UPDATE Conversations
+    SET last_updated = GETDATE()
+    WHERE conversation_id IN (SELECT DISTINCT conversation_id FROM INSERTED);
+END;
+CREATE TRIGGER StoryExpiration
+ON Stories
+AFTER INSERT
+AS
+BEGIN
+DELETE FROM Stories
+WHERE created_at < DATEADD(HOUR, -24, GETDATE());
+END;

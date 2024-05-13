@@ -34,7 +34,7 @@ export const ShowProfilePosts = ({ post, user, isOwnProfile }) => {
           <div className="relative hover:brightness-75 group">
             <Image
               height={300}
-              width={200}
+              width={300}
               src={`${post.media[0]}`}
               alt="Post"
               className="lg:w-80 lg:h-80 h-56 w-64 border col-span-1"
@@ -46,14 +46,14 @@ export const ShowProfilePosts = ({ post, user, isOwnProfile }) => {
         <div className="flex  justify-center items-center">
           <PostCard key={post.post_id} post={post} user={user} />
           {isOwnProfile && (
-            <Button
+            <button
               onClick={handleDeletePost}
               variant="destructive"
-              className="w-16 h-8 top-[-45%] right-20 relative rounded-sm"
+              className="w-10 h-8 text-[red] top-[-43%] right-16 relative rounded-sm"
             >
               {" "}
               <Image src="/icons/delete.svg" fill alt="delete" />
-            </Button>
+            </button>
           )}
         </div>
         <DialogFooter className="sm:justify-start"></DialogFooter>
