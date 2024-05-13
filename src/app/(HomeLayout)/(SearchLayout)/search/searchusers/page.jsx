@@ -44,7 +44,7 @@ const SearchProfilePage = async ({ searchParams }) => {
                     />
                   ) : (
                     <Image
-                      src={"/images/default-photo.png"}
+                      src={`/images/default-photo.png`}
                       alt={user.name}
                       fill
                       sizes="80px,80px"
@@ -53,7 +53,7 @@ const SearchProfilePage = async ({ searchParams }) => {
                   )}
                 </div>
                 <p className="text-lg font-bold">{user.name}</p>
-                <p className="text-sm text-purple-300">{user.username}</p>
+                <p className="text-sm">{user.username}</p>
               </Link>
             ))}
           </ul>

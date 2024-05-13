@@ -2,7 +2,7 @@
 import Image from "next/image";
 import parseDateTime, { parseDateTimeGMT } from "@/lib/dateTimeParser";
 
-const MyMessage = ({ user, message }) => {
+const MyMessage = ({ user, message, messages, setMessages }) => {
   const handleMessageDelete = async () => {
     await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/chat/delete-message`, {
       method: "POST",
@@ -14,7 +14,9 @@ const MyMessage = ({ user, message }) => {
       }),
     }).then((res) => {
       if (res.ok) {
-        window.location.reload();
+        setMessages(
+          messages.filter((msg) => msg.message_id != message.message_id)
+        );
         return res.json();
       }
     });
@@ -46,21 +48,7 @@ const MyMessage = ({ user, message }) => {
           )}
 
           <div className="flex flex-col">
-            {/* <div className="flex flex-row"> */}
             <p className="text-xs font-semiboldZ font-small lg:small-regular">
-              {parseDateTimeGMT(message.sent_on)}
-            </p>
-            <p className="text-base font-medium lg:font-bold">{user.name}</p>
-            {/* </div> */}
-            <div className="flex-center gap-2">
-              <p className="text-base font-small lg:font-regular">
-                {message.message_body}
-              </p>
-            </div>
-            {/* <div className="flex-center gap-2 text-text_light">
-                    <div className="flex flex-col">
-                        {/* <div className="flex flex-row"> */}
-            <p className="text-xs font-semibold font-small lg:small-regular">
               {parseDateTimeGMT(message.sent_on)}
             </p>
             <button
@@ -70,17 +58,11 @@ const MyMessage = ({ user, message }) => {
               Delete
             </button>
             <p className="text-base font-medium lg:font-bold">{user.name}</p>
-            {/* </div> */}
             <div className="flex-center gap-2">
-              <p className="text-base font-small lg:font-regular md:max-w-[600px] max-w-[250px] break-words">
+              <p className="text-base font-small lg:font-regular">
                 {message.message_body}
               </p>
             </div>
-            {/* <div className="flex-center gap-2 text-text_light">
-                            <p className="text-xs font-semibold lg:small-regular">
-                                {message.message_media_url}
-                            </p>
-                        </div> */}
           </div>
         </div>
       </div>

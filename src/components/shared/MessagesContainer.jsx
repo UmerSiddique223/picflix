@@ -46,6 +46,7 @@ function MessagesContainer({
 
   const sendMessage = () => {
     const message = {
+      // message_id: Math.random(),
       sent_on: Date.now() + 5 * 60 * 60 * 1000,
       message_body: newMessage,
       created_by: user.user_id,
@@ -80,9 +81,6 @@ function MessagesContainer({
       }
     });
   };
-  function handleOnEnter(newMessage) {
-    console.log("enter", newMessage);
-  }
   return (
     <div>
       <Link href="/chat">Back to Chats</Link>
@@ -98,7 +96,12 @@ function MessagesContainer({
               key={index}
               ref={index === messages.length - 1 ? lastMessageRef : null}
             >
-              <MessageComponent user={sentBy} message={message} />
+              <MessageComponent
+                user={sentBy}
+                message={message}
+                messages={messages}
+                setMessages={setMessages}
+              />
             </div>
           );
         })}
