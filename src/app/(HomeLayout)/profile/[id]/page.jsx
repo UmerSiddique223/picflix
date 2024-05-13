@@ -22,6 +22,8 @@ import {
 import { ShowProfilePosts } from "@/components/shared/ShowProfilePosts";
 import Loading from "../../loading";
 import parseDate from "@/lib/dateParser";
+import Link from "next/link";
+import { navLinks } from "@/lib/constants";
 
 const ProfilePage = ({ params }) => {
   const [user, setUser] = useState({});
@@ -35,6 +37,7 @@ const ProfilePage = ({ params }) => {
   const [totalPosts, setTotalPosts] = useState(0);
   const [profilePosts, setProfilePosts] = useState([]);
   const [isOwnProfile, setIsOwnProfile] = useState([]);
+  const [toggle, setToggle] = useState(false);
 
   const profileId = params.id;
 
@@ -71,7 +74,7 @@ const ProfilePage = ({ params }) => {
   return (
     <>
       {user.user_id ? (
-        <div className="flex w-full mb-2 flex-col">
+        <div className="flex relative w-full mb-2 flex-col">
           <div className="flex flex-col">
             <Image
               width={1600}
@@ -93,7 +96,7 @@ const ProfilePage = ({ params }) => {
                 <Image
                   height={106}
                   width={106}
-                  src={`/images/default-photo.png`}
+                  src={"/images/default-photo.png"}
                   alt="Profile Picture"
                   className="rounded-full h-32 w-32 -mt-16"
                 />
@@ -124,7 +127,7 @@ const ProfilePage = ({ params }) => {
                   <Dialog>
                     <div>
                       <DialogTrigger asChild>
-                        <Button className="mt-2  h-9">Edit Profile</Button>
+                        <Button className="mt-2 h-9">Edit Profile</Button>
                       </DialogTrigger>
                       <DialogContent className="min-w-[55%] custom-scrollbar">
                         <DialogHeader>
@@ -193,6 +196,32 @@ const ProfilePage = ({ params }) => {
                   isOwnProfile={isOwnProfile}
                 />
               ))}
+            </div>
+          </div>
+          <div className="text-white absolute top-44 lg:top-56 right-4 lg:flex z-20 flex-1 justify-end items-center">
+            <img
+              src={toggle ? "/icons/close.svg" : "/icons/menu.svg"}
+              alt="menu"
+              className="w-[28px] h-[28px]  object-contain"
+              onClick={() => setToggle(!toggle)}
+            />
+            <div
+              className={`${
+                !toggle ? "hidden" : "flex"
+              } p-6 bg-bar absolute top-10 right-2 mx-4 my-2 min-w-[140px] rounded-xl sidebar`}
+            >
+              <ul className="list-none flex gap-10 justify-end items-start  flex-1 flex-col">
+                {navLinks.map((nav, index) => (
+                  <li
+                    key={nav.id}
+                    className={`font-medium hover:brightness-50  cursor-pointer text-[16px]
+                  "text-white"
+                     ${index === navLinks.length - 1 ? "mb-0" : "mb-2"}`}
+                  >
+                    <Link href={nav.route}>{nav.label}</Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>

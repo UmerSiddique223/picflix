@@ -82,7 +82,7 @@ const PostCard = ({ key, user, post }) => {
             />
           ) : (
             <Image
-              src={`/images/default-photo.png`}
+              src={"/images/default-photo.png"}
               alt="creator"
               className="w-16 h-16 rounded-full"
               width={64}

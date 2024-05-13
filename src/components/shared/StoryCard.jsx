@@ -42,7 +42,7 @@ export default function StoryCard({ story }) {
                 width={64}
                 height={64}
                 className="w-12 h-12 ring-2 ring-ring ring-offset-2 transition-all duration-500 group-hover:ring-offset-4 ring-offset-background object-none object-center flex-shrink-0 rounded-full mr-4"
-                src={`/images/default photo.png`}
+                src={"/images/default-photo.png"}
               />
             )}
             <div>

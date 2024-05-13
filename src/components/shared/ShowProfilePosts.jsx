@@ -9,7 +9,6 @@ import {
 import PostCard from "./PostCard";
 import { Button } from "../UI/button";
 export const ShowProfilePosts = ({ post, user, isOwnProfile }) => {
-  console.log(post);
   const handleDeletePost = async () => {
     try {
       await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/posts/deletepost`, {

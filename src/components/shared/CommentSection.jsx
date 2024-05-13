@@ -64,7 +64,7 @@ function CommentSection({ user, comments, setComments, post }) {
                 <Image
                   width={40}
                   height={50}
-                  src={`/images/default photo.png`}
+                  src={"/images/default-photo.png"}
                   alt="user"
                   className="w-12 h-12 rounded-full"
                 />

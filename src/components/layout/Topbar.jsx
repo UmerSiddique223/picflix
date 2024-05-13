@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-const Topbar = () => {
+const Topbar = ({ user }) => {
   const router = useRouter();
   const HandleLogout = async () => {
     try {
@@ -31,17 +31,32 @@ const Topbar = () => {
           href="/"
           className="flex gap-3 items-center text-primary text-3xl"
         >
-          PicFLix
+          <Image
+            width={50}
+            height={20}
+            src="/icons/Picflix.svg"
+            alt="Logo"
+          ></Image>
         </Link>
         <div className="flex gap-4">
           <Link href="/profile" className="flex justify-center items-center">
-            <Image
-              src="/images/hq720.jpg"
-              alt="profile picture"
-              className="w-8 h-8 rounded-full"
-              width={32}
-              height={32}
-            />
+            {user.profile_picture ? (
+              <Image
+                src={`/images/${user.profile_picture}`}
+                alt="profile picture"
+                className="w-10 h-10 rounded-full"
+                width={44}
+                height={44}
+              />
+            ) : (
+              <Image
+                src="/images/default-photo.png"
+                alt="profile picture"
+                className="w-10 h-10 rounded-full"
+                width={44}
+                height={44}
+              />
+            )}
           </Link>
           <Button
             variant="ghost"

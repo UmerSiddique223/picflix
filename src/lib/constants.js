@@ -24,11 +24,6 @@ export const sidebarLinks = [
     label: "Chat",
   },
   {
-    name: "bookmark",
-    route: "/saved",
-    label: "Saved",
-  },
-  {
     name: "gallery-add",
     route: "/create",
     label: "Create Post",
@@ -47,14 +42,14 @@ export const bottombarLinks = [
     label: "Home",
   },
   {
-    name: "people",
-    route: "/chat",
-    label: "Chat",
+    name: "search",
+    route: "/search",
+    label: "Search",
   },
   {
-    name: "gallery-add",
-    route: "/create",
-    label: "Create Post",
+    name: "chat",
+    route: "/chat",
+    label: "Chat",
   },
   {
     name: "profile",
@@ -97,5 +92,22 @@ const getSvgs = (name) => {
 
   return SvgComponent;
 };
+export const navLinks = [
+  {
+    name: "bookmark",
+    route: "/saved",
+    label: "Saved Posts",
+  },
+  {
+    name: "gallery-add",
+    route: "/create",
+    label: "Create Post",
+  },
+  {
+    name: "people",
+    route: "/chat",
+    label: "Chat",
+  },
+];
 
 export default getSvgs;
