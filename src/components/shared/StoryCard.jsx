@@ -10,10 +10,15 @@ import {
   CarouselPrevious,
 } from "../UI/carousel";
 import { useEffect, useState } from "react";
+import { getUser } from "@/lib/userInfo";
 
 export default function StoryCard({ story }) {
   const [api, setApi] = useState();
   const [current, setCurrent] = useState(0);
+  const [isOwnStory, setIsOwnStory] = useState(false);
+  useEffect(() => {
+    setIsOwnStory(story.user_id === getUser().user_id);
+  }, [story]);
   useEffect(() => {
     if (!api) {
       return;
@@ -23,34 +28,55 @@ export default function StoryCard({ story }) {
       setCurrent(api.selectedScrollSnap());
     });
   }, [api]);
+  const handleDeleteStory = async () => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/stories`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ story_id: story.story_id }),
+      }).then((response) => {
+        window.location.reload();
+        return response.json();
+      });
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   return (
     <Dialog>
       <DialogTrigger>
         <div className="p-2 w-full mb-4 cursor-pointer group">
-          <div className="h-full flex items-center gap-2 border-b-2 group-hover:border-b-4 group-hover:-translate-y-1 duration-500 group-hover:bg-card-gradient transition-all p-4 rounded-lg">
-            {story.profile_picture ? (
+          <div className="h-full flex items-center justify-between gap-2 border-b-2 group-hover:border-b-4 group-hover:-translate-y-1 duration-500 group-hover:bg-card-gradient transition-all p-4 rounded-lg">
+            <div className="flex items-center gap-2">
               <Image
                 alt="story"
                 width={64}
                 height={64}
-                className="w-12 h-12 ring-2 ring-ring ring-offset-2 transition-all duration-500 group-hover:ring-offset-4 ring-offset-background object-none object-center flex-shrink-0 rounded-full mr-4"
+                className="w-12 h-12 ring-2 ring-ring ring-offset-2 transition-all duration-500 group-hover:ring-offset-4 ring-offset-background object-center object-cover flex-shrink-0 rounded-full mr-4"
                 src={`/images/${story.profile_picture}`}
+                quality={100}
               />
-            ) : (
-              <Image
-                alt="story"
-                width={64}
-                height={64}
-                className="w-12 h-12 ring-2 ring-ring ring-offset-2 transition-all duration-500 group-hover:ring-offset-4 ring-offset-background object-none object-center flex-shrink-0 rounded-full mr-4"
-                src={"/images/default-photo.png"}
-              />
-            )}
-            <div>
-              <h2 className="text-md font-medium">{story.name}</h2>
-              <p className="text-muted-foreground text-sm">
-                {parseDate(story.created_at)}
-              </p>
+              <div>
+                <h2 className="text-md font-medium">{story.name}</h2>
+                <p className="text-muted-foreground text-sm">
+                  {parseDate(story.created_at)}
+                </p>
+              </div>
             </div>
+            <Image
+              alt="delete"
+              width={32}
+              height={32}
+              className="flex-end shake"
+              src={`/icons/delete.svg`}
+              quality={100}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeleteStory();
+              }}
+            />
           </div>
         </div>
       </DialogTrigger>

@@ -3,10 +3,10 @@
 @tailwind utilities;
 @layer base {
     :root {
-        --background: 244.74, 59.38%, 87.45%, 1;
+        --background: 244.74, 59.38%, 97.45%, 1;
         --foreground: 271.5 5% 10%;
         --bar: 240 5% 11%;
-        --card: 271.5 50% 90%;
+        --card: 271.5 50% 94%;
         --card-foreground: 271.5 5% 15%;
         --popover: 271.5 100% 95%;
         --popover-foreground: 271.5 100% 10%;
@@ -21,7 +21,7 @@
         --destructive: 0 100% 30%;
         --destructive-foreground: 271.5 5% 90%;
         --border: 271.5 30% 50%;
-        --input: 271.5 50% 90%;
+        --input: 271.5 50% 97%;
         --ring: 271.5 81.3% 55.9%;
         --radius: 0.5rem;
     }
@@ -29,7 +29,7 @@
         --background: 271.5 50% 6%;
         --foreground: 271.5 5% 90%;
         --bar: 240 5% 5%;
-        --card: 271.5 40% 7%;
+        --card: 271.5 40% 9%;
         --card-foreground: 271.5 5% 90%;
         --popover: 271.5 50% 5%;
         --popover-foreground: 271.5 5% 90%;
@@ -43,7 +43,7 @@
         --accent-foreground: 271.5 5% 90%;
         --destructive: 0 100% 30%;
         --destructive-foreground: 271.5 5% 90%;
-        --border: 271.5 30% 26%;
+        --border: 271.5 30% 30%;
         --input: 261 64% 8%;
         --ring: 271.5 81.3% 55.9%;
         --radius: 0.5rem;
@@ -108,3 +108,14 @@
     -webkit-animation: slide-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
     animation: slide-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   }
+
+@keyframes shake {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(-15deg); }
+    50% { transform: rotate(0deg); }
+    75% { transform: rotate(15deg); }
+    100% { transform: rotate(0deg); }
+}
+.shake:hover {
+    animation: shake 0.3s 2;
+}

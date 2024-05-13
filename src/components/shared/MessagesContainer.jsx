@@ -87,7 +87,7 @@ function MessagesContainer({
     <div>
       <Link href="/chat">Back to Chats</Link>
 
-      <div className="flex flex-col relative overflow-auto custom-scrollbar gap-3 mt-3">
+      <div className="flex flex-col overflow-auto custom-scrollbar gap-3 mt-3">
         {messages.map((message, index) => {
           const isMine = message.created_by === user.user_id;
           const MessageComponent = isMine ? MyMessage : OtherMessage;
@@ -102,10 +102,12 @@ function MessagesContainer({
             </div>
           );
         })}
-        <div className="max-w-[750px] flex sticky bottom-0 items-center gap-3">
+        </div>
+        <div className="flex sticky bottom-[71px] lg:bottom-0 bg-background py-2 lg:py-6 items-center gap-3">
           <InputEmoji
             value={newMessage}
             onChange={setNewMessage}
+            keepOpened={true}
             background="#0C0C0D"
             color="#ffffff"
             borderColor="#9333EA"
@@ -115,7 +117,6 @@ function MessagesContainer({
                 e.preventDefault();
                 handleNewMessage();
                 sendMessage();
-                document.activeElement.blur();
               }
             }}
           />
@@ -131,7 +132,6 @@ function MessagesContainer({
             Send
           </Button>
         </div>
-      </div>
     </div>
   );
 }

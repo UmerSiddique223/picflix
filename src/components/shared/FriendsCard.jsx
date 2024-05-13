@@ -27,9 +27,12 @@ function FriendsCard({ user, friend }) {
       });
   };
   return (
-    <button onClick={() => handleFriendClick(friend.user_id)}>
-      <div className="flex flex-col max-h-96 overflow-auto custom-scrollbar gap-3 mt-3">
-        <div key={friend.user_id} className="flex gap-3">
+    <button onClick={() => handleFriendClick(friend.user_id)} className="w-44">
+      <div className="max-h-96 overflow-auto custom-scrollbar mt-3">
+        <div
+          key={friend.user_id}
+          className="flex flex-col items-center gap-3 px-3 py-8 rounded-lg w-full bg-secondary"
+        >
           {friend.profile_picture ? (
             <Image
               src={`/images/${friend.profile_picture}`}
@@ -40,7 +43,7 @@ function FriendsCard({ user, friend }) {
             />
           ) : (
             <Image
-              src={"/images/default-photo.png"}
+              src={`/images/default-photo.png`}
               alt="creator"
               className="w-12 h-12 rounded-full"
               width={48}

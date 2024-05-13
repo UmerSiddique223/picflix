@@ -13,7 +13,6 @@ export async function POST(req) {
       subject: "Picflix Verification Code",
       react: VerificationEmail({ username, otp: verifyCode }),
     });
-    console.log(Response.json(response));
     return NextResponse.json({
       success: true,
       message: "Verification email sent successfully.",

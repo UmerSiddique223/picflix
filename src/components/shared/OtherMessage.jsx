@@ -41,6 +41,19 @@ const OtherMessage = ({ user, message }) => {
               </p>
             </div>
             {/* <div className="flex-center gap-2 text-text_light">
+                    <div className="flex flex-col">
+                        {/* <div className="flex flex-row"> */}
+            <p className="text-xs font-semibold font-small lg:small-regular">
+              {parseDateTimeGMT(message.sent_on)}
+            </p>
+            <p className="text-base font-medium lg:font-bold">{user.name}</p>
+            {/* </div> */}
+            <div className="flex-center gap-2">
+              <p className="text-base font-small lg:font-regular md:max-w-[600px] max-w-[250px] break-words">
+                {message.message_body}
+              </p>
+            </div>
+            {/* <div className="flex-center gap-2 text-text_light">
                             <p className="text-xs font-semibold lg:small-regular">
                                 {message.message_media_url}
                             </p>

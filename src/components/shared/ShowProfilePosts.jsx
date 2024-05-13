@@ -50,7 +50,6 @@ export const ShowProfilePosts = ({ post, user, isOwnProfile }) => {
               variant="destructive"
               className="w-10 h-8 text-[red] top-[-43%] right-16 relative rounded-sm"
             >
-              {" "}
               <Image src="/icons/delete.svg" fill alt="delete" />
             </button>
           )}

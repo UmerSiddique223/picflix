@@ -22,7 +22,7 @@ export default function SearchBar() {
 
     return (
         <div className="w-full lg:-ml-20 mt-10 flex flex-col ">
-            <div className="mx-auto font-bold text-3xl mb-10 text-purple-500">
+            <div className="mx-auto font-bold text-3xl mb-10">
                 Search a User
             </div>
             <div className="h-10 flex items-center gap-[6px] justify-center rounded-md">

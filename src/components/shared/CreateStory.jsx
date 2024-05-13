@@ -28,53 +28,56 @@ function CreateStory() {
       formData.append("file", f);
     });
 
-    fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/upload`, {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("HTTP Error: " + response.status);
+        fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/upload`, {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("HTTP Error: " + response.status);
+                }
+                return response.json();
+            })
+            .catch((error) => {
+                console.error("File upload failed. Error: " + error.message);
+            });
+    };
+    const handleSubmit = async () => {
+        if(!media){
+            setError({message:"Please upload media.", status:"error"});;
+            return;
         }
-        return response.json();
-      })
-      .catch((error) => {
-        console.error("File upload failed. Error: " + error.message);
-      });
-  };
-  const handleSubmit = async () => {
-    if (!media) {
-      setError({ message: "Please upload media.", status: "error" });
-      return;
-    }
-    await uploadMedia(media);
-    const body = media.map((file) => ({
-      type: file.type,
-      path: file.name,
-    }));
-    const user = getUser();
-    fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/stories`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ media: body, user_id: user.user_id }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          setError({
-            message: "Story created successfully.",
-            status: "success",
-          });
-          router.push("/");
-        } else {
-          setError({ message: "Failed to create story.", status: "error" });
-        }
-      })
-      .catch(() => {
-        setError({ message: "Failed to create story.", status: "error" });
-      });
-  };
+        await uploadMedia(media);
+        const body=media.map((file) => ({
+            type: file.type,
+            path: file.name,
+        }));
+        const user = getUser();
+        fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/stories`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ media:body, user_id: user.user_id }),
+        }).then((response) => {
+            return response.json();
+        })
+        .then((res) => {
+            if(res.success){
+                setError({message:"Story created successfully.", status:"success"});
+                router.refresh();
+            }
+            else if (res.duplicate){
+                setError({message:"Cannot create duplicate story.", status:"error"});
+            }
+            else{
+                setError({message:"Failed to create story.", status:"error"});
+            }
+        })
+            .catch(() => {
+                setError({message:"Failed to create story.", status:"error"});
+            });
+    };
 
   return (
     <Dialog>
