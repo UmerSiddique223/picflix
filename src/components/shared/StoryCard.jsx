@@ -74,18 +74,20 @@ export default function StoryCard({ story }) {
                 </p>
               </div>
             </div>
-            <Image
-              alt="delete"
-              width={32}
-              height={32}
-              className="flex-end shake"
-              src={`/icons/delete.svg`}
-              quality={100}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDeleteStory();
-              }}
-            />
+            {isOwnStory && (
+              <Image
+                alt="delete"
+                width={32}
+                height={32}
+                className="flex-end shake"
+                src={`/icons/delete.svg`}
+                quality={100}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteStory();
+                }}
+              />
+            )}
           </div>
         </div>
       </DialogTrigger>

@@ -20,8 +20,9 @@ module.exports = {
     },
     extend: {
       backgroundImage: {
-        'card-gradient': 'linear-gradient(to top, #160f1c 0%, #100817 40%)',
-        'profile-cover':'/images/bg-cover.jpg'
+        "card-gradient":
+          "linear-gradient(to top, RGBA(60,41,77,0.48) 0%, RGBA(60,41,77,0.07) 40%)",
+        "profile-cover": "/images/bg-cover.jpg",
       },
       colors: {
         bar: "hsl(var(--bar))",

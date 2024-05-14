@@ -27,7 +27,7 @@ function FriendsCard({ user, friend }) {
       });
   };
   return (
-    <button onClick={() => handleFriendClick(friend.user_id)} className="w-44">
+    <div onClick={() => handleFriendClick(friend.user_id)} className="w-44">
       <div className="max-h-96 overflow-auto custom-scrollbar mt-3">
         <div
           key={friend.user_id}
@@ -55,7 +55,7 @@ function FriendsCard({ user, friend }) {
           </div>
         </div>
       </div>
-    </button>
+    </div>
   );
 }
 
