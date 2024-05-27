@@ -119,7 +119,7 @@ const ProfilePage = ({ params }) => {
                 </p>
                 <p className="flex justify-center gap-2 text-lg mt-4 font-bold w-1/3 py-4">
                   {totalLinks}
-                  <span className="font-normal">links</span>
+                  <span className="font-normal">Friends</span>
                 </p>
               </div>
               <div>

@@ -40,14 +40,12 @@ const Leftbar = ({ user }) => {
     <nav className="sticky hidden top-0 h-screen text-white lg:flex flex-col min-w-[270px] bg-bar">
       <div className="h-full flex flex-col justify-between px-6 py-3 gap-y-8 custom-scrollbar overflow-y-scroll">
         <div className="flex flex-col gap-8">
-          <div className="flex justify-between items-center">
-            <Link href="/" className="flex gap-3 items-center text-primary">
-              <Image
-                width={85}
-                height={20}
-                src="/icons/Picflix.svg"
-                alt="Logo"
-              ></Image>
+          <div className="flex text-7xl justify-between items-center">
+            <Link
+              href="/"
+              className="flex gap-3 ml-3 items-center text-primary"
+            >
+              Y?
             </Link>
             <div>
               <DropdownMenu>

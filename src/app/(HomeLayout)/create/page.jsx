@@ -68,6 +68,7 @@ function Create() {
       path: file.name,
     }));
     const user = getUser();
+
     fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/posts`, {
       method: "POST",
       headers: {

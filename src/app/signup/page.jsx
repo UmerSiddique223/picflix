@@ -25,8 +25,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/UI/alert-dialog";
 import Image from "next/image";
-import OTPform from "@/components/shared/OTPform";
-
+import { Button } from "@/components/UI/button";
+import { setUser } from "@/lib/userInfo";
+import { useRouter } from "next/navigation";
 //yup schema
 const schema = yup.object({
   username: yup
@@ -43,11 +44,9 @@ const schema = yup.object({
 
 //main function
 function SignupPage() {
+  const router = useRouter();
   const [error, Seterror] = useState("");
-  const [showform, Setshowform] = useState(false);
   const buttonRef = useRef(null);
-  const childbutRef = useRef(null);
-  const [buttonClicked, setButtonClicked] = useState(false);
   const [loading, setLoading] = useState(false);
   const form = useForm({
     defaultValues: {
@@ -61,11 +60,29 @@ function SignupPage() {
 
   const { formState } = form;
   const { errors } = formState;
-  // console.log("form Errors", errors);
+
+  const InsertUser = async (formValues) => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_DOMAIN}/api/signup/insertuser`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formValues),
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch user data");
+    }
+    const insertedData = await response.json();
+    setUser(insertedData.userData);
+    router.push("/");
+  };
   const handleSubmit = async (values) => {
     Seterror(null);
     setLoading(true);
-    Setshowform(false);
+
     try {
       await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/signup`, {
         method: "POST",
@@ -82,11 +99,7 @@ function SignupPage() {
             Seterror(data.message);
             buttonRef.current.click();
           } else {
-            Setshowform(true);
-            if (!buttonClicked) {
-              setButtonClicked(true);
-              if (childbutRef.current) childbutRef.current.click();
-            }
+            InsertUser(values);
           }
         });
     } catch (error) {
@@ -125,32 +138,10 @@ function SignupPage() {
 
         <div className="flex flex-col lg:w-1/2 lg:px-20 justify-center h-screen  items-center lg:items-end">
           <div className="xl:w-2/3 lg:w-[300px] md:w-[400px] w-[300px]">
-          {loading ? (
-                                            <svg
-                                                class="animate-spin -ml-1 mr-3 h-6 w-6 text-white"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <circle
-                                                    class="opacity-25"
-                                                    cx="12"
-                                                    cy="12"
-                                                    r="10"
-                                                    stroke="currentColor"
-                                                    stroke-width="4"
-                                                ></circle>
-                                                <path
-                                                    class="opacity-75"
-                                                    fill="currentColor"
-                                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                                ></path>
-                                            </svg>
-                                        ) : (
-                                          <h1 className="text-3xl w-full font-bold text-center text-primary mb-4">
-                                          Sign Up
-                                        </h1>
-                                        )}
+            <h1 className="text-3xl w-full font-bold text-center text-primary mb-4">
+              Sign Up
+            </h1>
+
             <Form {...form}>
               <form
                 className="flex flex-col gap-5"
@@ -228,14 +219,36 @@ function SignupPage() {
                     </FormItem>
                   )}
                 />
-                <OTPform
-                  butRef={childbutRef}
-                  formValues={form.getValues()}
-                  showform={showform}
-                  SetShowform={Setshowform}
-                  Seterror={Seterror}
-                  SetErrorRef={buttonRef}
-                />
+                {loading ? (
+                  <svg
+                    class="animate-spin -ml-1 mr-3 h-6 w-6 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      class="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      stroke-width="4"
+                    ></circle>
+                    <path
+                      class="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                ) : (
+                  <Button
+                    type="submit"
+                    onClick={handleSubmit}
+                    className="whitespace-nowrap mt-8"
+                  >
+                    Sign up
+                  </Button>
+                )}
               </form>
             </Form>
             <div className=" w-full text-center">

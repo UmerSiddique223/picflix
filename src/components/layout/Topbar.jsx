@@ -29,17 +29,15 @@ const Topbar = ({ user }) => {
       <div className="flex justify-between items-center py-4 px-5">
         <Link
           href="/"
-          className="flex gap-3 items-center text-primary text-3xl"
+          className="flex text-5xl ml-3 gap-3 items-center text-primary "
         >
-          <Image
-            width={50}
-            height={20}
-            src="/icons/Picflix.svg"
-            alt="Logo"
-          ></Image>
+          Y?
         </Link>
         <div className="flex gap-4">
-          <Link href="/profile" className="flex justify-center items-center">
+          <Link
+            href={`/profile/${user.user_id}`}
+            className="flex justify-center items-center"
+          >
             {user.profile_picture ? (
               <Image
                 src={`/images/${user.profile_picture}`}
