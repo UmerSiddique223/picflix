@@ -199,10 +199,12 @@ const ProfilePage = ({ params }) => {
             </div>
           </div>
           <div className="text-white absolute top-44 lg:top-56 right-4 lg:flex z-20 flex-1 justify-end items-center">
-            <img
+            <Image
+              width={30}
+              height={30}
               src={toggle ? "/icons/close.svg" : "/icons/menu.svg"}
               alt="menu"
-              className="w-[28px] h-[28px]  object-contain"
+              className="w-[28px] h-[28px] cursor-pointer object-contain"
               onClick={() => setToggle(!toggle)}
             />
             <div

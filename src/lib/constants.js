@@ -108,6 +108,11 @@ export const navLinks = [
     route: "/chat",
     label: "Chat",
   },
+  {
+    name: "",
+    route: "/explore",
+    label: "Explore",
+  },
 ];
 
 export default getSvgs;

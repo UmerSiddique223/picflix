@@ -29,70 +29,57 @@ export const getPosts = async (user) => {
       return acc;
     }, []);
 
-        return posts;
-    } catch (err) {
-        console.error("Error executing query:", err);
-        return [];
-    }
+    return posts;
+  } catch (err) {
+    console.error("Error executing query:", err);
+    return [];
+  }
 };
 export const getStories = async () => {
-    try {
-      const pool = await poolPromise;
-      const result = await pool.request().query(`
+  try {
+    const pool = await poolPromise;
+    const result = await pool.request().query(`
           SELECT Stories.*, Users.name, Users.profile_picture, Media.media_url AS media FROM Stories
           JOIN Users ON Users.user_id=Stories.user_id
           LEFT JOIN Media ON Stories.story_id = Media.entity_id
           WHERE Media.entity_type='story'
           ORDER BY Stories.created_at DESC;
           `);
-      const stories = result.recordset.reduce((acc, row) => {
-        const existingPost = acc.find((story) => story.story_id === row.story_id);
-        if (existingPost) {
-          existingPost.media.push(row.media);
-        } else {
-          acc.push({
-            ...row,
-            media: [row.media],
-          });
-        }
-        return acc;
-      }, []);
+    const stories = result.recordset.reduce((acc, row) => {
+      const existingPost = acc.find((story) => story.story_id === row.story_id);
+      if (existingPost) {
+        existingPost.media.push(row.media);
+      } else {
+        acc.push({
+          ...row,
+          media: [row.media],
+        });
+      }
+      return acc;
+    }, []);
 
-      return stories;
-    } catch (err) {
-      console.error("Error in fetching stories:", err);
-      return [];
-    }
+    return stories;
+  } catch (err) {
+    console.error("Error in fetching stories:", err);
+    return [];
+  }
 };
 export default async function Saved() {
-    const user = getUserCookie();
-    const stories = await getStories();
-    const posts = await getPosts(user);
-    return (
-      <div className="flex w-full pr-8">
-        <div className="flex-grow  w-2/3">
-          <div className="flex flex-col items-center gap-10 py-10 sm:px-5 md:px-8 lg:p-10 custom-scrollbar">
-            <h2 className="text-2xl font-bold tracking-tighter">Saved Posts</h2>
-            <div className="flex flex-col gap-9 w-full">
-              {posts.map((post) => (
-                <PostCard key={post.post_id} user={user} post={post} />
-              ))}
-            </div>
-          </div>
-        </div>
-        <div className=" hidden lg:block w-1/3 mt-28">
-          <h2 className="text-xl mb-4 text-center font-bold tracking-tighter">
-            Stories & Updates
-          </h2>
-          <div className="flex flex-col w-full">
-            {stories.map((story) => (
-              <StoryCard key={story.story_id} story={story} />
+  const user = getUserCookie();
+  const stories = await getStories();
+  const posts = await getPosts(user);
+  return (
+    <div className="flex w-full pr-8">
+      <div className="flex-grow  w-2/3">
+        <div className="flex flex-col items-center gap-10 py-10 sm:px-5 md:px-8 lg:p-10 custom-scrollbar">
+          <h2 className="text-2xl font-bold tracking-tighter">Saved Posts</h2>
+          <div className="flex flex-col gap-9 w-full">
+            {posts.map((post) => (
+              <PostCard key={post.post_id} user={user} post={post} />
             ))}
           </div>
         </div>
-        <div>
-          <CreateStory />
-        </div>
       </div>
-    );
-  }
+    </div>
+  );
+}

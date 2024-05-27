@@ -7,7 +7,7 @@ import {
   DialogTrigger,
 } from "@/components/UI/dialog";
 import PostCard from "./PostCard";
-import { Button } from "../UI/button";
+
 export const ShowProfilePosts = ({ post, user, isOwnProfile }) => {
   const handleDeletePost = async () => {
     try {
@@ -48,7 +48,7 @@ export const ShowProfilePosts = ({ post, user, isOwnProfile }) => {
             <button
               onClick={handleDeletePost}
               variant="destructive"
-              className="w-10 h-8 text-[red] top-[-43%] right-16 relative rounded-sm"
+              className="w-10 h-8 top-[-43%] shake right-16 relative rounded-sm"
             >
               <Image src="/icons/delete.svg" fill alt="delete" />
             </button>

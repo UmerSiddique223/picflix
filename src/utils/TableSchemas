@@ -1,5 +1,4 @@
-                                                Store procedure
-                                                <1>
+--Store procedure  <1>
 CREATE PROCEDURE GetFriendPosts
     @user_id INT
 AS
@@ -85,71 +84,86 @@ CREATE TABLE Users (
     password VARCHAR(255),
     email VARCHAR(255) UNIQUE,
     profile_picture VARCHAR(255),
-    bio nvarchar(max), --set collation to Latin1_General_100_CI_AI_SC_UTF8
+    bio NVARCHAR(MAX) COLLATE Latin1_General_100_CI_AI_SC_UTF8,
     created_at DATETIME
 );
 
 CREATE TABLE Posts (
     post_id INT PRIMARY KEY,
-    user_id INT FOREIGN KEY REFERENCES Users(user_id),
-    caption nvarchar(max), --set collation to Latin1_General_100_CI_AI_SC_UTF8
-    location varchar(50),
-    created_at DATETIME
+    user_id INT,
+    caption NVARCHAR(MAX) COLLATE Latin1_General_100_CI_AI_SC_UTF8,
+    location VARCHAR(50),
+    created_at DATETIME,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-create table Stories (
+CREATE TABLE Stories (
     story_id INT PRIMARY KEY,
-    user_id INT FOREIGN KEY REFERENCES Users(user_id),
-    created_at DATETIME
+    user_id INT,
+    created_at DATETIME,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Media (
     entity_id INT,
     entity_type VARCHAR(50),
     media_url VARCHAR(255),
-    PRIMARY KEY (entity_id, entity_type, media_url),
+    PRIMARY KEY (entity_id, entity_type, media_url)
 );
 
 CREATE TABLE Comments (
-    comment_id INT PRIMARY KEY, --auto increment it
-    user_id INT FOREIGN KEY REFERENCES Users(user_id),
-    post_id INT FOREIGN KEY REFERENCES Posts(post_id),
-    comment_text nvarchar(max), --set collation to Latin1_General_100_CI_AI_SC_UTF8
-    created_at DATETIME
+    comment_id INT PRIMARY KEY,
+    user_id INT,
+    post_id INT,
+    comment_text NVARCHAR(MAX) COLLATE Latin1_General_100_CI_AI_SC_UTF8,
+    created_at DATETIME,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (post_id) REFERENCES Posts(post_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Likes (
-    user_id INT FOREIGN KEY REFERENCES Users(user_id),
-    post_id INT FOREIGN KEY REFERENCES Posts(post_id),
-    PRIMARY KEY (user_id, post_id)
+    user_id INT,
+    post_id INT,
+    PRIMARY KEY (user_id, post_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (post_id) REFERENCES Posts(post_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE SavedPosts (
-    user_id INT FOREIGN KEY REFERENCES Users(user_id),
-    post_id INT FOREIGN KEY REFERENCES Posts(post_id),
-    PRIMARY KEY (user_id, post_id)
+    user_id INT,
+    post_id INT,
+    PRIMARY KEY (user_id, post_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (post_id) REFERENCES Posts(post_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Friends (
-    user_id INT FOREIGN KEY REFERENCES Users(user_id),
-    friend_id INT FOREIGN KEY REFERENCES Users(user_id),
-    PRIMARY KEY(user_id,friend_id)
+    user_id INT,
+    friend_id INT,
+    PRIMARY KEY(user_id,friend_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (friend_id) REFERENCES Users(user_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-create table Conversations (
-conversation_id int primary key identity(1,1),
-first_user int foreign key references Users(user_id),
-second_user int foreign key references Users(user_id),
-last_updated datetime
-)
 
-create table Messages (
-message_id int primary key identity(1,1),
-created_by int foreign key references Users(user_id),
-conversation_id int foreign key references Conversations(conversation_id),
-message_body nvarchar(max) not null,
-message_media_url nvarchar(255),
-sent_on datetime
-)
+CREATE TABLE Conversations (
+    conversation_id INT PRIMARY KEY IDENTITY(1,1),
+    first_user INT,
+    second_user INT,
+    last_updated DATETIME,
+    FOREIGN KEY (first_user) REFERENCES Users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (second_user) REFERENCES Users(user_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE Messages (
+    message_id INT PRIMARY KEY IDENTITY(1,1),
+    created_by INT,
+    conversation_id INT,
+    message_body NVARCHAR(MAX) NOT NULL,
+    message_media_url NVARCHAR(255),
+    sent_on DATETIME,
+    FOREIGN KEY (created_by) REFERENCES Users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (conversation_id) REFERENCES Conversations(conversation_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 ALTER TABLE Likes
 ADD CONSTRAINT FK_Likes_post_id
