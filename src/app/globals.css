@@ -75,13 +75,6 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #7878a3;
 }
-.save-post-image {
-    transition: transform 0.3s ease;
-}
-
-.save-post-image:hover {
-    transform: scale(1.1);
-}
 @-webkit-keyframes slide-top {
     0% {
       -webkit-transform: translateY(100px);

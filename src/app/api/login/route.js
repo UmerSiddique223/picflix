@@ -6,14 +6,13 @@ import { NextResponse } from "next/server";
 export async function POST(req, res) {
   const body = await req.json();
   const { username, password } = body;
-
   // Check if username exists
   const pool = await poolPromise;
-  const existingUser = await pool
-    .request()
-    .input("username", username)
-    .query("SELECT * FROM Users WHERE username = @username");
-  if (existingUser.recordset.length === 0) {
+  const existingUser = await pool.get(
+    `SELECT * FROM Users WHERE username = ?`,
+    username
+  );
+  if (existingUser.length === 0) {
     return NextResponse.json({
       success: false,
       message: "Username or password is incorrect",
@@ -21,8 +20,7 @@ export async function POST(req, res) {
   }
 
   // Verify the password
-  const user = existingUser.recordset[0];
-
+  const user = existingUser;
   const validPassword = await compare(password, user.password);
   if (!validPassword) {
     return NextResponse.json({

@@ -1,28 +1,20 @@
 // utils/db.js
-import { ConnectionPool } from "mssql";
+import sqlite3 from 'sqlite3';
+import { open } from 'sqlite';
 
-const { USER, PASSWORD, SERVER, DATABASE } = process.env;
 // Configure the database connection
-const config = {
-  server: SERVER,
-  user: USER,
-  password: PASSWORD,
-  database: DATABASE,
-  options: {
-    enableArithAbort: true,
-    encrypt: false,
-  },
-};
+const { DATABASE } = process.env;
 
 // Create a pool of connections
-const poolPromise = new ConnectionPool(config)
-  .connect()
-  .then((pool) => {
-    return pool;
-  })
-  .catch((err) => {
-    console.error("Database connection failed:", err);
-    process.exit(1);
-  });
+const poolPromise = open({
+  filename: DATABASE,
+  driver: sqlite3.Database
+}).then((db) => {
+  console.log('Connected to the SQLite database.');
+  return db;
+}).catch((err) => {
+  console.error("Database connection failed:", err);
+  process.exit(1);
+});
 
 export default poolPromise;

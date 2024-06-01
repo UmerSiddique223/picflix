@@ -7,13 +7,13 @@ const SearchProfilePage = async ({ searchParams }) => {
   const query = searchParams.query;
   const getSearchResults = async () => {
     try {
-      const pool = await poolPromise;
-      const result = await pool
-        .request()
-        .query(
-          `SELECT * FROM Users WHERE name LIKE '%${query}%' OR username LIKE '%${query}%'`
-        );
-      return result.recordset;
+      const db = await poolPromise;
+      const result = await db.all(
+        `SELECT * FROM Users WHERE name LIKE ? OR username LIKE ?`,
+        `%${query}%`,
+        `%${query}%`
+      );
+      return result;
     } catch (error) {
       console.error("Error executing query:", error);
       return [];

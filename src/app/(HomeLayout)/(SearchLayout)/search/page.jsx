@@ -8,11 +8,12 @@ const SearchPage = async () => {
   const user = getUserCookie();
   const getFriends = async () => {
     try {
-      const pool = await poolPromise;
-      const result = await pool.request().input("userId", user.user_id).query(`
-      select * from Users join Friends on users.[user_id]= Friends.friend_id where Friends.[user_id]=@userID
-`);
-      return result.recordset;
+      const db = await poolPromise;
+      const result = await db.all(
+        `SELECT * FROM Users JOIN Friends ON Users.user_id = Friends.friend_id WHERE Friends.user_id = ?`,
+        user.user_id
+      );
+      return result;
     } catch (error) {
       console.error("Error executing query:", error);
       return [];

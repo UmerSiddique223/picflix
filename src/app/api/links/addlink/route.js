@@ -7,13 +7,13 @@ export async function POST(req) {
 
   try {
     const pool = await poolPromise;
-    await pool
-      .request()
-      .input("user_id", user_id)
-      .input("friend_id", friend_id)
-      .query(
-        "INSERT INTO friends (user_id,friend_id) VALUES (@user_id,@friend_id),(@friend_id,@user_id)"
-      );
+    await pool.run(
+      `INSERT INTO friends (user_id, friend_id) VALUES (?, ?), (?, ?)`,
+      user_id,
+      friend_id,
+      friend_id,
+      user_id
+    );
     // Respond with success message
     return NextResponse.json({
       success: true,

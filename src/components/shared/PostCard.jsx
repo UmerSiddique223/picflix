@@ -20,7 +20,6 @@ const PostCard = ({ key, user, post }) => {
   const [stats, setStats] = useState({
     likes: 0,
     comments: 0,
-    isSaved: false,
   });
   useEffect(() => {
     if (!api) {
@@ -50,7 +49,6 @@ const PostCard = ({ key, user, post }) => {
           setStats({
             likes: data.likes?.length ? data.likes.length : 0,
             comments: data.comments?.length ? data.comments.length : 0,
-            isSaved: data.isSaved,
           });
           if (data.likes.some((item) => item.likes === 1)) {
             setIsLiked(true);

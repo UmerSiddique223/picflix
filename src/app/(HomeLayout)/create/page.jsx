@@ -110,14 +110,16 @@ function Create() {
               control={form.control}
               name="caption"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="relative">
                   <FormLabel>Caption</FormLabel>
                   <FormControl>
                     <Textarea
                       className="custom-scrollbar bg-input border border-border"
                       {...field}
+                      maxLength={120}
                     />
                   </FormControl>
+                  <div className="absolute bottom-2 right-3 text-muted-foreground text-xs">{`${field.value.length}/120`}</div>
                   <FormMessage />
                 </FormItem>
               )}
@@ -143,15 +145,17 @@ function Create() {
               control={form.control}
               name="location"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="relative">
                   <FormLabel>Location</FormLabel>
                   <FormControl>
                     <Input
                       className="bg-input border border-border"
                       type="text"
                       {...field}
+                      maxLength={40}
                     />
                   </FormControl>
+                  <div className="absolute bottom-1 right-1 text-muted-foreground text-xs">{`${field.value.length}/40`}</div>
                   <FormMessage />
                 </FormItem>
               )}

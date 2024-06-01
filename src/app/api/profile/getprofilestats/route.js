@@ -6,16 +6,16 @@ export async function POST(req) {
   const { user_id } = body;
 
   try {
-    const pool = await poolPromise;
-
-    const result = await pool.request().input("user_id", user_id).query(`
-    SELECT Posts.*, Users.name, Users.profile_picture, Media.media_url AS media FROM Posts
+    const db = await poolPromise;
+    const result = await db.all(
+      `SELECT Posts.*, Users.name, Users.profile_picture, Media.media_url AS media FROM Posts
         JOIN Users ON Users.user_id=Posts.user_id
         LEFT JOIN Media ON Posts.post_id = Media.entity_id
-        WHERE Media.entity_type= 'post' and posts.user_id=@user_id
-        ORDER BY Posts.created_at DESC;`);
-
-    const postData = result.recordset.reduce((acc, row) => {
+        WHERE Media.entity_type= 'post' and posts.user_id=?
+        ORDER BY Posts.created_at DESC;`,
+      user_id
+    );
+    const postData = result.reduce((acc, row) => {
       const existingPost = acc.find((post) => post.post_id === row.post_id);
       if (existingPost) {
         existingPost.media.push(row.media);
@@ -28,14 +28,12 @@ export async function POST(req) {
       return acc;
     }, []);
 
-    const result1 = await pool
-      .request()
-      .input("user_id", user_id)
-      .query(
-        "select count(friend_id)as totalLinks from Friends where user_id=@user_id"
-      );
+    const result1 = await db.get(
+      "SELECT COUNT(friend_id) AS totalLinks FROM Friends WHERE user_id=?",
+      user_id
+    );
 
-    const totalLinks = result1.recordset[0].totalLinks;
+    const totalLinks = result1.totalLinks;
 
     // Respond with success message
     return NextResponse.json({

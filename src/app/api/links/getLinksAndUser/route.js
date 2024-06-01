@@ -6,19 +6,18 @@ export async function POST(req) {
   const { user_id, curr_user_id } = body;
 
   try {
-    const pool = await poolPromise;
-    const result = await pool
-      .request()
-      .input("user_id", curr_user_id)
-      .query("Select * from friends where user_id=@user_id");
-    const Links = result.recordset;
+    const db = await poolPromise;
+    const result = await db.all(
+      "SELECT * FROM Friends WHERE user_id = ?",
+      curr_user_id
+    );
+    const Links = result;
 
-    const result1 = await pool
-      .request()
-      .input("user_id", user_id)
-      .query("Select * from Users where user_id=@user_id");
-
-    const User = result1.recordset[0];
+    const result1 = await db.all(
+      "SELECT * FROM Users WHERE user_id = ?",
+      user_id
+    );
+    const User = result1[0];
 
     // Respond with success message
     return NextResponse.json({

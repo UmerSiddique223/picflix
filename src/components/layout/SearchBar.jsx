@@ -40,7 +40,7 @@ export default function SearchBar() {
                         }
                     }}
                     ref={inputRef}
-                    className="border w-96 lg:w-[40rem] border-border"
+                    className="border max-w-96 ml-4 lg:w-[40rem] border-border"
                 />
 
                 <button

@@ -13,15 +13,16 @@ export async function POST(request) {
   const filteredLocation = filter.clean(location);
 
   try {
-    const pool = await poolPromise;
-    const result = await pool
-      .request()
-      .input("user_id", user_id)
-      .input("caption", filteredCaption)
-      .input("location", filteredLocation)
-      .execute("InsertPost");
+    const db = await poolPromise;
+    const result = await db.run(
+      `INSERT INTO Posts (user_id, caption, location) VALUES (?, ?, ?)`,
+      user_id,
+      filteredCaption,
+      filteredLocation
+    );
 
-    const postId = result.recordset[0].post_id;
+    const postId = result.lastID;
+
     const mediaWithType = media.map((item) => {
       if (item.type.startsWith("image")) {
         return `/images/${item.path}`;
@@ -31,13 +32,15 @@ export async function POST(request) {
         return null;
       }
     });
+
     const mediaValues = mediaWithType
       .map((item) => `(${postId}, 'post', '${item}')`)
       .join(", ");
-    await pool.request().query(`
-            INSERT INTO Media (entity_id, entity_type, media_url)
-            VALUES ${mediaValues};
-        `);
+
+    await db.run(`
+      INSERT INTO Media (entity_id, entity_type, media_url)
+      VALUES ${mediaValues};
+    `);
     return NextResponse.json({ message: "Post created successfully" });
   } catch (err) {
     console.error("Error executing query:", err);

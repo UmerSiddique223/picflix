@@ -7,21 +7,17 @@ export async function POST(request) {
     try {
         const pool = await poolPromise;
         if (isliked) {
-            await pool
-                .request()
-                .input("post_id", post_id)
-                .input("user_id", user_id).query(`
-                    INSERT INTO Likes (post_id, user_id)
-                    VALUES (@post_id, @user_id);
-                `);
+            await pool.run(
+                `INSERT INTO Likes (post_id, user_id) VALUES (?, ?)`,
+                post_id,
+                user_id
+            );
         } else {
-            await pool
-                .request()
-                .input("post_id", post_id)
-                .input("user_id", user_id).query(`
-                    DELETE FROM Likes
-                    WHERE post_id = @post_id AND user_id = @user_id;
-                `);
+            await pool.run(
+                `DELETE FROM Likes WHERE post_id = ? AND user_id = ?`,
+                post_id,
+                user_id
+            );
         }
         return NextResponse.json({ message: "Like updated successfully" });
     } catch (err) {
