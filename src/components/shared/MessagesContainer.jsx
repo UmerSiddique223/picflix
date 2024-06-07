@@ -7,6 +7,7 @@ import OtherMessage from "@/components/shared/OtherMessage";
 import Link from "next/link";
 import io from "socket.io-client";
 import InputEmoji from "react-input-emoji";
+import Image from "next/image";
 const socket = io("http://localhost:3001", { autoConnect: false });
 
 function MessagesContainer({
@@ -18,8 +19,6 @@ function MessagesContainer({
   const [messages, setMessages] = useState(initialMessages);
   const [newMessage, setNewMessage] = useState("");
   const lastMessageRef = useRef(null);
-  // const inputRef = useRef(null);
-  // const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   useEffect(() => {
     socket.connect();
@@ -64,6 +63,7 @@ function MessagesContainer({
       setError("Message cannot be empty");
       return;
     }
+    console.log("user_idededed", user.user_id);
     await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/chat/new-message`, {
       method: "POST",
       headers: {
@@ -82,8 +82,19 @@ function MessagesContainer({
     });
   };
   return (
-    <div>
-      <Link href="/chat">Back to Chats</Link>
+    <div className="">
+      <Link href="/chat" className="hover:bg-gray-600 h-10 w-20">
+        <Button variant="ghost" className="w-32 flex items-center gap-3">
+          {" "}
+          <Image
+            src="/icons/back.svg"
+            alt="back"
+            height={20}
+            width={25}
+          ></Image>{" "}
+          <p className="text-lg">Chats</p>
+        </Button>
+      </Link>
 
       <div className="flex flex-col overflow-auto custom-scrollbar gap-3 mt-3">
         {messages.map((message, index) => {
@@ -105,36 +116,36 @@ function MessagesContainer({
             </div>
           );
         })}
-        </div>
-        <div className="flex sticky bottom-[71px] lg:bottom-0 bg-background py-2 lg:py-6 items-center gap-3">
-          <InputEmoji
-            value={newMessage}
-            onChange={setNewMessage}
-            keepOpened={true}
-            background="#0C0C0D"
-            color="#ffffff"
-            borderColor="#9333EA"
-            placeholder="Type a message"
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                handleNewMessage();
-                sendMessage();
-              }
-            }}
-          />
-          <Button
-            className="w-32"
-            disabled={!newMessage}
-            onClick={(e) => {
+      </div>
+      <div className="sticky lg:bottom-0 bottom-[71px] max-w-screen-md bg-background py-2 lg:py-6 flex  items-center gap-3">
+        <InputEmoji
+          value={newMessage}
+          onChange={setNewMessage}
+          keepOpened={true}
+          background="#0C0C0D"
+          color="#ffffff"
+          borderColor="#9333EA"
+          placeholder="Type a message"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();
               handleNewMessage();
               sendMessage();
-            }}
-          >
-            Send
-          </Button>
-        </div>
+            }
+          }}
+        />
+        <Button
+          className="w-32"
+          disabled={!newMessage}
+          onClick={(e) => {
+            e.preventDefault();
+            handleNewMessage();
+            sendMessage();
+          }}
+        >
+          Send
+        </Button>
+      </div>
     </div>
   );
 }

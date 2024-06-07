@@ -1,38 +1,47 @@
-import poolPromise from "@/lib/SQL_Config";
+import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
   const body = await req.json();
   const { username, email } = body;
-  // Check if username or email already exists
-  const pool = await poolPromise;
 
-  const existingUsername = await pool
-    .request()
-    .input("username", username)
-    .query("SELECT * FROM Users WHERE username = @username");
+  try {
+    // Check if username already exists
+    const { rows: existingUsername } = await sql`
+      SELECT * FROM Users WHERE username = ${username}
+    `;
 
-  if (existingUsername.recordset.length > 0) {
-    return NextResponse.json({
-      success: false,
-      message: "Username already exists",
-      status: 400,
-    });
-  }
+    if (existingUsername.length > 0) {
+      return NextResponse.json({
+        success: false,
+        message: "Username already exists",
+        status: 400,
+      });
+    }
 
-  const existingEmail = await pool
-    .request()
-    .input("email", email)
-    .query("SELECT * FROM Users WHERE email = @email");
-    if (existingEmail.recordset.length > 0) {
+    // Check if email already exists
+    const { rows: existingEmail } = await sql`
+      SELECT * FROM Users WHERE email = ${email}
+    `;
+
+    if (existingEmail.length > 0) {
       return NextResponse.json({
         success: false,
         message: "Email already exists",
         status: 400,
       });
     }
-  return NextResponse.json({
-    success: true,
-    message: "User is unique",
-  });
+
+    return NextResponse.json({
+      success: true,
+      message: "User is unique",
+    });
+  } catch (err) {
+    console.error("Error executing query:", err);
+    return NextResponse.json({
+      success: false,
+      message: "An error occurred while checking user uniqueness",
+      status: 500,
+    });
+  }
 }

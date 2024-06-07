@@ -2,11 +2,11 @@
 import Image from "next/image";
 import { PostStats } from "./PostStats";
 import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
 } from "@/components/UI/carousel";
 import { useEffect, useState } from "react";
 import parseDate from "@/lib/dateParser";
@@ -52,7 +52,7 @@ const PostCard = ({ key, user, post }) => {
             comments: data.comments?.length ? data.comments.length : 0,
             isSaved: data.isSaved,
           });
-          if (data.likes.some((item) => item.likes === 1)) {
+          if (data.likes.some((item) => item.likes === user.user_id)) {
             setIsLiked(true);
           }
         });

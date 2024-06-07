@@ -1,25 +1,19 @@
-import poolPromise from "@/lib/SQL_Config";
+import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
-    const payload = await request.json();
-    const { message_body, user_id, conversation_id } = payload;
-    try {
-        const pool = await poolPromise;
-        const result = await pool.request()
-            .input("user_id", user_id)
-            .input("message", message_body)
-            .input("conversation_id", conversation_id)
-            .query(
-                `INSERT INTO Messages (created_by, conversation_id, message_body, sent_on)
-                OUTPUT INSERTED.*
-                VALUES (@user_id, @conversation_id, @message, GETDATE());
+  const payload = await request.json();
+  const { message_body, user_id, conversation_id } = payload;
+  try {
+    const { rows: result } =
+      await sql`INSERT INTO Messages (created_by, conversation_id, message_body, sent_on)
+                VALUES (${user_id}, ${conversation_id}, ${message_body}, ${new Date()})
+                RETURNING *;`;
 
-                UPDATE Conversations SET last_updated = GETDATE() where conversation_id = @conversation_id;`
-            );
-        return NextResponse.json(result.recordset[0]);
-    } catch (err) {
-        console.error("Error executing query:", err);
-        return NextResponse.error(new Error("Error executing query"));
-    }
+    await sql`UPDATE Conversations SET last_updated = ${new Date()} where conversation_id = ${conversation_id};`;
+    return NextResponse.json(result[0]);
+  } catch (err) {
+    console.error("Error executing query:", err);
+    return NextResponse.error(new Error("Error executing query"));
+  }
 }

@@ -1,22 +1,19 @@
-import CreateStory from "@/components/shared/CreateStory";
 import PostCard from "@/components/shared/PostCard";
-import StoryCard from "@/components/shared/StoryCard";
-import poolPromise from "@/lib/SQL_Config";
 import { getUserCookie } from "@/lib/userCookie";
+import { sql } from "@vercel/postgres";
 
 export const getPosts = async (user) => {
   try {
-    const pool = await poolPromise;
-    const result = await pool.request().input("user_id", user.user_id).query(`
-                SELECT Posts.*, Users.name, Users.profile_picture, Media.media_url AS media FROM SavedPosts
-                LEFT JOIN Posts ON SavedPosts.post_id = Posts.post_id
-                LEFT JOIN Media ON Posts.post_id = Media.entity_id
-                JOIN Users ON Users.user_id=Posts.user_id
-                WHERE SavedPosts.user_id=@user_id
-                AND Media.entity_type= 'post'
-                ORDER BY Posts.created_at DESC;
-        `);
-    const posts = result.recordset.reduce((acc, row) => {
+    const result = await sql`
+    SELECT Posts.*, Users.name, Users.profile_picture, Media.media_url AS media
+    FROM SavedPosts
+    LEFT JOIN Posts ON SavedPosts.post_id = Posts.post_id
+    LEFT JOIN Media ON Posts.post_id = Media.entity_id AND Media.entity_type = 'post'
+    JOIN Users ON Users.user_id = Posts.user_id
+    WHERE SavedPosts.user_id = ${user.user_id}
+    ORDER BY Posts.created_at DESC;
+  `;
+    const posts = result.rows.reduce((acc, row) => {
       const existingPost = acc.find((post) => post.post_id === row.post_id);
       if (existingPost) {
         existingPost.media.push(row.media);
@@ -35,38 +32,9 @@ export const getPosts = async (user) => {
     return [];
   }
 };
-export const getStories = async () => {
-  try {
-    const pool = await poolPromise;
-    const result = await pool.request().query(`
-          SELECT Stories.*, Users.name, Users.profile_picture, Media.media_url AS media FROM Stories
-          JOIN Users ON Users.user_id=Stories.user_id
-          LEFT JOIN Media ON Stories.story_id = Media.entity_id
-          WHERE Media.entity_type='story'
-          ORDER BY Stories.created_at DESC;
-          `);
-    const stories = result.recordset.reduce((acc, row) => {
-      const existingPost = acc.find((story) => story.story_id === row.story_id);
-      if (existingPost) {
-        existingPost.media.push(row.media);
-      } else {
-        acc.push({
-          ...row,
-          media: [row.media],
-        });
-      }
-      return acc;
-    }, []);
 
-    return stories;
-  } catch (err) {
-    console.error("Error in fetching stories:", err);
-    return [];
-  }
-};
 export default async function Saved() {
   const user = getUserCookie();
-  const stories = await getStories();
   const posts = await getPosts(user);
   return (
     <div className="flex w-full pr-8">

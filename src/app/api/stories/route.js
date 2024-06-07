@@ -1,80 +1,93 @@
-import poolPromise from "@/lib/SQL_Config";
+import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 
+// POST handler to create a story
 export async function POST(request) {
-    const payload = await request.json();
-    const { media, user_id } = payload;
-    try {
-        const pool = await poolPromise;
+  const payload = await request.json();
+  const { media, user_id } = payload;
 
-        const existingStory = await pool
-            .request()
-            .input("user_id", user_id)
-            .query("SELECT story_id FROM Stories WHERE user_id = @user_id");
+  try {
+    const { rows: existingStory } = await sql`
+      SELECT story_id FROM Stories WHERE user_id = ${user_id};
+    `;
 
-        let storyId;
-        if (existingStory.recordset.length > 0) {
-            storyId = existingStory.recordset[0].story_id;
-        } else {
-            const result = await pool
-                .request()
-                .input("user_id", user_id)
-                .query(
-                    `INSERT INTO Stories (user_id, created_at)
-                    OUTPUT INSERTED.story_id
-                    VALUES (@user_id, GETDATE());`
-                );
-            storyId = result.recordset[0].story_id;
-        }
-        const mediaWithType = media.map((item) => {
-            if (item.type.startsWith("image")) {
-                return `/images/${item.path}`;
-            } else if (item.type.startsWith("video")) {
-                return `/videos/${item.path}`;
-            } else {
-                return null;
-            }
-        });
-
-        const mediaValues = mediaWithType
-            .map((item) => `(${storyId}, 'story', '${item}')`)
-            .join(", ");
-
-        await pool.request().query(`
-            INSERT INTO Media (entity_id, entity_type, media_url)
-            VALUES ${mediaValues};
-        `);
-
-        return NextResponse.json({
-            message: "Story created successfully",
-            success: true,
-        });
-    } catch (err) {
-        console.error("Error executing query:", err);
-        if (err.code === "EREQUEST" && err.number === 2627) {
-            return NextResponse.json({
-                message: "Duplicate key error",
-                duplicate: true,
-                success: false,
-            });
-        } else {
-            return NextResponse.error(new Error("Error executing query"));
-        }
+    let storyId;
+    if (existingStory.length > 0) {
+      storyId = existingStory[0].story_id;
+    } else {
+      const createdAt = new Date();
+      const { rows } = await sql`
+        INSERT INTO Stories (user_id, created_at)
+        VALUES (${user_id}, ${createdAt})
+        RETURNING story_id;
+      `;
+      storyId = rows[0].story_id;
     }
+
+    const mediaWithType = media
+      .map((item) => {
+        if (item.type.startsWith("image")) {
+          return {
+            entityId: storyId,
+            type: "story",
+            url: `/images/${item.path}`,
+          };
+        } else if (item.type.startsWith("video")) {
+          return {
+            entityId: storyId,
+            type: "story",
+            url: `/videos/${item.path}`,
+          };
+        } else {
+          return null;
+        }
+      })
+      .filter((item) => item !== null); // Filter out any null values
+
+    for (const item of mediaWithType) {
+      await sql`
+        INSERT INTO Media (entity_id, entity_type, media_url)
+        VALUES (${item.entityId}, ${item.type}, ${item.url});
+      `;
+    }
+
+    return NextResponse.json({
+      message: "Story created successfully",
+      success: true,
+    });
+  } catch (err) {
+    console.error("Error executing query:", err);
+    if (err.code === "23505") {
+      // Unique violation error code for PostgreSQL
+      return NextResponse.json({
+        message: "Duplicate key error",
+        duplicate: true,
+        success: false,
+      });
+    } else {
+      return NextResponse.json({
+        message: "Error executing query",
+        success: false,
+      });
+    }
+  }
 }
 
-export async function DELETE(request, content) {
-    const payload = await request.json();
-    const story_id = payload.story_id;
-    try {
-        const pool = await poolPromise;
-        await pool
-            .request()
-            .input("story_id", story_id)
-            .query("DELETE FROM Stories WHERE story_id = @story_id");
-        return NextResponse.json({ message: "Story deleted successfully" });
-    } catch (err) {
-        console.error("Error executing query:", err);
-        return NextResponse.error(new Error("Error executing query"));
-    }
+// DELETE handler to delete a story
+export async function DELETE(request) {
+  const payload = await request.json();
+  const { story_id } = payload;
+
+  try {
+    await sql`
+      DELETE FROM Stories WHERE story_id = ${story_id};
+    `;
+    return NextResponse.json({ message: "Story deleted successfully" });
+  } catch (err) {
+    console.error("Error executing query:", err);
+    return NextResponse.json({
+      message: "Error executing query",
+      success: false,
+    });
+  }
 }

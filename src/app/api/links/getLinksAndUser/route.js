@@ -1,4 +1,4 @@
-import poolPromise from "@/lib/SQL_Config";
+import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -6,24 +6,26 @@ export async function POST(req) {
   const { user_id, curr_user_id } = body;
 
   try {
-    const pool = await poolPromise;
-    const result = await pool
-      .request()
-      .input("user_id", curr_user_id)
-      .query("Select * from friends where user_id=@user_id");
-    const Links = result.recordset;
+    // Fetch friends of the current user
+    const { rows: linksResult } = await sql`
+      SELECT * 
+      FROM Friends 
+      WHERE user_id = ${curr_user_id}
+    `;
+    const Links = linksResult;
 
-    const result1 = await pool
-      .request()
-      .input("user_id", user_id)
-      .query("Select * from Users where user_id=@user_id");
-
-    const User = result1.recordset[0];
+    // Fetch user details
+    const { rows: userResult } = await sql`
+      SELECT * 
+      FROM Users 
+      WHERE user_id = ${user_id}
+    `;
+    const User = userResult[0];
 
     // Respond with success message
     return NextResponse.json({
       success: true,
-      message: "Links and user got successfully",
+      message: "Links and user fetched successfully",
       Links,
       User,
     });

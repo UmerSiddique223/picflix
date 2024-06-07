@@ -1,35 +1,35 @@
-import poolPromise from "@/lib/SQL_Config";
 import { NextResponse } from "next/server";
-
+import { sql } from "@vercel/postgres";
 export async function POST(request) {
   const payload = await request.json();
   const { caption, media, location, user_id } = payload;
   try {
-    const pool = await poolPromise;
-    const result = await pool
-      .request()
-      .input("user_id", user_id)
-      .input("caption", caption)
-      .input("location", location)
-      .execute("InsertPost");
+    const createdAt = new Date();
+    const { rows } = await sql`
+    INSERT INTO Posts (user_id, caption, created_at, location)
+    VALUES (${user_id}, ${caption}, ${createdAt}, ${location})
+    RETURNING post_id;
+`;
 
-    const postId = result.recordset[0].post_id;
-    const mediaWithType = media.map((item) => {
-      if (item.type.startsWith("image")) {
-        return `/images/${item.path}`;
-      } else if (item.type.startsWith("video")) {
-        return `/videos/${item.path}`;
-      } else {
-        return null;
-      }
-    });
-    const mediaValues = mediaWithType
-      .map((item) => `(${postId}, 'post', '${item}')`)
-      .join(", ");
-    await pool.request().query(`
-            INSERT INTO Media (entity_id, entity_type, media_url)
-            VALUES ${mediaValues};
-        `);
+    const postId = rows[0].post_id;
+    const mediaWithType = media
+      .map((item) => {
+        if (item.type.startsWith("image")) {
+          return { postId, type: "post", url: `/images/${item.path}` };
+        } else if (item.type.startsWith("video")) {
+          return { postId, type: "post", url: `/videos/${item.path}` };
+        } else {
+          return null;
+        }
+      })
+      .filter((item) => item !== null); // Filter out any null values
+
+    for (const item of mediaWithType) {
+      await sql`
+        INSERT INTO Media (entity_id, entity_type, media_url)
+        VALUES (${item.postId}, ${item.type}, ${item.url});
+      `;
+    }
     return NextResponse.json({ message: "Post created successfully" });
   } catch (err) {
     console.error("Error executing query:", err);

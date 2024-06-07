@@ -1,18 +1,21 @@
-import poolPromise from "@/lib/SQL_Config";
 import { getUserCookie } from "@/lib/userCookie";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { sql } from "@vercel/postgres";
 
 const SearchPage = async () => {
   const user = getUserCookie();
   const getFriends = async () => {
     try {
-      const pool = await poolPromise;
-      const result = await pool.request().input("userId", user.user_id).query(`
-      select * from Users join Friends on users.[user_id]= Friends.friend_id where Friends.[user_id]=@userID
-`);
-      return result.recordset;
+      const userId = user.user_id;
+
+      const result = await sql`
+  SELECT * FROM Users
+  JOIN Friends ON Users.user_id = Friends.friend_id
+  WHERE Friends.user_id = ${userId};
+`;
+      return result.rows;
     } catch (error) {
       console.error("Error executing query:", error);
       return [];

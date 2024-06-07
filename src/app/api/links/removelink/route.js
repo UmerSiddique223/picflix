@@ -1,4 +1,4 @@
-import poolPromise from "@/lib/SQL_Config";
+import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -6,14 +6,13 @@ export async function POST(req) {
   const { user_id, friend_id } = body;
 
   try {
-    const pool = await poolPromise;
-    await pool
-      .request()
-      .input("user_id", user_id)
-      .input("friend_id", friend_id)
-      .query(
-        "Delete from friends where (user_id=@user_id or user_id=@friend_id) and (friend_id=@friend_id or friend_id=@user_id)  "
-      );
+    // Delete the friendship links
+    await sql`
+      DELETE FROM Friends
+      WHERE (user_id = ${user_id} OR user_id = ${friend_id})
+        AND (friend_id = ${friend_id} OR friend_id = ${user_id})
+    `;
+
     // Respond with success message
     return NextResponse.json({
       success: true,

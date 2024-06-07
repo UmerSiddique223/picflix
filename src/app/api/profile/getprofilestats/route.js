@@ -1,21 +1,31 @@
-import poolPromise from "@/lib/SQL_Config";
 import { NextResponse } from "next/server";
+import { sql } from "@vercel/postgres";
 
 export async function POST(req) {
   const body = await req.json();
   const { user_id } = body;
 
   try {
-    const pool = await poolPromise;
+    const { rows: result } = await sql`
+    SELECT 
+      Posts.*, 
+      Users.name, 
+      Users.profile_picture, 
+      Media.media_url AS media 
+    FROM 
+      Posts
+    JOIN 
+      Users ON Users.user_id = Posts.user_id
+    LEFT JOIN 
+      Media ON Posts.post_id = Media.entity_id
+    WHERE 
+      Media.entity_type = 'post' 
+      AND Posts.user_id = ${user_id}
+    ORDER BY 
+      Posts.created_at DESC;
+  `;
 
-    const result = await pool.request().input("user_id", user_id).query(`
-    SELECT Posts.*, Users.name, Users.profile_picture, Media.media_url AS media FROM Posts
-        JOIN Users ON Users.user_id=Posts.user_id
-        LEFT JOIN Media ON Posts.post_id = Media.entity_id
-        WHERE Media.entity_type= 'post' and posts.user_id=@user_id
-        ORDER BY Posts.created_at DESC;`);
-
-    const postData = result.recordset.reduce((acc, row) => {
+    const postData = result.reduce((acc, row) => {
       const existingPost = acc.find((post) => post.post_id === row.post_id);
       if (existingPost) {
         existingPost.media.push(row.media);
@@ -28,16 +38,13 @@ export async function POST(req) {
       return acc;
     }, []);
 
-    const result1 = await pool
-      .request()
-      .input("user_id", user_id)
-      .query(
-        "select count(friend_id)as totalLinks from Friends where user_id=@user_id"
-      );
+    const { rows: result1 } = await sql`
+    SELECT COUNT(friend_id) AS totalLinks 
+    FROM Friends 
+    WHERE user_id = ${user_id};
+  `;
 
-    const totalLinks = result1.recordset[0].totalLinks;
-
-    // Respond with success message
+    const totalLinks = result1[0].totallinks;
     return NextResponse.json({
       success: true,
       message: "Links and user got successfully",

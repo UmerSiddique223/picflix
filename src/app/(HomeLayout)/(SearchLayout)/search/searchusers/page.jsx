@@ -1,19 +1,19 @@
-import poolPromise from "@/lib/SQL_Config";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { sql } from "@vercel/postgres";
 
 const SearchProfilePage = async ({ searchParams }) => {
   const query = searchParams.query;
   const getSearchResults = async () => {
     try {
-      const pool = await poolPromise;
-      const result = await pool
-        .request()
-        .query(
-          `SELECT * FROM Users WHERE name LIKE '%${query}%' OR username LIKE '%${query}%'`
-        );
-      return result.recordset;
+      const { rows: result } = await sql`
+      SELECT * FROM Users
+      WHERE name LIKE ${"%" + query + "%"} OR username LIKE ${
+        "%" + query + "%"
+      };
+    `;
+      return result;
     } catch (error) {
       console.error("Error executing query:", error);
       return [];

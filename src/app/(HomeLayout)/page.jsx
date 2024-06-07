@@ -1,20 +1,34 @@
 import CreateStory from "@/components/shared/CreateStory";
 import PostCard from "@/components/shared/PostCard";
 import StoryCard from "@/components/shared/StoryCard";
-import poolPromise from "@/lib/SQL_Config";
 import { getUserCookie } from "@/lib/userCookie";
-
+import { sql } from "@vercel/postgres";
 export const getPosts = async (user) => {
   try {
-    const pool = await poolPromise;
-
     // query for posts
-    const result = await pool
-      .request()
-      .input("user_id", user.user_id)
-      .execute("GetFriendPosts");
+    const { rows, fields } = await sql`
+      SELECT Posts.*, Users.name, Users.profile_picture, Media.media_url AS media
+      FROM Posts
+      JOIN Users ON Users.user_id = Posts.user_id
+      JOIN Friends ON Users.user_id = Friends.friend_id
+      LEFT JOIN Media ON Posts.post_id = Media.entity_id
+      WHERE Friends.user_id = ${user.user_id} 
+      AND Media.entity_type = 'post'
 
-    const posts = result.recordset.reduce((acc, row) => {
+      UNION
+
+      SELECT Posts.*, Users.name, Users.profile_picture, Media.media_url AS media
+      FROM Posts
+      JOIN Users ON Users.user_id = Posts.user_id
+      LEFT JOIN Media ON Posts.post_id = Media.entity_id
+      WHERE Users.user_id = ${user.user_id}
+      AND Media.entity_type = 'post'
+
+      ORDER BY created_at DESC
+    `;
+
+    const result = rows;
+    const posts = result.reduce((acc, row) => {
       const existingPost = acc.find((post) => post.post_id === row.post_id);
       if (existingPost) {
         existingPost.media.push(row.media);
@@ -24,6 +38,7 @@ export const getPosts = async (user) => {
           media: [row.media],
         });
       }
+
       return acc;
     }, []);
 
@@ -35,12 +50,27 @@ export const getPosts = async (user) => {
 };
 export const getStories = async (user) => {
   try {
-    const pool = await poolPromise;
-    const result = await pool
-      .request()
-      .input("userId", user.user_id)
-      .execute("GetFriendStories");
-    const stories = result.recordset.reduce((acc, row) => {
+    const { rows, fields } = await sql`
+    SELECT Stories.*, Users.name, Users.profile_picture, Media.media_url AS media
+    FROM Stories
+    JOIN Users ON Users.user_id = Stories.user_id
+    JOIN Friends ON Users.user_id = Friends.friend_id
+    LEFT JOIN Media ON Stories.story_id = Media.entity_id
+    WHERE Friends.user_id = ${user.user_id}
+    AND Media.entity_type = 'story'
+    
+    UNION
+    
+    SELECT Stories.*, Users.name, Users.profile_picture, Media.media_url AS media
+    FROM Stories
+    JOIN Users ON Users.user_id = Stories.user_id
+    LEFT JOIN Media ON Stories.story_id = Media.entity_id
+    WHERE Users.user_id = ${user.user_id}
+    AND Media.entity_type = 'story'
+  `;
+
+    const result = rows;
+    const stories = result.reduce((acc, row) => {
       const existingPost = acc.find((story) => story.story_id === row.story_id);
       if (existingPost) {
         existingPost.media.push(row.media);

@@ -1,22 +1,21 @@
 import CreateStory from "@/components/shared/CreateStory";
 import PostCard from "@/components/shared/PostCard";
 import StoryCard from "@/components/shared/StoryCard";
-import poolPromise from "@/lib/SQL_Config";
 import { getUserCookie } from "@/lib/userCookie";
+import { sql } from "@vercel/postgres";
 
 export const getPosts = async (user) => {
   try {
-    const pool = await poolPromise;
-
     // query for posts
-    const result = await pool.request().query(`
+    const { rows } = await sql`
       SELECT Posts.*, Users.name, Users.profile_picture, Media.media_url AS media FROM Posts
-        JOIN Users ON Users.[user_id]=Posts.[user_id]
-        LEFT JOIN Media ON Posts.post_id = Media.[entity_id]
+        JOIN Users ON Users.user_id=Posts.user_id
+        LEFT JOIN Media ON Posts.post_id = Media.entity_id
         WHERE Media.entity_type= 'post'
         ORDER BY Posts.created_at DESC;
-    `);
-    const posts = result.recordset.reduce((acc, row) => {
+    `;
+    console.log(rows);
+    const posts = rows.reduce((acc, row) => {
       const existingPost = acc.find((post) => post.post_id === row.post_id);
       if (existingPost) {
         existingPost.media.push(row.media);

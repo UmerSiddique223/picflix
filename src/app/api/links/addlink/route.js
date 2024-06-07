@@ -1,4 +1,4 @@
-import poolPromise from "@/lib/SQL_Config";
+import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -6,14 +6,13 @@ export async function POST(req) {
   const { user_id, friend_id } = body;
 
   try {
-    const pool = await poolPromise;
-    await pool
-      .request()
-      .input("user_id", user_id)
-      .input("friend_id", friend_id)
-      .query(
-        "INSERT INTO friends (user_id,friend_id) VALUES (@user_id,@friend_id),(@friend_id,@user_id)"
-      );
+    // Insert the friendship links
+    await sql`
+      INSERT INTO Friends (user_id, friend_id)
+      VALUES (${user_id}, ${friend_id}),
+             (${friend_id}, ${user_id})
+    `;
+
     // Respond with success message
     return NextResponse.json({
       success: true,
