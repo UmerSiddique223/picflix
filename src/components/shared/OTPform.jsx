@@ -44,6 +44,7 @@ const OTPform = ({
     const [isCalled, setIsCalled] = useState(true);
     const [otp, setOtp] = useState("123456");
     const [isemail, setIsemail] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const HandleEmail = async (email, username) => {
         setIsCalled(false);
@@ -89,6 +90,7 @@ const OTPform = ({
 
     const router = useRouter();
     const handleSubmit = async (values) => {
+        setLoading(true);
         try {
             if (values.pin !== otp) {
                 Seterror("Invalid OTP");
@@ -119,6 +121,7 @@ const OTPform = ({
         } catch (error) {
             console.error("Error:", error);
         }
+        // setLoading(false);
     };
 
     return (
@@ -126,23 +129,45 @@ const OTPform = ({
             <Dialog>
                 <DialogTrigger asChild>
                     <Button
-                        ref={butRef}
                         type="submit"
+                        onClick={handleSubmit}
                         className="whitespace-nowrap mt-8"
                     >
-                        Sign up
-                    </Button>
+                    {loading ? (
+                        <svg
+                            class="animate-spin -ml-1 mr-3 h-6 w-6 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <circle
+                                class="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                stroke-width="4"
+                            ></circle>
+                            <path
+                                class="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                        </svg>
+                    ) : (
+                            <span>Sign up</span>
+                        )}
+                        </Button>
                 </DialogTrigger>
                 {showform && (
                     <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader>
-                            <DialogTitle>Email Verification</DialogTitle>
+                            <DialogTitle>Verification</DialogTitle>
                         </DialogHeader>
                         {!isemail && (
                             <>
                                 <DialogDescription className="mt-3">
-                                    Click here to send a verification to{" "}
-                                    {formValues.email}
+                                    Click here to verify your identity
                                 </DialogDescription>
                                 <Button
                                     onClick={() => {
@@ -150,7 +175,7 @@ const OTPform = ({
                                     }}
                                     className="whitespace-nowrap mt-8"
                                 >
-                                    Send Email
+                                    Verify
                                 </Button>
                             </>
                         )}
@@ -159,11 +184,7 @@ const OTPform = ({
                                 {/* {isCalled && HandleEmail(formValues.email, formValues.username)} */}
 
                                 <DialogDescription>
-                                    We have sent an 6 letter code to
-                                    <span className="font-bold text-primary">
-                                        {formValues.email}
-                                    </span>
-                                    . Please enter the code below.
+                                    To confirm that you are not a robot, type {otp} here
                                 </DialogDescription>
                                 <Form {...form}>
                                     <div
@@ -176,7 +197,7 @@ const OTPform = ({
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel>
-                                                        6 digit OTP
+                                                        6 digit code
                                                     </FormLabel>
                                                     <FormControl>
                                                         <InputOTP
